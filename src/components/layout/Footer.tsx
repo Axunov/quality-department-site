@@ -1,40 +1,60 @@
+import Image from "next/image";
+import { Link } from "@/i18n/routing";
+
 export function Footer() {
   return (
-    <footer className="bg-slate-950 text-white">
-      <div className="mx-auto max-w-7xl px-6 py-14">
+    <footer className="mt-16 bg-[#083b73] text-white">
+      <div className="container-main py-14">
         <div className="grid gap-10 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <h3 className="text-2xl font-bold">
-              Отдел контроля качества образования
-            </h3>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
-              Совместный Белорусско–Узбекский межотраслевой институт прикладных
-              технических квалификаций в городе Ташкенте.
+            <div className="flex items-center gap-4">
+              <Image
+                src="/images/logo.jpg"
+                alt="Логотип института"
+                width={72}
+                height={72}
+                className="h-[72px] w-[72px] rounded-full object-cover bg-white"
+              />
+
+              <div>
+                <h2 className="text-2xl font-extrabold">
+                  Отдел контроля качества образования
+                </h2>
+                <p className="mt-2 text-sm text-blue-100">
+                  Совместный Белорусско–Узбекский межотраслевой институт
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-6 max-w-2xl leading-7 text-blue-100">
+              Официальный портал отдела контроля качества образования:
+              мониторинг, аккредитация, документы, новости и обратная связь.
             </p>
           </div>
 
           <div>
-            <p className="font-semibold">Разделы</p>
-            <div className="mt-4 space-y-2 text-sm text-slate-300">
-              <p>О подразделении</p>
-              <p>Сотрудники</p>
-              <p>Новости</p>
-              <p>Документы</p>
+            <h3 className="text-lg font-bold">Быстрые ссылки</h3>
+            <div className="mt-5 grid gap-3 text-blue-100">
+              <Link href="/about">О подразделении</Link>
+              <Link href="/employees">Сотрудники</Link>
+              <Link href="/news">Новости</Link>
+              <Link href="/documents">Документы</Link>
+              <Link href="/accreditation">Аккредитация</Link>
             </div>
           </div>
 
           <div>
-            <p className="font-semibold">Контакты</p>
-            <div className="mt-4 space-y-2 text-sm text-slate-300">
-              <p>г. Ташкент, Республика Узбекистан</p>
-              <p>Email: quality@sbumiptk.uz</p>
-              <p>Telegram: @quality_department</p>
+            <h3 className="text-lg font-bold">Контакты</h3>
+            <div className="mt-5 space-y-3 text-blue-100">
+              <p>📍 Ташкентская область, Кибрайский район, Корамурт 1</p>
+              <p>☎ +998 90 322-26-29</p>
+              <p>✉ quality@sbumiptk.uz</p>
             </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-xs text-slate-400">
-          © 2026. Все права защищены.
+        <div className="mt-12 border-t border-white/15 pt-6 text-sm text-blue-100">
+          © 2026 Отдел контроля качества образования. Все права защищены.
         </div>
       </div>
     </footer>
