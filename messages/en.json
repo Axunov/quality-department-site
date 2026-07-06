@@ -1,0 +1,72 @@
+{
+  "Header": {
+    "title": "Education Quality Control Department",
+    "institute": "Belarus–Uzbekistan Joint Intersectoral Institute of Applied Technical Qualifications in Tashkent",
+    "address": "Tashkent region, Kibray district, Koramurt 1",
+    "home": "Home",
+    "about": "About",
+    "employees": "Staff",
+    "news": "News",
+    "documents": "Documents",
+    "accreditation": "Accreditation",
+    "contacts": "Contacts"
+  },
+  "Hero": {
+    "label": "Official department portal",
+    "title": "Education Quality Control Department",
+    "text": "A modern information platform for education quality monitoring, accreditation, analytics, documents, news and feedback.",
+    "documents": "Documents",
+    "news": "Department news"
+  },
+  "Welcome": {
+    "label": "Welcome message from the head of department",
+    "name": "Farhod Rustamov",
+    "position": "Head of the Education Quality Control Department",
+    "text": "The Education Quality Control Department carries out systematic work to develop an internal culture of quality, monitor the educational process, prepare accreditation materials and ensure feedback from students, teachers, employers and institutional partners."
+  },
+  "Directions": {
+    "title": "Main areas of activity",
+    "items": [
+      "Education quality monitoring",
+      "Accreditation of educational programs",
+      "Electronic document library",
+      "Student and teacher surveys",
+      "Analytical reports",
+      "Cooperation with institute departments"
+    ]
+  }
+  ,
+"Statistics": {
+  "monitoring": "Monitoring activities",
+  "documents": "Documents",
+  "surveys": "Surveys",
+  "students": "Students"
+},
+"NewsPreview": {
+  "title": "Latest news",
+  "items": [
+    "Monitoring of the educational process was carried out",
+    "Accreditation materials were prepared",
+    "A student survey on education quality was launched"
+  ],
+  "date": "04.07.2026"
+},
+"DocumentsPreview": {
+  "title": "Key documents",
+  "download": "Download document",
+  "items": [
+    "Regulation on the Education Quality Control Department",
+    "Accreditation action plan",
+    "Analytical report template"
+  ]
+},
+"ContactsPreview": {
+  "title": "Department contacts",
+  "addressLabel": "Address",
+  "address": "Tashkent region, Kibray district, Koramurt 1",
+  "phoneLabel": "Phone",
+  "employeesLabel": "Staff",
+  "head": "Farhod Rustamov",
+  "inspector": "Dilafruz Eshmetova"
+}
+}

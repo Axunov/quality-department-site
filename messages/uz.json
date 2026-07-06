@@ -1,0 +1,72 @@
+{
+  "Header": {
+    "title": "Ta’lim sifatini nazorat qilish bo‘limi",
+    "institute": "Toshkent shahridagi Belarus–O‘zbekiston qo‘shma tarmoqlararo amaliy texnik kvalifikatsiyalar instituti",
+    "address": "Toshkent viloyati, Qibray tumani, Qoramurt 1",
+    "home": "Bosh sahifa",
+    "about": "Bo‘lim haqida",
+    "employees": "Xodimlar",
+    "news": "Yangiliklar",
+    "documents": "Hujjatlar",
+    "accreditation": "Akkreditatsiya",
+    "contacts": "Kontaktlar"
+  },
+  "Hero": {
+    "label": "Bo‘limning rasmiy portali",
+    "title": "Ta’lim sifatini nazorat qilish bo‘limi",
+    "text": "Ta’lim sifati monitoringi, akkreditatsiya, tahlil, hujjatlar, yangiliklar va qayta aloqa uchun zamonaviy axborot platformasi.",
+    "documents": "Hujjatlar",
+    "news": "Bo‘lim yangiliklari"
+  },
+  "Welcome": {
+    "label": "Bo‘lim boshlig‘ining tabrigi",
+    "name": "Rustamov Farhod Nurmatovich",
+    "position": "Ta’lim sifatini nazorat qilish bo‘limi boshlig‘i",
+    "text": "Ta’lim sifatini nazorat qilish bo‘limi ichki sifat madaniyatini rivojlantirish, o‘quv jarayonini monitoring qilish, akkreditatsiya materiallarini tayyorlash hamda talabalar, o‘qituvchilar, ish beruvchilar va hamkorlar bilan qayta aloqani ta’minlash bo‘yicha tizimli ishlarni amalga oshiradi."
+  },
+  "Directions": {
+    "title": "Faoliyatning asosiy yo‘nalishlari",
+    "items": [
+      "Ta’lim sifati monitoringi",
+      "Ta’lim dasturlari akkreditatsiyasi",
+      "Elektron hujjatlar kutubxonasi",
+      "Talabalar va o‘qituvchilar so‘rovlari",
+      "Tahliliy hisobotlar",
+      "Institut bo‘linmalari bilan hamkorlik"
+    ]
+  }
+  ,
+"Statistics": {
+  "monitoring": "Monitoringlar",
+  "documents": "Hujjatlar",
+  "surveys": "So‘rovlar",
+  "students": "Talabalar"
+},
+"NewsPreview": {
+  "title": "So‘nggi yangiliklar",
+  "items": [
+    "O‘quv jarayoni sifati bo‘yicha monitoring o‘tkazildi",
+    "Akkreditatsiya bo‘yicha materiallar tayyorlandi",
+    "Ta’lim sifati bo‘yicha talabalar so‘rovi boshlandi"
+  ],
+  "date": "04.07.2026"
+},
+"DocumentsPreview": {
+  "title": "Muhim hujjatlar",
+  "download": "Hujjatni yuklab olish",
+  "items": [
+    "Ta’lim sifatini nazorat qilish bo‘limi to‘g‘risidagi nizom",
+    "Akkreditatsiya bo‘yicha tadbirlar rejasi",
+    "Tahliliy hisobot shakli"
+  ]
+},
+"ContactsPreview": {
+  "title": "Bo‘lim kontaktlari",
+  "addressLabel": "Manzil",
+  "address": "Toshkent viloyati, Qibray tumani, Qoramurt 1",
+  "phoneLabel": "Telefon",
+  "employeesLabel": "Xodimlar",
+  "head": "Rustamov Farhod Nurmatovich",
+  "inspector": "Eshmetova Dilafruz"
+}
+}
