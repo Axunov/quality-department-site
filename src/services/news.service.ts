@@ -3,16 +3,24 @@ import { supabase } from "@/lib/supabase";
 export type NewsItem = {
   id: string;
   slug: string;
+
   title_ru: string;
   title_uz: string;
   title_en: string;
+
   text_ru: string;
   text_uz: string;
   text_en: string;
-  category: string | null;
-  author: string | null;
-  image_url: string | null;
-  published: boolean;
+
+  content_ru?: string | null;
+  content_uz?: string | null;
+  content_en?: string | null;
+
+  category?: string | null;
+  author?: string | null;
+  image_url?: string | null;
+  gallery_urls?: string[] | null;
+  published?: boolean;
   created_at: string;
 };
 
