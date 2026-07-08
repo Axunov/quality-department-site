@@ -25,16 +25,35 @@
     "text": "Ta’lim sifatini nazorat qilish bo‘limi ichki sifat madaniyatini rivojlantirish, o‘quv jarayonini monitoring qilish, akkreditatsiya materiallarini tayyorlash hamda talabalar, o‘qituvchilar, ish beruvchilar va hamkorlar bilan qayta aloqani ta’minlash bo‘yicha tizimli ishlarni amalga oshiradi."
   },
   "Directions": {
-    "title": "Faoliyatning asosiy yo‘nalishlari",
-    "items": [
-      "Ta’lim sifati monitoringi",
-      "Ta’lim dasturlari akkreditatsiyasi",
-      "Elektron hujjatlar kutubxonasi",
-      "Talabalar va o‘qituvchilar so‘rovlari",
-      "Tahliliy hisobotlar",
-      "Institut bo‘linmalari bilan hamkorlik"
-    ]
-  }
+  "label": "Yo‘nalishlar",
+  "title": "Faoliyatning asosiy yo‘nalishlari",
+  "items": [
+    {
+      "title": "Ta’lim sifati monitoringi",
+      "text": "Davomat, o‘zlashtirish, darslar sifati va ta’lim muhitini nazorat qilish."
+    },
+    {
+      "title": "Akkreditatsiya",
+      "text": "Materiallar tayyorlash, o‘zini o‘zi baholash, indikatorlar va jarayonlarni kuzatish."
+    },
+    {
+      "title": "Hujjatlar",
+      "text": "Nizomlar, buyruqlar, shakllar, namunalar va uslubiy materiallar."
+    },
+    {
+      "title": "So‘rovlar",
+      "text": "Talabalar, o‘qituvchilar, bitiruvchilar va ish beruvchilar o‘rtasida so‘rovlar."
+    },
+    {
+      "title": "Tahlil",
+      "text": "Ma’lumotnomalar, hisobotlar va institut rahbariyati uchun tavsiyalar tayyorlash."
+    },
+    {
+      "title": "Qayta aloqa",
+      "text": "Ta’lim jarayoni ishtirokchilarining taklif, e’tiroz va murojaatlari bilan ishlash."
+    }
+  ]
+}
   ,
 "Statistics": {
   "monitoring": "Monitoringlar",

@@ -1,69 +1,61 @@
-import { PageHeader } from "@/components/common/PageHeader";
-import { Link } from "@/i18n/routing";
+import { getNews } from "@/services/news.service";
 
-const modules = [
-  {
-    title: "Новости",
-    text: "Добавление, редактирование и публикация новостей отдела.",
-    href: "/admin/news",
-    icon: "📰",
-  },
-  {
-    title: "Документы",
-    text: "Загрузка PDF, DOCX, приказов, положений и шаблонов.",
-    href: "/admin/documents",
-    icon: "📄",
-  },
-  {
-    title: "Сотрудники",
-    text: "Редактирование карточек сотрудников, контактов и фотографий.",
-    href: "/admin/employees",
-    icon: "👥",
-  },
-  {
-    title: "Аккредитация",
-    text: "Управление дорожной картой, индикаторами и рабочими группами.",
-    href: "/admin/accreditation",
-    icon: "🏛️",
-  },
-];
+export default async function AdminDashboardPage() {
+  const news = await getNews();
 
-export default function AdminPage() {
   return (
-    <main>
-      <PageHeader
-        label="Админ-панель"
-        title="Панель управления сайтом"
-        description="Раздел для управления новостями, документами, сотрудниками и материалами отдела контроля качества образования."
-      />
+    <div>
+      <h1 className="text-4xl font-bold text-slate-900">Dashboard</h1>
+      <p className="mt-2 text-slate-500">
+        Общая информация по административной панели
+      </p>
 
-      <section className="container-main py-16">
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-          {modules.map((item) => (
-            <Link
-              key={item.title}
-              href={item.href}
-              className="rounded-[30px] bg-white p-8 shadow-xl shadow-slate-200/70 transition hover:-translate-y-1 hover:shadow-2xl"
+      <div className="mt-8 grid gap-6 md:grid-cols-3">
+        <div className="rounded-2xl bg-white p-6 shadow">
+          <p className="text-sm text-slate-500">Новости</p>
+          <h2 className="mt-2 text-4xl font-bold text-blue-700">
+            {news.length}
+          </h2>
+        </div>
+
+        <div className="rounded-2xl bg-white p-6 shadow">
+          <p className="text-sm text-slate-500">Документы</p>
+          <h2 className="mt-2 text-4xl font-bold text-blue-700">0</h2>
+        </div>
+
+        <div className="rounded-2xl bg-white p-6 shadow">
+          <p className="text-sm text-slate-500">Сотрудники</p>
+          <h2 className="mt-2 text-4xl font-bold text-blue-700">0</h2>
+        </div>
+      </div>
+
+      <div className="mt-8 rounded-2xl bg-white p-6 shadow">
+        <h2 className="text-2xl font-bold text-slate-900">
+          Последние новости
+        </h2>
+
+        <div className="mt-5 space-y-3">
+          {news.slice(0, 5).map((item: any) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between rounded-xl bg-slate-50 p-4"
             >
-              <div className="text-5xl">{item.icon}</div>
-              <h2 className="mt-6 text-2xl font-bold text-slate-900">
-                {item.title}
-              </h2>
-              <p className="mt-4 leading-7 text-slate-600">{item.text}</p>
-              <p className="mt-6 font-bold text-blue-700">Открыть →</p>
-            </Link>
+              <div>
+                <p className="font-semibold text-slate-900">
+                  {item.title_ru}
+                </p>
+                <p className="text-sm text-slate-500">
+                  {item.category || "Новости"}
+                </p>
+              </div>
+
+              <p className="text-sm text-slate-500">
+                {new Date(item.created_at).toLocaleDateString("ru-RU")}
+              </p>
+            </div>
           ))}
         </div>
-
-        <div className="mt-12 rounded-[30px] bg-blue-50 p-8">
-          <h2 className="text-2xl font-bold text-slate-900">Важно</h2>
-          <p className="mt-4 leading-7 text-slate-700">
-            Сейчас это первая версия административной панели. На следующем этапе
-            мы подключим базу данных и авторизацию, чтобы изменения сохранялись
-            и отображались на сайте автоматически.
-          </p>
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

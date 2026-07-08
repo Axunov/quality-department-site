@@ -1,21 +1,47 @@
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
+
+const links = [
+  "/monitoring",
+  "/accreditation",
+  "/documents",
+  "/news",
+  "/analytics",
+  "/appeals",
+];
+
+const icons = ["📊", "🏛️", "📄", "📝", "📈", "✉️"];
+
+type DirectionItem = {
+  title: string;
+  text: string;
+};
 
 export function Directions() {
   const t = useTranslations("Directions");
-  const directions = t.raw("items") as string[];
+  const items = t.raw("items") as DirectionItem[];
 
   return (
-    <section className="container-main pb-20">
-      <h2 className="text-3xl font-bold">{t("title")}</h2>
+    <section className="container-main py-14">
+      <div className="mb-8">
+        <p className="soft-label">{t("label")}</p>
+        <h2 className="mt-4 section-title">{t("title")}</h2>
+      </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {directions.map((item) => (
-          <div key={item} className="card card-hover p-6">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 font-bold text-blue-700">
-              ✓
-            </div>
-            <h3 className="text-xl font-bold">{item}</h3>
-          </div>
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {items.map((item, index) => (
+          <Link
+            key={item.title}
+            href={links[index]}
+            className="rounded-[30px] bg-white p-7 shadow-xl shadow-slate-200/70 transition hover:-translate-y-1 hover:shadow-2xl"
+          >
+            <div className="text-5xl">{icons[index]}</div>
+            <h3 className="mt-6 text-2xl font-bold text-slate-900">
+              {item.title}
+            </h3>
+            <p className="mt-4 leading-7 text-slate-600">{item.text}</p>
+            <p className="mt-6 font-bold text-blue-700">Открыть →</p>
+          </Link>
         ))}
       </div>
     </section>

@@ -1,69 +1,85 @@
 import { PageHeader } from "@/components/common/PageHeader";
-import { news } from "@/data/news";
 import { Link } from "@/i18n/routing";
-import { SearchBox } from "@/components/search/SearchBox";
+import { getNews } from "@/services/news.service";
+import { getLocalizedText } from "@/utils/getLocalizedText";
 
-const categories = ["Все", "Аккредитация", "Мониторинг", "Опросы", "Семинары"];
+export default async function NewsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const news = await getNews();
 
-export default function NewsPage() {
   return (
     <main>
       <PageHeader
         label="Новости"
-        title="Новости отдела"
-        description="Актуальные события, объявления, мониторинг, опросы, семинары и материалы по аккредитации."
+        title="Новости"
+        description="Последние новости и объявления института"
       />
 
       <section className="container-main py-16">
-        <div className="mb-10 rounded-[28px] bg-white p-6 shadow-xl shadow-slate-200/70">
-          <SearchBox placeholder="Поиск по новостям..." />
+        <div className="grid gap-7 md:grid-cols-3">
+          {news.map((item: any) => {
+            const title = getLocalizedText(
+              locale,
+              item.title_ru,
+              item.title_uz,
+              item.title_en
+            );
 
-          <div className="mt-5 flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <div
-                key={category}
-                className="rounded-full border border-blue-100 bg-blue-50 px-5 py-2 text-sm font-bold text-blue-800"
+            const text = getLocalizedText(
+              locale,
+              item.text_ru,
+              item.text_uz,
+              item.text_en
+            );
+
+            return (
+              <article
+                key={item.id}
+                className="overflow-hidden rounded-[28px] bg-white shadow-xl shadow-slate-200/70 transition hover:-translate-y-1 hover:shadow-2xl"
               >
-                {category}
-              </div>
-            ))}
-          </div>
-        </div>
+                {item.image_url ? (
+                  <img
+                    src={item.image_url}
+                    alt={title}
+                    className="h-52 w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-52 items-center justify-center bg-gradient-to-br from-[#0b3b78] to-[#0ea5a3] text-5xl text-white">
+                    📰
+                  </div>
+                )}
 
-        <div className="grid gap-8 md:grid-cols-3">
-          {news.map((item, index) => (
-            <article
-              key={item.title}
-              className="overflow-hidden rounded-[30px] bg-white shadow-xl shadow-slate-200/70 transition hover:-translate-y-1 hover:shadow-2xl"
-            >
-              <div className="flex h-52 items-center justify-center bg-gradient-to-br from-[#0b3b78] to-[#0ea5a3] text-6xl text-white">
-                {index === 0 ? "📊" : index === 1 ? "🏛️" : "📝"}
-              </div>
+                <div className="p-6">
+                  <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+                    {item.category || "Новости"}
+                  </span>
 
-              <div className="p-7">
-                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
-                  {item.category}
-                </span>
+                  <h2 className="mt-5 text-xl font-bold text-slate-900">
+                    {title}
+                  </h2>
 
-                <h2 className="mt-5 text-xl font-extrabold leading-7 text-slate-900">
-                  {item.title}
-                </h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                    {text}
+                  </p>
 
-                <p className="mt-3 text-sm text-slate-500">
-                  {item.date} · {item.author}
-                </p>
+                  <p className="mt-4 text-xs text-slate-500">
+                    {new Date(item.created_at).toLocaleDateString("ru-RU")}
+                  </p>
 
-                <p className="mt-5 leading-7 text-slate-600">{item.text}</p>
-
-                <Link
-                  href={`/news/${item.slug}`}
-                  className="mt-6 inline-block font-bold text-blue-700"
+                  <Link
+                    href={`/news/${item.slug}`}
+                    className="mt-5 inline-block font-semibold text-blue-700"
                   >
-                 Читать подробнее →
-                </Link>
-              </div>
-            </article>
-          ))}
+                    Читать подробнее →
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
     </main>

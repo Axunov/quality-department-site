@@ -25,16 +25,35 @@
     "text": "The Education Quality Control Department carries out systematic work to develop an internal culture of quality, monitor the educational process, prepare accreditation materials and ensure feedback from students, teachers, employers and institutional partners."
   },
   "Directions": {
-    "title": "Main areas of activity",
-    "items": [
-      "Education quality monitoring",
-      "Accreditation of educational programs",
-      "Electronic document library",
-      "Student and teacher surveys",
-      "Analytical reports",
-      "Cooperation with institute departments"
-    ]
-  }
+  "label": "Areas",
+  "title": "Main areas of activity",
+  "items": [
+    {
+      "title": "Education quality monitoring",
+      "text": "Monitoring attendance, academic performance, teaching quality and the learning environment."
+    },
+    {
+      "title": "Accreditation",
+      "text": "Preparation of materials, self-assessment, quality indicators and accreditation support."
+    },
+    {
+      "title": "Documents",
+      "text": "Regulations, orders, forms, templates and methodological materials."
+    },
+    {
+      "title": "Surveys",
+      "text": "Surveys of students, teachers, graduates and employers."
+    },
+    {
+      "title": "Analytics",
+      "text": "Preparation of reports, analytical notes and recommendations for institute management."
+    },
+    {
+      "title": "Feedback",
+      "text": "Processing proposals, comments and appeals from participants of the educational process."
+    }
+  ]
+}
   ,
 "Statistics": {
   "monitoring": "Monitoring activities",

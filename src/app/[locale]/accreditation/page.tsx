@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/common/PageHeader";
+import { Link } from "@/i18n/routing";
 
 const sections = [
   {
@@ -6,36 +7,42 @@ const sections = [
     description:
       "Подготовка института к комплексной государственной аккредитации, координация рабочих групп и сопровождение процедуры.",
     icon: "🏛️",
+    href: "/documents",
   },
   {
     title: "Специальная аккредитация",
     description:
       "Подготовка образовательных программ к специальной аккредитации в соответствии с требованиями Национального агентства.",
     icon: "🎓",
+    href: "/documents",
   },
   {
     title: "Самооценка",
     description:
       "Формирование отчёта по самооценке, анализ показателей и сбор доказательной базы.",
     icon: "📋",
+    href: "/analytics",
   },
   {
     title: "Индикаторы качества",
     description:
       "Мониторинг выполнения критериев, анализ результатов и контроль выполнения мероприятий.",
     icon: "📊",
+    href: "/monitoring",
   },
   {
     title: "Нормативные документы",
     description:
       "Законы, постановления, государственные образовательные стандарты и внутренние документы.",
     icon: "📚",
+    href: "/documents",
   },
   {
     title: "Рабочие группы",
     description:
       "Ответственные лица, распределение обязанностей и контроль исполнения дорожной карты.",
     icon: "👥",
+    href: "/employees",
   },
 ];
 
@@ -67,9 +74,12 @@ export default function AccreditationPage() {
                 {item.description}
               </p>
 
-              <button className="mt-8 rounded-xl bg-[#0b3b78] px-6 py-3 font-semibold text-white transition hover:bg-blue-700">
-                Подробнее
-              </button>
+              <Link
+  href={item.href}
+  className="mt-8 inline-flex rounded-xl bg-[#0b3b78] px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+>
+  Подробнее
+</Link>
             </div>
           ))}
         </div>

@@ -11,13 +11,13 @@ export function Header() {
   const locale = useLocale();
 
   const navItems = [
-    { href: "/", label: t("home") },
-    { href: "/about", label: t("about") },
-    { href: "/employees", label: t("employees") },
-    { href: "/news", label: t("news") },
-    { href: "/documents", label: t("documents") },
-    { href: "/accreditation", label: t("accreditation") },
-    { href: "/contacts", label: t("contacts") },
+  { href: "/", label: t("home") },
+  { href: "/about", label: t("about") },
+  { href: "/employees", label: t("employees") },
+  { href: "/news", label: t("news") },
+  { href: "/documents", label: t("documents") },
+  { href: "/accreditation", label: t("accreditation") },
+  { href: "/contacts", label: t("contacts") },
   ];
 
   return (
@@ -65,6 +65,7 @@ export function Header() {
         <nav className="flex items-center justify-center gap-2 border-t border-slate-100 py-3 text-sm font-semibold">
           {navItems.map((item) => {
             const active = pathname === item.href;
+                       
 
             return (
               <Link
