@@ -1,6 +1,9 @@
 import { getDocuments } from "@/services/documents.service";
 import { getLocalizedText } from "@/utils/getLocalizedText";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const labels = {
   ru: {
     label: "Документы",

@@ -2,6 +2,9 @@ import { Link } from "@/i18n/routing";
 import { getNews } from "@/services/news.service";
 import { getLocalizedText } from "@/utils/getLocalizedText";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const labels = {
   ru: {
     label: "Новости",
