@@ -160,3 +160,167 @@ body {
   color: #1d4ed8;
   text-decoration: underline;
 }
+
+/* ========================================
+   ГЛОБАЛЬНАЯ МОБИЛЬНАЯ АДАПТАЦИЯ
+======================================== */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* Общий контейнер */
+.container-main {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+/* Длинные слова, email, ссылки и названия файлов */
+a,
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Формы и кнопки */
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
+}
+
+/* Таблицы не должны растягивать страницу */
+table {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  /* Уменьшаем вертикальные отступы */
+  section {
+    scroll-margin-top: 80px;
+  }
+
+  /* Hero-блоки */
+  section[class*="min-h-[620px]"] {
+    min-height: auto !important;
+  }
+
+  div[class*="min-h-[620px]"] {
+    min-height: auto !important;
+  }
+
+  /* Универсально уменьшаем крупные заголовки */
+  h1 {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+    line-height: 1.12 !important;
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 7vw, 2.4rem) !important;
+    line-height: 1.18 !important;
+  }
+
+  h3 {
+    line-height: 1.25 !important;
+  }
+
+  /* Сетки переводим в одну колонку */
+  .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Убираем слишком большие отступы */
+  .py-24 {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+
+  .py-20 {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .pt-20 {
+    padding-top: 48px !important;
+  }
+
+  .pb-24 {
+    padding-bottom: 56px !important;
+  }
+
+  .p-10,
+  .p-12 {
+    padding: 24px !important;
+  }
+
+  .p-8 {
+    padding: 24px !important;
+  }
+
+  /* Карточки */
+  article,
+  .card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Кнопки и ссылки в блоках */
+  .flex-wrap {
+    row-gap: 12px;
+  }
+
+  /* Iframe карты */
+  iframe {
+    min-height: 320px;
+  }
+
+  /* Фото сотрудников и новости */
+  img[class*="object-cover"] {
+    object-position: center top;
+  }
+
+  /* Админ-панель */
+  .overflow-hidden {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 640px) {
+  .container-main {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-main {
+    padding-inline: 32px;
+  }
+}
