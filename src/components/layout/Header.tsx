@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export function Header() {
   const t = useTranslations("Header");

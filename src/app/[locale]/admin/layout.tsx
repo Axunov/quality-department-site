@@ -2,11 +2,13 @@
 
 import { Link, usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
 
 const labels = {
   ru: {
     panel: "Админ-панель",
     subtitle: "Управление сайтом",
+    tools: "Инструменты",
     dashboard: "Dashboard",
     news: "Новости",
     documents: "Документы",
@@ -16,6 +18,7 @@ const labels = {
   uz: {
     panel: "Admin panel",
     subtitle: "Saytni boshqarish",
+    tools: "Vositalar",
     dashboard: "Dashboard",
     news: "Yangiliklar",
     documents: "Hujjatlar",
@@ -25,6 +28,7 @@ const labels = {
   en: {
     panel: "Admin Panel",
     subtitle: "Website management",
+    tools: "Tools",
     dashboard: "Dashboard",
     news: "News",
     documents: "Documents",
@@ -40,23 +44,33 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const locale = useLocale();
-  const t = labels[locale as "ru" | "uz" | "en"] || labels.ru;
+
+  const currentLocale: "ru" | "uz" | "en" =
+    locale === "uz" || locale === "en" ? locale : "ru";
+
+  const t = labels[currentLocale];
+
+  const isLoginPage = pathname === "/admin/login";
 
   const menuItems = [
-  { href: "/admin", label: t.dashboard, icon: "📊" },
-  { href: "/admin/news", label: t.news, icon: "📰" },
-  { href: "/admin/documents", label: t.documents, icon: "📄" },
-  { href: "/admin/employees", label: t.employees, icon: "👨‍🏫" },
-      ];
+    { href: "/admin", label: t.dashboard, icon: "📊" },
+    { href: "/admin/news", label: t.news, icon: "📰" },
+    { href: "/admin/documents", label: t.documents, icon: "📄" },
+    { href: "/admin/employees", label: t.employees, icon: "👨‍🏫" },
+    { href: "/admin/tools",  label: t.tools,  icon: "🛠️",},
+  ];
+
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
+
   return (
     <main className="min-h-screen bg-slate-100">
       <div className="flex">
         <aside className="min-h-screen w-72 bg-[#083b73] p-6 text-white">
           <div>
             <h1 className="text-2xl font-bold">{t.panel}</h1>
-            <p className="mt-2 text-sm text-blue-100">
-              {t.subtitle}
-            </p>
+            <p className="mt-2 text-sm text-blue-100">{t.subtitle}</p>
           </div>
 
           <nav className="mt-8 space-y-2">
@@ -86,8 +100,9 @@ export default function AdminLayout({
               href="/"
               className="mt-8 block rounded-xl bg-white/10 px-4 py-3 hover:bg-white/20"
             >
-               {t.site}
+              {t.site}
             </Link>
+            <AdminLogoutButton />
           </nav>
         </aside>
 
