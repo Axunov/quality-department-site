@@ -1,45 +1,103 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "next-intl";
+import { Link } from "@/i18n/routing";
+import { supabase } from "@/lib/supabase";
 
 const labels = {
   ru: {
     title: "Файловый менеджер",
     subtitle: "Загрузка и управление документами сайта",
-    add: "Добавить документ",
-    chooseFile: "Выбрать и добавить документ",
-    loading: "Загружается...",
+    addTitle: "Добавить документ",
+    titleRu: "Название на русском",
+    titleUz: "Название на узбекском",
+    titleEn: "Название на английском",
+    descriptionRu: "Описание на русском",
+    descriptionUz: "Описание на узбекском",
+    descriptionEn: "Описание на английском",
+    category: "Категория",
+    file: "Основной файл",
+    preview: "Обложка документа",
+    save: "Сохранить документ",
+    saving: "Сохранение...",
+    search: "Поиск документов...",
     open: "Открыть",
     download: "Скачать",
+    edit: "Редактировать",
+    delete: "Удалить",
     deleteConfirm: "Удалить документ?",
     empty: "Документы пока не добавлены",
     defaultCategory: "Документы",
+    requiredFile: "Выберите основной файл",
+    requiredTitle: "Укажите название документа",
+    uploadError: "Ошибка загрузки файла",
+    previewUploadError: "Ошибка загрузки обложки",
+    saveError: "Ошибка сохранения",
+    saved: "Документ добавлен",
+    deleteError: "Ошибка удаления",
   },
   uz: {
     title: "Fayl menejeri",
     subtitle: "Sayt hujjatlarini yuklash va boshqarish",
-    add: "Hujjat qo‘shish",
-    chooseFile: "Hujjatni tanlash va qo‘shish",
-    loading: "Yuklanmoqda...",
+    addTitle: "Hujjat qo‘shish",
+    titleRu: "Rus tilidagi nomi",
+    titleUz: "O‘zbek tilidagi nomi",
+    titleEn: "Ingliz tilidagi nomi",
+    descriptionRu: "Rus tilidagi tavsif",
+    descriptionUz: "O‘zbek tilidagi tavsif",
+    descriptionEn: "Ingliz tilidagi tavsif",
+    category: "Toifa",
+    file: "Asosiy fayl",
+    preview: "Hujjat muqovasi",
+    save: "Hujjatni saqlash",
+    saving: "Saqlanmoqda...",
+    search: "Hujjatlarni qidirish...",
     open: "Ochish",
     download: "Yuklab olish",
+    edit: "Tahrirlash",
+    delete: "O‘chirish",
     deleteConfirm: "Hujjat o‘chirilsinmi?",
     empty: "Hozircha hujjatlar qo‘shilmagan",
     defaultCategory: "Hujjatlar",
+    requiredFile: "Asosiy faylni tanlang",
+    requiredTitle: "Hujjat nomini kiriting",
+    uploadError: "Faylni yuklashda xato",
+    previewUploadError: "Muqovani yuklashda xato",
+    saveError: "Saqlashda xato",
+    saved: "Hujjat qo‘shildi",
+    deleteError: "O‘chirishda xato",
   },
   en: {
     title: "File Manager",
     subtitle: "Upload and manage website documents",
-    add: "Add document",
-    chooseFile: "Choose and add document",
-    loading: "Uploading...",
+    addTitle: "Add document",
+    titleRu: "Russian title",
+    titleUz: "Uzbek title",
+    titleEn: "English title",
+    descriptionRu: "Russian description",
+    descriptionUz: "Uzbek description",
+    descriptionEn: "English description",
+    category: "Category",
+    file: "Main file",
+    preview: "Document cover",
+    save: "Save document",
+    saving: "Saving...",
+    search: "Search documents...",
     open: "Open",
     download: "Download",
+    edit: "Edit",
+    delete: "Delete",
     deleteConfirm: "Delete this document?",
     empty: "No documents have been added yet",
     defaultCategory: "Documents",
+    requiredFile: "Choose the main file",
+    requiredTitle: "Enter a document title",
+    uploadError: "File upload error",
+    previewUploadError: "Cover upload error",
+    saveError: "Save error",
+    saved: "Document added",
+    deleteError: "Delete error",
   },
 };
 
@@ -52,31 +110,42 @@ function formatFileSize(size?: number) {
 
 function getFileIcon(fileName?: string) {
   const ext = fileName?.split(".").pop()?.toLowerCase();
-
   if (ext === "pdf") return "📕";
   if (["doc", "docx"].includes(ext || "")) return "🟦";
   if (["xls", "xlsx"].includes(ext || "")) return "🟩";
   if (["ppt", "pptx"].includes(ext || "")) return "🟧";
-
   return "📄";
 }
 
+function extractStoragePath(publicUrl?: string, bucket?: string) {
+  if (!publicUrl || !bucket) return null;
+  const marker = `/storage/v1/object/public/${bucket}/`;
+  const index = publicUrl.indexOf(marker);
+  if (index === -1) return null;
+  return decodeURIComponent(publicUrl.slice(index + marker.length));
+}
+
 export default function DocumentsAdmin() {
+  const locale = useLocale();
+  const currentLocale: "ru" | "uz" | "en" =
+    locale === "uz" || locale === "en" ? locale : "ru";
+  const t = labels[currentLocale];
+
   const [documents, setDocuments] = useState<any[]>([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const locale = useLocale();
-
-const currentLocale: "ru" | "uz" | "en" =
-  locale === "uz" || locale === "en" ? locale : "ru";
-
-const t = labels[currentLocale];
+  const [search, setSearch] = useState("");
 
   async function loadDocuments() {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("documents")
       .select("*")
       .order("created_at", { ascending: false });
+
+    if (error) {
+      setMessage(error.message);
+      return;
+    }
 
     setDocuments(data || []);
   }
@@ -85,68 +154,96 @@ const t = labels[currentLocale];
     loadDocuments();
   }, []);
 
+  const filteredDocuments = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return documents;
+
+    return documents.filter((doc) =>
+      [doc.title_ru, doc.title_uz, doc.title_en, doc.category, doc.file_name]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(query))
+    );
+  }, [documents, search]);
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage("");
     setLoading(true);
 
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+
     const file = form.get("file") as File;
     const previewFile = form.get("preview") as File;
+    const titleRu = String(form.get("title_ru") || "").trim();
+    const titleUz = String(form.get("title_uz") || "").trim();
+    const titleEn = String(form.get("title_en") || "").trim();
 
     if (!file || file.size === 0) {
-      setMessage("Выберите файл");
+      setMessage(t.requiredFile);
       setLoading(false);
       return;
     }
 
-    const fileExt = file.name.split(".").pop() || "file";
-    const fileName = `${Date.now()}-document.${fileExt}`;
+    if (!titleRu && !titleUz && !titleEn) {
+      setMessage(t.requiredTitle);
+      setLoading(false);
+      return;
+    }
+
+    const stamp = `${Date.now()}-${crypto.randomUUID()}`;
+    const fileExt = file.name.split(".").pop()?.toLowerCase() || "file";
+    const filePath = `${stamp}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage
       .from("documents")
-      .upload(fileName, file);
+      .upload(filePath, file, { upsert: false });
 
     if (uploadError) {
-      setMessage("Ошибка загрузки файла: " + uploadError.message);
+      setMessage(`${t.uploadError}: ${uploadError.message}`);
       setLoading(false);
       return;
     }
 
-    const { data } = supabase.storage.from("documents").getPublicUrl(fileName);
+    const { data: fileData } = supabase.storage
+      .from("documents")
+      .getPublicUrl(filePath);
 
     let previewUrl = "";
 
     if (previewFile && previewFile.size > 0) {
-      const previewExt = previewFile.name.split(".").pop() || "jpg";
-      const previewName = `${Date.now()}-preview.${previewExt}`;
+      const previewExt =
+        previewFile.name.split(".").pop()?.toLowerCase() || "jpg";
+      const previewPath = `${stamp}-preview.${previewExt}`;
 
       const { error: previewUploadError } = await supabase.storage
         .from("document-previews")
-        .upload(previewName, previewFile);
+        .upload(previewPath, previewFile, { upsert: false });
 
       if (previewUploadError) {
-        setMessage("Ошибка загрузки обложки: " + previewUploadError.message);
+        await supabase.storage.from("documents").remove([filePath]);
+        setMessage(`${t.previewUploadError}: ${previewUploadError.message}`);
         setLoading(false);
         return;
       }
 
       const { data: previewData } = supabase.storage
         .from("document-previews")
-        .getPublicUrl(previewName);
+        .getPublicUrl(previewPath);
 
       previewUrl = previewData.publicUrl;
     }
 
     const { error } = await supabase.from("documents").insert({
-      title_ru: String(form.get("title_ru") || ""),
-      title_uz: String(form.get("title_uz") || ""),
-      title_en: String(form.get("title_en") || ""),
-      description_ru: String(form.get("description_ru") || ""),
-      description_uz: String(form.get("description_uz") || ""),
-      description_en: String(form.get("description_en") || ""),
-      category: String(form.get("category") || "Документы"),
-      file_url: data.publicUrl,
+      title_ru: titleRu,
+      title_uz: titleUz,
+      title_en: titleEn,
+      description_ru: String(form.get("description_ru") || "").trim(),
+      description_uz: String(form.get("description_uz") || "").trim(),
+      description_en: String(form.get("description_en") || "").trim(),
+      category:
+        String(form.get("category") || "").trim() || t.defaultCategory,
+      file_url: fileData.publicUrl,
       file_name: file.name,
       file_type: file.type || fileExt,
       file_size: file.size,
@@ -155,321 +252,135 @@ const t = labels[currentLocale];
     });
 
     if (error) {
-      setMessage("Ошибка сохранения: " + error.message);
+      await supabase.storage.from("documents").remove([filePath]);
+      const previewPath = extractStoragePath(previewUrl, "document-previews");
+      if (previewPath) {
+        await supabase.storage.from("document-previews").remove([previewPath]);
+      }
+
+      setMessage(`${t.saveError}: ${error.message}`);
       setLoading(false);
       return;
     }
 
-    setMessage("Документ добавлен!");
-    (event.target as HTMLFormElement).reset();
+    setMessage(t.saved);
+    formElement.reset();
+    await loadDocuments();
     setLoading(false);
-    loadDocuments();
   }
 
-  async function deleteDocument(id: string) {
+  async function deleteDocument(doc: any) {
     if (!confirm(t.deleteConfirm)) return;
 
-    const { error } = await supabase.from("documents").delete().eq("id", id);
+    setMessage("");
+
+    const { error } = await supabase
+      .from("documents")
+      .delete()
+      .eq("id", doc.id);
 
     if (error) {
-      alert("Ошибка удаления: " + error.message);
+      setMessage(`${t.deleteError}: ${error.message}`);
       return;
     }
 
-    loadDocuments();
+    const filePath = extractStoragePath(doc.file_url, "documents");
+    const previewPath = extractStoragePath(doc.preview_url, "document-previews");
+
+    if (filePath) {
+      await supabase.storage.from("documents").remove([filePath]);
+    }
+
+    if (previewPath) {
+      await supabase.storage.from("document-previews").remove([previewPath]);
+    }
+
+    await loadDocuments();
   }
 
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-slate-900">{t.title}</h1>
+        <h1 className="text-4xl font-black text-slate-900">{t.title}</h1>
         <p className="mt-2 text-slate-500">{t.subtitle}</p>
       </div>
 
-      <div className="rounded-2xl bg-white p-6 shadow">
-  <h2 className="text-2xl font-bold text-slate-900">{t.add}</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm"
+      >
+        <h2 className="text-2xl font-black text-slate-900">{t.addTitle}</h2>
 
-  <div className="mt-5 flex flex-wrap gap-3">
-    <button
-      type="button"
-      disabled={loading}
-      onClick={async () => {
-        try {
-          const picker = (window as any).showOpenFilePicker;
+        <div className="mt-7 grid gap-5 lg:grid-cols-3">
+          <input name="title_ru" placeholder={t.titleRu} className="rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
+          <input name="title_uz" placeholder={t.titleUz} className="rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
+          <input name="title_en" placeholder={t.titleEn} className="rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
 
-          if (!picker) {
-            setMessage(
-              currentLocale === "uz"
-                ? "Brauzer fayl tanlash funksiyasini qo‘llab-quvvatlamaydi."
-                : currentLocale === "en"
-                  ? "This browser does not support the file picker."
-                  : "Браузер не поддерживает системный выбор файла."
-            );
-            return;
-          }
+          <textarea name="description_ru" placeholder={t.descriptionRu} className="min-h-28 rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
+          <textarea name="description_uz" placeholder={t.descriptionUz} className="min-h-28 rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
+          <textarea name="description_en" placeholder={t.descriptionEn} className="min-h-28 rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
+        </div>
 
-          const [fileHandle] = await picker({
-            multiple: false,
-            types: [
-              {
-                description: "Documents",
-                accept: {
-                  "application/pdf": [".pdf"],
-                  "application/msword": [".doc"],
-                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-                  "application/vnd.ms-excel": [".xls"],
-                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
-                  "application/vnd.ms-powerpoint": [".ppt"],
-                  "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
-                },
-              },
-            ],
-          });
+        <div className="mt-5 grid gap-5 lg:grid-cols-3">
+          <label className="block">
+            <span className="mb-2 block text-sm font-bold text-slate-700">{t.category}</span>
+            <input name="category" defaultValue={t.defaultCategory} className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
+          </label>
 
-          const file = await fileHandle.getFile();
+          <label className="block">
+            <span className="mb-2 block text-sm font-bold text-slate-700">{t.file}</span>
+            <input name="file" type="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
+          </label>
 
-          const titleRu = prompt("Название RU") || file.name;
-          const titleUz = prompt("Nomi UZ") || titleRu;
-          const titleEn = prompt("Title EN") || titleRu;
-          const category =
-            prompt(
-              currentLocale === "uz"
-                ? "Toifa"
-                : currentLocale === "en"
-                  ? "Category"
-                  : "Категория"
-            ) || t.defaultCategory;
+          <label className="block">
+            <span className="mb-2 block text-sm font-bold text-slate-700">{t.preview}</span>
+            <input name="preview" type="file" accept="image/jpeg,image/png,image/webp" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
+          </label>
+        </div>
 
-          const descriptionRu = prompt("Описание RU") || "";
-          const descriptionUz = prompt("Tavsif UZ") || descriptionRu;
-          const descriptionEn = prompt("Description EN") || descriptionRu;
+        <button type="submit" disabled={loading} className="mt-7 rounded-xl bg-blue-700 px-7 py-3.5 font-bold text-white transition hover:bg-blue-800 disabled:opacity-60">
+          {loading ? t.saving : t.save}
+        </button>
 
-          setLoading(true);
-          setMessage("");
+        {message && (
+          <p className="mt-5 rounded-xl bg-slate-100 p-4 text-sm text-slate-700">{message}</p>
+        )}
+      </form>
 
-          const fileExt = file.name.split(".").pop()?.toLowerCase() || "file";
-          const fileName = `${Date.now()}-document.${fileExt}`;
+      <div className="mt-8">
+        <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t.search} className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-blue-500" />
+      </div>
 
-          const { error: uploadError } = await supabase.storage
-            .from("documents")
-            .upload(fileName, file);
-
-          if (uploadError) {
-            setMessage("Ошибка загрузки файла: " + uploadError.message);
-            setLoading(false);
-            return;
-          }
-
-          const { data: fileData } = supabase.storage
-            .from("documents")
-            .getPublicUrl(fileName);
-
-          const { error } = await supabase.from("documents").insert({
-            title_ru: titleRu,
-            title_uz: titleUz,
-            title_en: titleEn,
-            description_ru: descriptionRu,
-            description_uz: descriptionUz,
-            description_en: descriptionEn,
-            category,
-            file_url: fileData.publicUrl,
-            file_name: file.name,
-            file_type: file.type || fileExt,
-            file_size: file.size,
-            preview_url: "",
-            published: true,
-          });
-
-          if (error) {
-            setMessage("Ошибка сохранения: " + error.message);
-          } else {
-            setMessage(
-              currentLocale === "uz"
-                ? "Hujjat qo‘shildi!"
-                : currentLocale === "en"
-                  ? "Document added!"
-                  : "Документ добавлен!"
-            );
-            await loadDocuments();
-          }
-
-          setLoading(false);
-        } catch (error: any) {
-          setLoading(false);
-
-          if (error?.name !== "AbortError") {
-            setMessage(error?.message || "Не удалось выбрать файл");
-          }
-        }
-      }}
-      className="rounded-xl bg-blue-700 px-6 py-3 font-semibold text-white disabled:opacity-60"
-    >
-      {loading ? t.loading : `+ ${t.chooseFile}`}
-    </button>
-
-    <button
-      type="button"
-      disabled={loading}
-      onClick={async () => {
-        try {
-          const picker = (window as any).showOpenFilePicker;
-
-          if (!picker) {
-            setMessage("Браузер не поддерживает системный выбор файла.");
-            return;
-          }
-
-          const [previewHandle] = await picker({
-            multiple: false,
-            types: [
-              {
-                description: "Images",
-                accept: {
-                  "image/*": [".jpg", ".jpeg", ".png", ".webp"],
-                },
-              },
-            ],
-          });
-
-          const previewFile = await previewHandle.getFile();
-
-          const documentId = prompt(
-            currentLocale === "uz"
-              ? "Hujjat ID sini kiriting"
-              : currentLocale === "en"
-                ? "Enter document ID"
-                : "Введите ID документа"
-          );
-
-          if (!documentId) return;
-
-          setLoading(true);
-          setMessage("");
-
-          const previewExt =
-            previewFile.name.split(".").pop()?.toLowerCase() || "jpg";
-          const previewName = `${Date.now()}-preview.${previewExt}`;
-
-          const { error: previewUploadError } = await supabase.storage
-            .from("document-previews")
-            .upload(previewName, previewFile);
-
-          if (previewUploadError) {
-            setMessage(
-              "Ошибка загрузки обложки: " + previewUploadError.message
-            );
-            setLoading(false);
-            return;
-          }
-
-          const { data: previewData } = supabase.storage
-            .from("document-previews")
-            .getPublicUrl(previewName);
-
-          const { error } = await supabase
-            .from("documents")
-            .update({ preview_url: previewData.publicUrl })
-            .eq("id", documentId);
-
-          if (error) {
-            setMessage("Ошибка сохранения обложки: " + error.message);
-          } else {
-            setMessage(
-              currentLocale === "uz"
-                ? "Muqova qo‘shildi!"
-                : currentLocale === "en"
-                  ? "Cover added!"
-                  : "Обложка добавлена!"
-            );
-            await loadDocuments();
-          }
-
-          setLoading(false);
-        } catch (error: any) {
-          setLoading(false);
-
-          if (error?.name !== "AbortError") {
-            setMessage(error?.message || "Не удалось выбрать обложку");
-          }
-        }
-      }}
-      className="rounded-xl bg-slate-700 px-6 py-3 font-semibold text-white disabled:opacity-60"
-    >
-      🖼️ {currentLocale === "uz"
-        ? "Muqova qo‘shish"
-        : currentLocale === "en"
-          ? "Add cover"
-          : "Добавить обложку"}
-    </button>
-  </div>
-
-  {message && (
-    <p className="mt-4 rounded-lg bg-slate-100 p-3">{message}</p>
-  )}
-</div>
-
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
-        {documents.map((doc) => (
-          <div key={doc.id} className="overflow-hidden rounded-2xl bg-white shadow">
-            <div className="flex h-48 items-center justify-center bg-slate-100 text-6xl">
+      <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {filteredDocuments.map((doc) => (
+          <article key={doc.id} className="overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-sm">
+            <div className="flex h-56 items-center justify-center bg-slate-100 text-6xl">
               {doc.preview_url ? (
-                <img
-                  src={doc.preview_url}
-                  alt={doc.title_ru}
-                  className="h-full w-full object-cover"
-                />
+                <img src={doc.preview_url} alt={doc.title_ru || doc.file_name} className="h-full w-full object-contain p-3" />
               ) : (
                 <span>{getFileIcon(doc.file_name)}</span>
               )}
             </div>
 
-            <div className="p-5">
-              <p className="text-xs font-bold uppercase text-blue-700">
-                {doc.category || t.defaultCategory}
-              </p>
+            <div className="p-6">
+              <p className="text-xs font-bold uppercase tracking-wide text-blue-700">{doc.category || t.defaultCategory}</p>
+              <h3 className="mt-3 line-clamp-2 text-xl font-black text-slate-900">{doc.title_ru || doc.title_uz || doc.title_en}</h3>
+              <p className="mt-3 break-all text-sm text-slate-500">{doc.file_name}</p>
+              <p className="mt-1 text-sm text-slate-500">{formatFileSize(doc.file_size)}</p>
 
-              <h3 className="mt-3 line-clamp-2 text-lg font-bold text-slate-900">
-                {doc.title_ru}
-              </h3>
-
-              <p className="mt-2 text-sm text-slate-500">{doc.file_name}</p>
-              <p className="mt-1 text-sm text-slate-500">
-                {formatFileSize(doc.file_size)}
-              </p>
-
-              <div className="mt-5 flex gap-2">
-                <a
-                  href={doc.file_url}
-                  target="_blank"
-                  className="flex-1 rounded-lg bg-slate-100 px-3 py-2 text-center text-sm font-semibold text-slate-700"
-                >
-                  👁 {t.open}
-                </a>
-
-                <a
-                  href={doc.file_url}
-                  download
-                  className="flex-1 rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-semibold text-white"
-                >
-                 ⬇ {t.download}
-                </a>
-
-                <button
-                  type="button"
-                  onClick={() => deleteDocument(doc.id)}
-                  className="rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white"
-                >
-                  🗑
-                </button>
-                {documents.length === 0 && (
-                  <div className="col-span-full rounded-2xl bg-white p-10 text-center text-slate-500 shadow">
-                 {t.empty}
-                 </div>
-                 )}
+              <div className="mt-6 grid grid-cols-2 gap-2">
+                <a href={doc.file_url} target="_blank" rel="noreferrer" className="rounded-lg bg-slate-100 px-3 py-2.5 text-center text-sm font-bold text-slate-700">{t.open}</a>
+                <a href={doc.file_url} download={doc.file_name || true} className="rounded-lg bg-blue-700 px-3 py-2.5 text-center text-sm font-bold text-white">{t.download}</a>
+                <Link href={`/admin/documents/${doc.id}/edit`} className="rounded-lg bg-amber-500 px-3 py-2.5 text-center text-sm font-bold text-white">{t.edit}</Link>
+                <button type="button" onClick={() => deleteDocument(doc)} className="rounded-lg bg-red-600 px-3 py-2.5 text-sm font-bold text-white">{t.delete}</button>
               </div>
             </div>
-          </div>
+          </article>
         ))}
+
+        {filteredDocuments.length === 0 && (
+          <div className="col-span-full rounded-[26px] bg-white p-12 text-center text-slate-500 shadow-sm">{t.empty}</div>
+        )}
       </div>
     </div>
   );
