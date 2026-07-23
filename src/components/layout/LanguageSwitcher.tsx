@@ -38,6 +38,8 @@ export default function LanguageSwitcher() {
             key={language.code}
             type="button"
             disabled={isPending}
+            aria-pressed={isActive}
+            aria-label={language.label}
             onClick={() => changeLanguage(language.code)}
             className={`rounded-lg px-3 py-2 text-xs font-bold transition ${
               isActive

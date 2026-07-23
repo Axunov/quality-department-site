@@ -9,7 +9,24 @@
     "news": "News",
     "documents": "Documents",
     "accreditation": "Accreditation",
-    "contacts": "Contacts"
+    "contacts": "Contacts",
+    "accessibility": "Accessibility mode",
+    "search": "Search",
+    "menu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "Footer": {
+    "title": "Education Quality Control Department",
+    "institute": "Belarus–Uzbekistan Joint Intersectoral Institute",
+    "description": "The official department portal for quality monitoring, accreditation, documents, news and feedback.",
+    "quickLinks": "Quick links",
+    "contacts": "Contacts",
+    "about": "About",
+    "employees": "Staff",
+    "news": "News",
+    "documents": "Documents",
+    "accreditation": "Accreditation",
+    "rights": "Education Quality Control Department. All rights reserved."
   },
   "Hero": {
     "label": "Official department portal",

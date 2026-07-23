@@ -1,82 +1,15 @@
 import { PageHeader } from "@/components/common/PageHeader";
+import { Link } from "@/i18n/routing";
 
-const reports = [
-  {
-    title: "Анализ посещаемости",
-    value: "87%",
-    text: "Средний показатель посещаемости занятий по данным внутреннего мониторинга.",
-    icon: "👥",
-  },
-  {
-    title: "Качество занятий",
-    value: "89%",
-    text: "Оценка качества проведения занятий по результатам наблюдений и опросов.",
-    icon: "📊",
-  },
-  {
-    title: "Удовлетворённость студентов",
-    value: "84%",
-    text: "Результаты анкетирования студентов по вопросам образовательной среды.",
-    icon: "📝",
-  },
-  {
-    title: "Готовность документов",
-    value: "92%",
-    text: "Степень подготовки материалов для аккредитации и внутренней отчётности.",
-    icon: "📄",
-  },
-];
+const labels = {
+  ru: { label: "Аналитика", title: "Аналитические материалы", description: "Отчёты и аналитические материалы отдела контроля качества образования.", title2: "Принципы публикации", items: ["указание отчётного периода", "ссылка на источник данных", "описание методики расчёта", "дата утверждения результата", "ответственное подразделение", "рекомендации и последующие меры"], note: "Неподтверждённые демонстрационные показатели удалены. Актуальные результаты размещаются в электронном архиве после официального утверждения.", documents: "Открыть электронный архив" },
+  uz: { label: "Tahlil", title: "Tahliliy materiallar", description: "Ta’lim sifatini nazorat qilish bo‘limining hisobot va tahliliy materiallari.", title2: "E’lon qilish tamoyillari", items: ["hisobot davrini ko‘rsatish", "ma’lumot manbasiga havola", "hisoblash usulini tavsiflash", "natijani tasdiqlash sanasi", "mas’ul bo‘linma", "tavsiyalar va keyingi choralar"], note: "Tasdiqlanmagan namoyish ko‘rsatkichlari olib tashlandi. Dolzarb natijalar rasmiy tasdiqlangandan so‘ng elektron arxivda joylashtiriladi.", documents: "Elektron arxivni ochish" },
+  en: { label: "Analytics", title: "Analytical materials", description: "Reports and analytical materials of the Education Quality Control Department.", title2: "Publication principles", items: ["reporting period", "data source", "calculation methodology", "approval date", "responsible unit", "recommendations and follow-up actions"], note: "Unverified demonstration figures have been removed. Current results are added to the electronic archive after formal approval.", documents: "Open the document archive" },
+};
 
-export default function AnalyticsPage() {
-  return (
-    <main>
-      <PageHeader
-        label="Аналитика"
-        title="Аналитика качества образования"
-        description="Сводные показатели, аналитические материалы и ключевые результаты внутреннего мониторинга."
-      />
-
-      <section className="container-main py-16">
-        <div className="grid gap-7 md:grid-cols-2 xl:grid-cols-4">
-          {reports.map((item) => (
-            <div
-              key={item.title}
-              className="rounded-[30px] bg-white p-7 shadow-xl shadow-slate-200/70"
-            >
-              <div className="text-5xl">{item.icon}</div>
-              <p className="mt-6 text-5xl font-extrabold text-[#0b3b78]">
-                {item.value}
-              </p>
-              <h2 className="mt-4 text-xl font-bold text-slate-900">
-                {item.title}
-              </h2>
-              <p className="mt-3 leading-7 text-slate-600">{item.text}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12 rounded-[30px] bg-white p-8 shadow-xl shadow-slate-200/70">
-          <h2 className="section-title">Аналитические направления</h2>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {[
-              "анализ учебного процесса",
-              "оценка посещаемости занятий",
-              "анализ результатов опросов",
-              "подготовка справок для руководства",
-              "мониторинг выполнения индикаторов",
-              "формирование рекомендаций по улучшению качества",
-            ].map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl bg-blue-50 p-5 font-semibold text-blue-900"
-              >
-                ✓ {item}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+export default async function AnalyticsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const current = locale === "uz" || locale === "en" ? locale : "ru";
+  const t = labels[current];
+  return <main><PageHeader label={t.label} title={t.title} description={t.description} /><section className="container-main py-12 sm:py-16"><div className="rounded-[30px] bg-white p-6 shadow-xl sm:p-8"><h2 className="section-title">{t.title2}</h2><div className="mt-8 grid gap-4 md:grid-cols-2">{t.items.map((item) => <div key={item} className="rounded-2xl bg-blue-50 p-5 font-semibold text-blue-900">✓ {item}</div>)}</div><p className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 leading-7 text-amber-900">{t.note}</p><Link href="/documents" className="mt-7 inline-flex rounded-xl bg-blue-700 px-6 py-3 font-bold text-white">{t.documents}</Link></div></section></main>;
 }

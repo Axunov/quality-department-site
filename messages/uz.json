@@ -9,7 +9,24 @@
     "news": "Yangiliklar",
     "documents": "Hujjatlar",
     "accreditation": "Akkreditatsiya",
-    "contacts": "Kontaktlar"
+    "contacts": "Aloqa",
+    "accessibility": "Maxsus imkoniyatlar",
+    "search": "Qidiruv",
+    "menu": "Menyuni ochish",
+    "closeMenu": "Menyuni yopish"
+  },
+  "Footer": {
+    "title": "Ta’lim sifatini nazorat qilish bo‘limi",
+    "institute": "Belarus–O‘zbekiston qo‘shma tarmoqlararo instituti",
+    "description": "Ta’lim sifati monitoringi, akkreditatsiya, hujjatlar, yangiliklar va qayta aloqa bo‘yicha bo‘limning rasmiy portali.",
+    "quickLinks": "Tezkor havolalar",
+    "contacts": "Aloqa",
+    "about": "Bo‘lim haqida",
+    "employees": "Xodimlar",
+    "news": "Yangiliklar",
+    "documents": "Hujjatlar",
+    "accreditation": "Akkreditatsiya",
+    "rights": "Ta’lim sifatini nazorat qilish bo‘limi. Barcha huquqlar himoyalangan."
   },
   "Hero": {
     "label": "Bo‘limning rasmiy portali",

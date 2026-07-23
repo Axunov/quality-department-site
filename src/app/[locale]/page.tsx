@@ -2,6 +2,7 @@ import { getNews } from "@/services/news.service";
 import { getDocuments } from "@/services/documents.service";
 import { Link } from "@/i18n/routing";
 import { getLocalizedText } from "@/utils/getLocalizedText";
+import { ServiceHub } from "@/components/home/ServiceHub";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -259,7 +260,7 @@ export default async function HomePage({
     );
 
   return (
-    <main className="overflow-hidden bg-[#f7f9fc]">
+    <main id="main-content" className="public-main overflow-hidden bg-[#f7f9fc]">
       {/* Hero */}
       <section
         className="relative isolate min-h-[720px] overflow-hidden bg-[#061b33] text-white"
@@ -391,6 +392,8 @@ export default async function HomePage({
 
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#f7f9fc] to-transparent" />
       </section>
+
+      <ServiceHub locale={currentLocale} />
 
       {/* Statistics */}
       <section className="relative z-10 -mt-12 pb-8">

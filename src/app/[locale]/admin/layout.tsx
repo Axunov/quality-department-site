@@ -3,6 +3,7 @@
 import { Link, usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 const labels = {
   ru: {
@@ -66,14 +67,17 @@ export default function AdminLayout({
 
   return (
     <main className="min-h-screen bg-slate-100">
-      <div className="flex">
-        <aside className="min-h-screen w-72 bg-[#083b73] p-6 text-white">
-          <div>
+      <div className="flex flex-col md:flex-row">
+        <aside className="w-full bg-gradient-to-br from-[#083b73] via-[#063565] to-[#05243f] p-4 text-white md:sticky md:top-0 md:min-h-screen md:w-72 md:self-start md:p-6">
+          <div className="flex items-start justify-between gap-3">
+            <div>
             <h1 className="text-2xl font-bold">{t.panel}</h1>
             <p className="mt-2 text-sm text-blue-100">{t.subtitle}</p>
+            </div>
+            <ThemeToggle />
           </div>
 
-          <nav className="mt-8 space-y-2">
+          <nav className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 md:mt-8 md:block md:space-y-2">
             {menuItems.map((item) => {
               const active =
                 item.href === "/admin"
@@ -98,7 +102,7 @@ export default function AdminLayout({
 
             <Link
               href="/"
-              className="mt-8 block rounded-xl bg-white/10 px-4 py-3 hover:bg-white/20"
+              className="block rounded-xl bg-white/10 px-4 py-3 hover:bg-white/20 md:mt-8"
             >
               {t.site}
             </Link>
@@ -106,7 +110,7 @@ export default function AdminLayout({
           </nav>
         </aside>
 
-        <section className="flex-1 p-8">{children}</section>
+        <section className="admin-content min-w-0 flex-1 p-4 sm:p-6 md:p-8 lg:p-10">{children}</section>
       </div>
     </main>
   );

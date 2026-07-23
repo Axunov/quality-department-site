@@ -1,7 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("Footer");
+  const header = useTranslations("Header");
   return (
     <footer className="mt-16 bg-[#083b73] text-white">
       <div className="container-main py-14">
@@ -18,35 +23,34 @@ export function Footer() {
 
               <div>
                 <h2 className="text-2xl font-extrabold">
-                  Отдел контроля качества образования
+                  {t("title")}
                 </h2>
                 <p className="mt-2 text-sm text-blue-100">
-                  Совместный Белорусско–Узбекский межотраслевой институт
+                  {t("institute")}
                 </p>
               </div>
             </div>
 
             <p className="mt-6 max-w-2xl leading-7 text-blue-100">
-              Официальный портал отдела контроля качества образования:
-              мониторинг, аккредитация, документы, новости и обратная связь.
+              {t("description")}
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold">Быстрые ссылки</h3>
+            <h3 className="text-lg font-bold">{t("quickLinks")}</h3>
             <div className="mt-5 grid gap-3 text-blue-100">
-              <Link href="/about">О подразделении</Link>
-              <Link href="/employees">Сотрудники</Link>
-              <Link href="/news">Новости</Link>
-              <Link href="/documents">Документы</Link>
-              <Link href="/accreditation">Аккредитация</Link>
+              <Link href="/about">{t("about")}</Link>
+              <Link href="/employees">{t("employees")}</Link>
+              <Link href="/news">{t("news")}</Link>
+              <Link href="/documents">{t("documents")}</Link>
+              <Link href="/accreditation">{t("accreditation")}</Link>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold">Контакты</h3>
+            <h3 className="text-lg font-bold">{t("contacts")}</h3>
             <div className="mt-5 space-y-3 text-blue-100">
-              <p>📍 Ташкентская область, Кибрайский район, Корамурт 1</p>
+              <p>📍 {header("address")}</p>
               <p>☎ +998 90 322-26-29</p>
               <p>✉ quality@sbumiptk.uz</p>
             </div>
@@ -54,7 +58,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/15 pt-6 text-sm text-blue-100">
-          © 2026 Отдел контроля качества образования. Все права защищены.
+          © 2026 {t("rights")}
         </div>
       </div>
     </footer>

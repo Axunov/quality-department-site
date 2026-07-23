@@ -569,44 +569,6 @@ export default async function AccreditationPage({
         </div>
       </section>
 
-      {/* Текущий статус */}
-      <section className="bg-white py-24">
-        <div className="container-main">
-          <div className="max-w-3xl">
-            <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-cyan-700">
-              {t.progressLabel}
-            </p>
-
-            <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
-              {t.progressTitle}
-            </h2>
-
-            <p className="mt-5 leading-8 text-slate-600">
-              {t.progressDescription}
-            </p>
-          </div>
-
-          <div className="mt-12 overflow-hidden rounded-[34px] bg-gradient-to-r from-[#073b70] to-[#087d83] p-8 text-white shadow-[0_28px_75px_rgba(7,59,112,0.22)] sm:p-10">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {t.stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-[24px] border border-white/10 bg-white/[0.08] p-6 backdrop-blur"
-                >
-                  <p className="text-4xl font-black tracking-tight sm:text-5xl">
-                    {stat.value}
-                  </p>
-
-                  <p className="mt-3 leading-6 text-blue-50/80">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Этапы */}
       <section className="bg-[#061b33] py-24 text-white">
         <div className="container-main">

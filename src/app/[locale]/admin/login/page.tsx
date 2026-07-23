@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useLocale } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 const labels = {
@@ -14,6 +14,7 @@ const labels = {
     login: "Войти",
     loading: "Выполняется вход...",
     error: "Ошибка входа",
+    forbidden: "У этой учетной записи нет прав администратора.",
   },
   uz: {
     title: "Admin panelga kirish",
@@ -23,6 +24,7 @@ const labels = {
     login: "Kirish",
     loading: "Kirilmoqda...",
     error: "Kirish xatosi",
+    forbidden: "Ushbu hisobda administrator huquqi mavjud emas.",
   },
   en: {
     title: "Admin login",
@@ -32,12 +34,14 @@ const labels = {
     login: "Sign in",
     loading: "Signing in...",
     error: "Sign-in error",
+    forbidden: "This account does not have administrator access.",
   },
 };
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
   const locale = useLocale();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
 
   const currentLocale: "ru" | "uz" | "en" =
@@ -55,13 +59,20 @@ export default function AdminLoginPage() {
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       setMessage(`${t.error}: ${error.message}`);
+      setLoading(false);
+      return;
+    }
+
+    if (data.user?.app_metadata?.role !== "admin") {
+      await supabase.auth.signOut();
+      setMessage(t.forbidden);
       setLoading(false);
       return;
     }
@@ -130,8 +141,22 @@ export default function AdminLoginPage() {
               {message}
             </p>
           )}
+
+          {searchParams.get("error") === "forbidden" && (
+            <p className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
+              {t.forbidden}
+            </p>
+          )}
         </form>
       </div>
     </main>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-slate-100" />}>
+      <AdminLoginForm />
+    </Suspense>
   );
 }
