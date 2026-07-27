@@ -16,9 +16,9 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const portalLabels = {
-    ru: { quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ" },
-    uz: { quality: "Sifat tizimi", self: "O‘zini o‘zi baholash", monitoring: "Monitoring", analytics: "Tahlil", open: "Ochiq materiallar", appeals: "Murojaatlar", faq: "FAQ" },
-    en: { quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ" },
+    ru: { quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов" },
+    uz: { quality: "Sifat tizimi", self: "O‘zini o‘zi baholash", monitoring: "Monitoring", analytics: "Tahlil", open: "Ochiq materiallar", appeals: "Murojaatlar", faq: "FAQ", survey: "Talabalar so‘rovi" },
+    en: { quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ", survey: "Student survey" },
   } as const;
   const currentLocale = locale === "uz" || locale === "en" ? locale : "ru";
   const portal = portalLabels[currentLocale];
@@ -29,6 +29,7 @@ export function Header() {
     { href: "/open-data", label: portal.open },
     { href: "/appeals", label: portal.appeals },
     { href: "/faq", label: portal.faq },
+    { href: "/surveys/teacher", label: portal.survey },
   ];
 
   const navItems = [

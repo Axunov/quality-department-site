@@ -14,6 +14,7 @@ const labels = {
     news: "Новости",
     documents: "Документы",
     employees: "Сотрудники",
+    surveys: "Опрос студентов",
     site: "← На сайт",
   },
   uz: {
@@ -24,6 +25,7 @@ const labels = {
     news: "Yangiliklar",
     documents: "Hujjatlar",
     employees: "Xodimlar",
+    surveys: "Talabalar so‘rovi",
     site: "← Saytga qaytish",
   },
   en: {
@@ -34,6 +36,7 @@ const labels = {
     news: "News",
     documents: "Documents",
     employees: "Employees",
+    surveys: "Student survey",
     site: "← Back to site",
   },
 };
@@ -58,6 +61,7 @@ export default function AdminLayout({
     { href: "/admin/news", label: t.news, icon: "📰" },
     { href: "/admin/documents", label: t.documents, icon: "📄" },
     { href: "/admin/employees", label: t.employees, icon: "👨‍🏫" },
+    { href: "/admin/surveys/teacher", label: t.surveys, icon: "🗳️" },
     { href: "/admin/tools",  label: t.tools,  icon: "🛠️",},
   ];
 

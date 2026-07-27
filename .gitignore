@@ -42,3 +42,21 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Персональные данные и коды студентов. Никогда не загружать в GitHub.
+_private_student_import/
+
+# Локальные настройки и конфиденциальные данные
+.env
+.env.local
+.env.*
+!.env.example
+
+# Зависимости и результаты сборки
+node_modules/
+.next/
+.netlify/
+*.tsbuildinfo
+
+# Конфиденциальные списки студентов
+_private_student_import/
