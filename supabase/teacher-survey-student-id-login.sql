@@ -43,7 +43,7 @@ create or replace function public.begin_teacher_survey_by_student_id(
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_code public.survey_access_codes%rowtype;
@@ -135,7 +135,7 @@ create or replace function public.submit_teacher_survey_anonymous(
 ) returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_session public.survey_anonymous_sessions%rowtype;
