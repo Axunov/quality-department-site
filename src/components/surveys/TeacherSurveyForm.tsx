@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
 import { localizedTeacherSurvey } from "@/data/teacherSurvey";
-import { readStudentPortalToken } from "@/lib/studentPortal";
 
 type Teacher = {
   id: string;
@@ -18,12 +16,6 @@ type TeacherAnswer = {
   ratings: number[];
   violation: string;
   comment: string;
-};
-
-type AnonymousSession = {
-  session_token: string;
-  completion_receipt: string;
-  resolved_group_id: string;
 };
 
 const content = {
@@ -107,11 +99,8 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
   const t = content[lang];
   const surveyText = localizedTeacherSurvey[lang];
   const router = useRouter();
-  const supabase = useMemo(() => createClient(), []);
   const started = useRef(false);
 
-  const [sessionToken, setSessionToken] = useState("");
-  const [completionReceipt, setCompletionReceipt] = useState("");
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [answers, setAnswers] = useState<TeacherAnswer[]>([]);
   const [satisfaction, setSatisfaction] = useState(0);
@@ -124,41 +113,23 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
     if (started.current) return;
     started.current = true;
 
-    const portalToken = readStudentPortalToken();
-    if (!portalToken) {
-      router.replace("/student/login");
-      return;
-    }
-
     async function loadSurvey() {
-      const { data: sessionData, error: sessionError } = await supabase.rpc(
-        "begin_teacher_survey_from_portal",
-        { p_portal_token: portalToken },
-      );
-      const session = sessionData?.[0] as AnonymousSession | undefined;
-
-      if (sessionError || !session) {
+      const response = await fetch("/api/student/survey/start", {
+        method: "POST",
+      });
+      if (response.status === 401) {
+        router.replace("/student/login");
+        return;
+      }
+      if (!response.ok) {
         setMessage(t.error);
         setBusy(false);
         return;
       }
-
-      const { data, error } = await supabase
-        .from("survey_group_teachers")
-        .select("id,teacher_id,subject,teachers:survey_teachers(full_name)")
-        .eq("group_id", session.resolved_group_id)
-        .eq("active", true)
-        .order("sort_order");
-
-      if (error) {
-        setMessage(t.error);
-        setBusy(false);
-        return;
-      }
-
-      const list = (data || []) as unknown as Teacher[];
-      setSessionToken(session.session_token);
-      setCompletionReceipt(session.completion_receipt);
+      const result = (await response.json()) as {
+        teachers?: Teacher[];
+      };
+      const list = result.teachers || [];
       setTeachers(list);
       setAnswers(
         list.map((item) => ({
@@ -173,7 +144,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
     }
 
     void loadSurvey();
-  }, [router, supabase, surveyText.questions.length, t.error, t.noTeachers]);
+  }, [router, surveyText.questions.length, t.error, t.noTeachers]);
 
   function updateRating(teacherIndex: number, questionIndex: number, value: number) {
     setAnswers((current) =>
@@ -204,17 +175,19 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
 
     setBusy(true);
     setMessage("");
-    const { error } = await supabase.rpc("submit_teacher_survey_anonymous", {
-      p_session_token: sessionToken,
-      p_completion_receipt: completionReceipt,
-      p_locale: lang,
-      p_answers: answers,
-      p_final_satisfaction: satisfaction,
-      p_final_suggestions: suggestions.trim() || null,
+    const response = await fetch("/api/student/survey/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        locale: lang,
+        answers,
+        finalSatisfaction: satisfaction,
+        finalSuggestions: suggestions.trim() || null,
+      }),
     });
     setBusy(false);
 
-    if (error) {
+    if (!response.ok) {
       setMessage(t.error);
       return;
     }

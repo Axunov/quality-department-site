@@ -1,15 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
-import {
-  clearStudentPortalToken,
-  readStudentPortalToken,
-} from "@/lib/studentPortal";
 
 type Profile = {
-  participant_name: string;
   resolved_group_name: string;
   teacher_survey_title: string;
   teacher_survey_available: boolean;
@@ -72,35 +66,28 @@ export default function StudentDashboard({ locale }: { locale: string }) {
   const lang = locale === "uz" || locale === "en" ? locale : "ru";
   const t = content[lang];
   const router = useRouter();
-  const supabase = useMemo(() => createClient(), []);
   const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
-    const token = readStudentPortalToken();
-    if (!token) {
-      router.replace("/student/login");
-      return;
-    }
-
-    void supabase
-      .rpc("student_portal_profile", { p_portal_token: token })
-      .then(({ data, error }) => {
-        const row = data?.[0] as Profile | undefined;
-        if (error || !row) {
-          clearStudentPortalToken();
+    void fetch("/api/student/profile", { cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) {
           router.replace("/student/login");
           return;
         }
-        setProfile(row);
+        const result = (await response.json()) as {
+          profile?: Profile;
+        };
+        if (!result.profile) {
+          router.replace("/student/login");
+          return;
+        }
+        setProfile(result.profile);
       });
-  }, [router, supabase]);
+  }, [router]);
 
   async function logout() {
-    const token = readStudentPortalToken();
-    if (token) {
-      await supabase.rpc("student_portal_logout", { p_portal_token: token });
-    }
-    clearStudentPortalToken();
+    await fetch("/api/student/logout", { method: "POST" });
     router.replace("/student/login");
   }
 
@@ -126,7 +113,7 @@ export default function StudentDashboard({ locale }: { locale: string }) {
             {t.eyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-black sm:text-5xl">
-            {t.title}, {profile.participant_name}
+            {t.title}!
           </h1>
           <p className="mt-4 text-blue-50">
             {t.group}: <strong>{profile.resolved_group_name}</strong>

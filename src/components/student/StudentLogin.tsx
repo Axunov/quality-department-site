@@ -1,12 +1,16 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import Script from "next/script";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
-import {
-  readStudentPortalToken,
-  saveStudentPortalToken,
-} from "@/lib/studentPortal";
+
+declare global {
+  interface Window {
+    onStudentTurnstileSuccess?: (token: string) => void;
+    onStudentTurnstileExpired?: () => void;
+    turnstile?: { reset: () => void };
+  }
+}
 
 const content = {
   ru: {
@@ -18,6 +22,7 @@ const content = {
     hint: "Формат: STU-0001",
     button: "Войти",
     loading: "Проверяем…",
+    captcha: "Подтвердите, что вы не робот.",
     privacy:
       "Student ID используется только для входа и учёта участия. Ответы анкет хранятся отдельно и остаются анонимными.",
     error: "Не удалось войти. Проверьте Student ID и попробуйте ещё раз.",
@@ -31,6 +36,7 @@ const content = {
     hint: "Format: STU-0001",
     button: "Kirish",
     loading: "Tekshirilmoqda…",
+    captcha: "Robot emasligingizni tasdiqlang.",
     privacy:
       "Student ID faqat kirish va ishtirokni hisobga olish uchun ishlatiladi. So‘rov javoblari alohida saqlanadi va anonim qoladi.",
     error: "Kirish amalga oshmadi. Student ID ni tekshirib, qayta urinib ko‘ring.",
@@ -44,6 +50,7 @@ const content = {
     hint: "Format: STU-0001",
     button: "Sign in",
     loading: "Checking…",
+    captcha: "Confirm that you are not a robot.",
     privacy:
       "Your Student ID is used only for sign-in and participation tracking. Survey answers are stored separately and remain anonymous.",
     error: "Unable to sign in. Check your Student ID and try again.",
@@ -54,16 +61,27 @@ export default function StudentLogin({ locale }: { locale: string }) {
   const lang = locale === "uz" || locale === "en" ? locale : "ru";
   const t = content[lang];
   const router = useRouter();
-  const supabase = useMemo(() => createClient(), []);
   const [studentId, setStudentId] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [captchaRequired, setCaptchaRequired] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   useEffect(() => {
-    if (readStudentPortalToken()) {
-      router.replace("/student");
-    }
+    void fetch("/api/student/profile", { cache: "no-store" }).then((response) => {
+      if (response.ok) router.replace("/student");
+    });
   }, [router]);
+
+  useEffect(() => {
+    window.onStudentTurnstileSuccess = (token) => setCaptchaToken(token);
+    window.onStudentTurnstileExpired = () => setCaptchaToken("");
+    return () => {
+      delete window.onStudentTurnstileSuccess;
+      delete window.onStudentTurnstileExpired;
+    };
+  }, []);
 
   async function login(event: FormEvent) {
     event.preventDefault();
@@ -71,18 +89,29 @@ export default function StudentLogin({ locale }: { locale: string }) {
     setBusy(true);
     setMessage("");
 
-    const { data, error } = await supabase.rpc("student_portal_login", {
-      p_student_identifier: studentId.trim().toUpperCase(),
+    const response = await fetch("/api/student/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        studentId: studentId.trim().toUpperCase(),
+        captchaToken,
+      }),
     });
-    const session = data?.[0] as { portal_token?: string } | undefined;
+    const result = (await response.json().catch(() => ({}))) as {
+      ok?: boolean;
+      captchaRequired?: boolean;
+      message?: string;
+    };
 
-    if (error || !session?.portal_token) {
-      setMessage(t.error);
+    if (!response.ok || !result.ok) {
+      setCaptchaRequired(Boolean(result.captchaRequired));
+      setMessage(result.message || t.error);
+      setCaptchaToken("");
+      window.turnstile?.reset();
       setBusy(false);
       return;
     }
 
-    saveStudentPortalToken(session.portal_token);
     router.replace("/student");
   }
 
@@ -124,9 +153,41 @@ export default function StudentLogin({ locale }: { locale: string }) {
               </p>
             )}
 
+            {captchaRequired && (
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <p className="mb-3 text-sm font-semibold text-slate-700">
+                  {t.captcha}
+                </p>
+                {turnstileSiteKey ? (
+                  <>
+                    <Script
+                      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                      strategy="afterInteractive"
+                    />
+                    <div
+                      className="cf-turnstile"
+                      data-sitekey={turnstileSiteKey}
+                      data-action="student_login"
+                      data-size="flexible"
+                      data-callback="onStudentTurnstileSuccess"
+                      data-expired-callback="onStudentTurnstileExpired"
+                    />
+                  </>
+                ) : (
+                  <p className="text-sm font-semibold text-red-700">
+                    CAPTCHA ещё не настроена администратором.
+                  </p>
+                )}
+              </div>
+            )}
+
             <button
               type="submit"
-              disabled={busy || !studentId.trim()}
+              disabled={
+                busy ||
+                !studentId.trim() ||
+                (captchaRequired && !captchaToken)
+              }
               className="mt-6 w-full rounded-2xl bg-blue-700 px-6 py-4 text-lg font-black text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {busy ? t.loading : t.button}
