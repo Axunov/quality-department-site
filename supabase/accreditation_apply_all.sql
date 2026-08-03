@@ -1,0 +1,7 @@
+-- Apply accreditation workspace files in this order in Supabase SQL Editor:
+-- 1. accreditation_workspace.sql
+-- 2. accreditation_seed_working_groups.sql
+-- 3. accreditation_progress_view.sql
+-- 4. accreditation_status_trigger.sql
+--
+-- accreditation_import_template.csv is a template for preparing the 272 indicators.
