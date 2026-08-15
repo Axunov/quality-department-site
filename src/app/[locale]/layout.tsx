@@ -76,6 +76,11 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const messages = await getMessages();
+  const skipLabel = locale === "uz"
+    ? "Asosiy tarkibga o‘tish"
+    : locale === "en"
+      ? "Skip to main content"
+      : "Перейти к основному содержанию";
 
   return (
     <html data-scroll-behavior="smooth" lang={locale} suppressHydrationWarning>
@@ -87,9 +92,9 @@ export default async function LocaleLayout({
         />
       </head>
       <body>
-        <a href="#main-content" className="skip-link">Skip to content</a>
+        <a href="#main-content" className="skip-link">{skipLabel}</a>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <SiteChrome>{children}</SiteChrome>
+          <SiteChrome><div id="main-content" tabIndex={-1}>{children}</div></SiteChrome>
         </NextIntlClientProvider>
       </body>
     </html>

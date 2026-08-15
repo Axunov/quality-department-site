@@ -2,12 +2,13 @@
 import { useEffect,useMemo,useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { complexIndicators } from "@/lib/accreditation/complexData";
+import { complexIndicatorsEn } from "@/lib/accreditation/complexDataEn";
 import { complexIndicatorsUz } from "@/lib/accreditation/complexDataUz";
 import { accreditationUi } from "@/lib/accreditation/ui";
 import type { Locale } from "@/lib/accreditation/specialData";
 type State={id:string;status:string;completion_percent:number;responsible_user_id:string|null};type Doc={id:string;indicator_id:string;file_name:string;storage_path:string;version:number};type Review={indicator_id:string;decision:string;comment:string;created_at:string};
 export default function ComplexIndicatorMonitor({locale:l}:{locale:Locale}){const t=accreditationUi[l];const supabase=useMemo(()=>createClient(),[]);const[states,setStates]=useState<Record<string,State>>({});const[userId,setUserId]=useState<string|null>(null);const[approvedProfile,setApprovedProfile]=useState(false);const[docs,setDocs]=useState<Doc[]>([]);const[reviews,setReviews]=useState<Review[]>([]);const[q,setQ]=useState("");const[msg,setMsg]=useState("");const[uploadMsg,setUploadMsg]=useState<Record<string,string>>({});const[uploading,setUploading]=useState<Record<string,boolean>>({});
- const localizedIndicators=l==='uz'?complexIndicatorsUz:complexIndicators;
+ const localizedIndicators=l==='uz'?complexIndicatorsUz:l==='en'?complexIndicatorsEn:complexIndicators;
  async function load(){try{const{data:{user}}=await supabase.auth.getUser();setUserId(user?.id||null);if(user){const{data:p}=await supabase.from('accreditation_v3_profiles').select('approval_status,is_active').eq('user_id',user.id).maybeSingle();setApprovedProfile(Boolean(p?.approval_status==='approved'&&p?.is_active))}const{data:p}=await supabase.from('accreditation_v3_projects').select('id').eq('code','complex').maybeSingle();if(!p)return;const{data}=await supabase.from('accreditation_v3_indicators').select('id,code,status,completion_percent,responsible_user_id').eq('project_id',p.id);const rows=(data||[]) as any[];setStates(Object.fromEntries(rows.map(x=>[x.code,x])));if(user){const mine=rows.filter(x=>x.responsible_user_id===user.id).map(x=>x.id);if(mine.length){const[{data:d},{data:r}]=await Promise.all([supabase.from('accreditation_v3_documents').select('id,indicator_id,file_name,storage_path,version').in('indicator_id',mine),supabase.from('accreditation_v3_reviews').select('indicator_id,decision,comment,created_at').in('indicator_id',mine).order('created_at',{ascending:false})]);setDocs((d||[]) as Doc[]);setReviews((r||[]) as Review[])}}}catch{}}
  useEffect(()=>{void load()},[]);
  async function upload(st:State,file:File){

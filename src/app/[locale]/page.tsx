@@ -260,7 +260,7 @@ export default async function HomePage({
     );
 
   return (
-    <main id="main-content" className="public-main overflow-hidden bg-[#f7f9fc]">
+    <main className="public-main overflow-hidden bg-[#f7f9fc]">
       {/* Hero */}
       <section
         className="relative isolate min-h-[720px] overflow-hidden bg-[#061b33] text-white"
