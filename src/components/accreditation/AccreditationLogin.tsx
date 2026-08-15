@@ -1,14 +1,12 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { localeOf } from "@/lib/accreditation/ui";
-
-
-type PositionOption={key:string;ru:string;uz:string;en:string;aliases:string[]};
-
-const POSITIONS:PositionOption[]=[
+import { accreditationPositions as POSITIONS, positionLabel } from "@/lib/accreditation/positions";
+/* legacy list retained below is removed in this release */
+const LEGACY_POSITIONS = [
  {key:"legal_counsel",ru:"Юрисконсульт",uz:"Yuriskonsult",en:"Legal Counsel",aliases:["Юрисконсульт","Yuriskonsult"]},
  {key:"council_secretary",ru:"Секретарь Совета",uz:"Kengash kotibi",en:"Council Secretary",aliases:["Секретарь Совета","Заведующий канцелярией (секретарь Совета)","Kengash kotibi"]},
  {key:"deputy_academic",ru:"Заместитель директора по учебной работе",uz:"Ijrochi direktorning o‘quv ishlari bo‘yicha o‘rinbosari",en:"Deputy Director for Academic Affairs",aliases:["Заместитель директора по учебной работе","Ijrochi direktorning o‘quv ishlari bo‘yicha o‘rinbosari","O‘quv ishlari bo‘yicha o‘rinbosari"]},
@@ -35,13 +33,11 @@ const POSITIONS:PositionOption[]=[
  {key:"civil_protection",ru:"Начальник отдела гражданской защиты и охраны труда",uz:"Mehnatni muhofaza qilish va texnika xavfsizligi bo‘yicha mas’ul",en:"Head of Civil Protection and Occupational Safety",aliases:["Начальник отдела гражданской защиты и охраны труда","Mehnatni muhofaza qilish va texnika xavfsizligi bo‘yicha mas’ul"]},
  {key:"psychologist",ru:"Психолог",uz:"Psixolog",en:"Psychologist",aliases:["Психолог","Psixolog"]},
  {key:"kpi_chair",ru:"Председатель рабочей группы по KPI",uz:"KPI ishchi guruhi raisi",en:"Chair of the KPI Working Group",aliases:["Председатель рабочей группы по KPI","KPI ishchi guruhi raisi"]}
-];
-
-function positionLabel(p:PositionOption,l:"ru"|"uz"|"en"){return p[l]}
+]; void LEGACY_POSITIONS;
 
 export default function AccreditationLogin(){
  const l=localeOf(useLocale()); const router=useRouter(); const supabase=useMemo(()=>createClient(),[]);
- const[mode,setMode]=useState<"login"|"register">("login"); const[email,setEmail]=useState(""); const[password,setPassword]=useState(""); const[fullName,setFullName]=useState(""); const[positionKey,setPositionKey]=useState(""); const[requestedRole,setRequestedRole]=useState("department_head"); const[msg,setMsg]=useState(""); const[busy,setBusy]=useState(false);
+ const[mode,setMode]=useState<"login"|"register">("login"); const[email,setEmail]=useState(""); const[password,setPassword]=useState(""); const[fullName,setFullName]=useState(""); const[positionKey,setPositionKey]=useState(""); const[msg,setMsg]=useState(""); const[busy,setBusy]=useState(false);
  const tx={
   ru:{title:"Система аккредитации",sub:"Личный кабинет для ответственных руководителей",login:"Вход",register:"Регистрация",email:"Электронная почта",pass:"Пароль",name:"Ф.И.О.",job:"Должность",responsible:"Ответственное подразделение / должность по распределению индикаторов",type:"Тип кабинета",head:"Руководитель подразделения",director:"Директор института",go:"Войти",create:"Зарегистрироваться",pending:"Регистрация завершена. Если подтверждение e-mail включено, перейдите по ссылке из письма. После входа администратор должен подтвердить Ваш профиль.",noProfile:"Профиль аккредитации ещё не создан. Зарегистрируйтесь или обратитесь к администратору."},
   uz:{title:"Akkreditatsiya tizimi",sub:"Mas’ul rahbarlar uchun shaxsiy kabinet",login:"Kirish",register:"Ro‘yxatdan o‘tish",email:"Elektron pochta",pass:"Parol",name:"F.I.Sh.",job:"Lavozim",responsible:"Indikatorlar taqsimotidagi mas’ul bo‘linma / lavozim",type:"Kabinet turi",head:"Bo‘linma rahbari",director:"Institut direktori",go:"Kirish",create:"Ro‘yxatdan o‘tish",pending:"Ro‘yxatdan o‘tish yakunlandi. E-mail tasdiqlash yoqilgan bo‘lsa, xatdagi havolaga o‘ting. Kirgandan so‘ng administrator profilingizni tasdiqlashi kerak.",noProfile:"Akkreditatsiya profili hali yaratilmagan. Ro‘yxatdan o‘ting yoki administratorga murojaat qiling."},
@@ -49,8 +45,9 @@ export default function AccreditationLogin(){
  }[l];
   async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setMsg('');
   if(mode==='register'){
-   const pos=POSITIONS.find(p=>p.key===positionKey); const selectedJob=requestedRole==='director'?tx.director:(pos?positionLabel(pos,l):'');
-   const {data,error}=await supabase.auth.signUp({email,password,options:{data:{accreditation_signup:'true',full_name:fullName,job_title:selectedJob,position_key:requestedRole==='director'?'director':positionKey,requested_role:requestedRole}}});
+   const pos=POSITIONS.find(p=>p.key===positionKey); const selectedJob=pos?positionLabel(pos,l):'';
+   const requestedRole=positionKey==='director'?'director':'department_head';
+   const {data,error}=await supabase.auth.signUp({email,password,options:{data:{accreditation_signup:'true',full_name:fullName,job_title:selectedJob,position_key:positionKey,requested_role:requestedRole}}});
    if(error){setMsg(error.message);setBusy(false);return} setMsg(tx.pending); setBusy(false); if(data.session){router.replace(`/${l}/accreditation/cabinet`);router.refresh()} return;
   }
   const{data,error}=await supabase.auth.signInWithPassword({email,password}); if(error){setMsg(error.message);setBusy(false);return}
@@ -60,7 +57,7 @@ export default function AccreditationLogin(){
  return <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 p-6"><form onSubmit={submit} className="w-full max-w-xl rounded-[30px] border border-blue-100 bg-white p-8 shadow-[0_25px_70px_rgba(15,95,168,.14)]">
   <div className="text-4xl">🔐</div><h1 className="mt-4 text-3xl font-black text-slate-900">{tx.title}</h1><p className="mt-2 text-slate-500">{tx.sub}</p>
   <div className="mt-6 grid grid-cols-2 rounded-xl bg-slate-100 p-1"><button type="button" onClick={()=>{setMode('login');setMsg('')}} className={`rounded-lg px-4 py-2.5 text-sm font-bold ${mode==='login'?'bg-white text-blue-800 shadow-sm':'text-slate-500'}`}>{tx.login}</button><button type="button" onClick={()=>{setMode('register');setMsg('')}} className={`rounded-lg px-4 py-2.5 text-sm font-bold ${mode==='register'?'bg-white text-blue-800 shadow-sm':'text-slate-500'}`}>{tx.register}</button></div>
-  {mode==='register'&&<><div className="mt-6 grid gap-4 sm:grid-cols-2"><label><span className="text-sm font-bold text-slate-700">{tx.name}</span><input className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" required value={fullName} onChange={e=>setFullName(e.target.value)}/></label><label><span className="text-sm font-bold text-slate-700">{tx.job}</span>{requestedRole==='director'?<div className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-700">{tx.director}</div>:<select required value={positionKey} onChange={e=>setPositionKey(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3"><option value="">—</option>{POSITIONS.map(p=><option key={p.key} value={p.key}>{positionLabel(p,l)}</option>)}</select>}</label></div><label className="mt-4 block"><span className="text-sm font-bold text-slate-700">{tx.type}</span><select value={requestedRole} onChange={e=>setRequestedRole(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3"><option value="department_head">{tx.head}</option><option value="director">{tx.director}</option></select></label></>}
+  {mode==='register'&&<div className="mt-6 grid gap-4 sm:grid-cols-2"><label><span className="text-sm font-bold text-slate-700">{tx.name}</span><input className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" required value={fullName} onChange={e=>setFullName(e.target.value)}/></label><label><span className="text-sm font-bold text-slate-700">{tx.job}</span><select required value={positionKey} onChange={e=>setPositionKey(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3"><option value="">—</option>{POSITIONS.map(p=><option key={p.key} value={p.key}>{positionLabel(p,l)}</option>)}</select></label></div>}
   <label className="mt-5 block"><span className="text-sm font-bold text-slate-700">{tx.email}</span><input className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" type="email" required value={email} onChange={e=>setEmail(e.target.value)}/></label><label className="mt-4 block"><span className="text-sm font-bold text-slate-700">{tx.pass}</span><input className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" type="password" minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/></label>
   <button disabled={busy} className="mt-6 w-full rounded-xl bg-gradient-to-r from-blue-700 to-cyan-600 px-5 py-3 font-bold text-white disabled:opacity-50">{busy?'...':mode==='login'?tx.go:tx.create}</button>{msg&&<p className="mt-4 rounded-xl bg-blue-50 p-4 text-sm text-blue-800">{msg}</p>}
  </form></main>

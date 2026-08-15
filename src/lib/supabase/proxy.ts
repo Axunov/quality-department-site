@@ -14,8 +14,13 @@ export async function updateSession(request: NextRequest) {
   const teacherRegisterPath = `${teacherPrefix}/register`;
   const isTeacherRoute =
     pathname === teacherPrefix || pathname.startsWith(`${teacherPrefix}/`);
+  const accreditationPrefix = `/${locale}/accreditation`;
+  const accreditationLogin = `${accreditationPrefix}/login`;
+  const directorRoute = `${accreditationPrefix}/director`;
+  const cabinetRoute = `${accreditationPrefix}/cabinet`;
+  const isProtectedAccreditation = pathname === directorRoute || pathname === cabinetRoute;
 
-  if (!isAdminRoute && !isTeacherRoute) {
+  if (!isAdminRoute && !isTeacherRoute && !isProtectedAccreditation) {
     return NextResponse.next({ request });
   }
 
@@ -58,6 +63,17 @@ export async function updateSession(request: NextRequest) {
   const isTeacherPublicPage =
     pathname === teacherLoginPath || pathname === teacherRegisterPath;
   const isTeacher = user?.app_metadata?.role === "teacher";
+
+  if (isProtectedAccreditation && !user) {
+    const url = request.nextUrl.clone(); url.pathname = accreditationLogin; url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname === directorRoute && user) {
+    const {data:profile}=await supabase.from("accreditation_v3_profiles").select("role,is_active,approval_status").eq("user_id",user.id).maybeSingle();
+    const allowed=isAdmin||Boolean(profile?.role==="director"&&profile?.is_active&&profile?.approval_status==="approved");
+    if(!allowed){const url=request.nextUrl.clone();url.pathname=cabinetRoute;url.search="";return NextResponse.redirect(url);}
+  }
 
   if (isAdminRoute && !isLoginPage && (!user || !isAdmin)) {
     const url = request.nextUrl.clone();

@@ -14,11 +14,19 @@ export default function ProjectProgress({projectCodes,locale,fallbackTotal=0}:Pr
   const t=accreditationUi[locale];
   const supabase=useMemo(()=>createClient(),[]);
   const [summary,setSummary]=useState<Summary>({...empty,total:fallbackTotal});
+  const [authorized,setAuthorized]=useState(false);
 
   useEffect(()=>{
     let active=true;
     async function load(){
       try{
+        const {data:{user}}=await supabase.auth.getUser();
+        if(!user){if(active)setAuthorized(false);return;}
+        const isAdmin=user.app_metadata?.role==="admin";
+        const {data:profile}=await supabase.from("accreditation_v3_profiles").select("role,is_active,approval_status").eq("user_id",user.id).maybeSingle();
+        const canSee=isAdmin||Boolean(profile?.role==="director"&&profile?.is_active&&profile?.approval_status==="approved");
+        if(active)setAuthorized(canSee);
+        if(!canSee)return;
         const {data:projects,error:pErr}=await supabase.from("accreditation_v3_projects").select("id,code").in("code",projectCodes);
         if(pErr || !projects?.length){ if(active)setSummary({...empty,total:fallbackTotal}); return; }
         const ids=projects.map((p:any)=>p.id);
@@ -40,6 +48,7 @@ export default function ProjectProgress({projectCodes,locale,fallbackTotal=0}:Pr
     return()=>{active=false;void supabase.removeChannel(channel)};
   },[supabase,projectCodes.join("|"),fallbackTotal]);
 
+  if(!authorized)return null;
   const cards=[[t.total,summary.total],[t.approved,summary.approved],[t.review,summary.review],[t.revision,summary.revision]];
   return <>
     <section className="mt-7 rounded-[28px] border border-blue-100 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,.06)]">

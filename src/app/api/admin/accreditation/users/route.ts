@@ -16,8 +16,9 @@ export async function POST(request: Request) {
     const password = String(body.password || "");
     const fullName = String(body.fullName || "").trim();
     const jobTitle = String(body.jobTitle || "").trim() || null;
+    const positionKey = String(body.positionKey || "").trim();
     const role = String(body.role || "department_head");
-    if (!email || password.length < 8 || !fullName || !allowedRoles.has(role)) {
+    if (!email || password.length < 8 || !fullName || !positionKey || !allowedRoles.has(role)) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
     const admin = createAdminClient();
@@ -28,7 +29,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: createError?.message || "User creation failed" }, { status: 400 });
     }
     const { error: profileError } = await admin.from("accreditation_v3_profiles").upsert({
-      user_id: created.user.id, full_name: fullName, job_title: jobTitle, role, is_active: true,
+      user_id: created.user.id, full_name: fullName, job_title: jobTitle, role, requested_role: role,
+      position_key: positionKey, approval_status: "approved", approved_at: new Date().toISOString(), is_active: true,
     });
     if (profileError) {
       await admin.auth.admin.deleteUser(created.user.id);
