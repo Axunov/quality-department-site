@@ -3,6 +3,7 @@ import {useCallback,useEffect,useMemo,useState} from "react";
 import {createClient} from "@/lib/supabase/client";
 import type {Locale} from "@/lib/accreditation/specialData";
 import {accreditationPositions as positions,positionLabel} from "@/lib/accreditation/positions";
+import BulkAssignment from "./BulkAssignment";
 type Row=Record<string,any>;
 export default function AdminAccreditation({locale:l}:{locale:Locale}){
  const supabase=useMemo(()=>createClient(),[]),[profiles,setProfiles]=useState<Row[]>([]),[items,setItems]=useState<Row[]>([]),[docs,setDocs]=useState<Row[]>([]),[stats,setStats]=useState<Row[]>([]),[owners,setOwners]=useState<Row[]>([]),[msg,setMsg]=useState(""),[comments,setComments]=useState<Record<string,string>>({}),[drafts,setDrafts]=useState<Record<string,string>>({}),[busy,setBusy]=useState(false),[form,setForm]=useState({fullName:"",email:"",password:"",positionKey:""});
