@@ -27,6 +27,8 @@ alter view public.accreditation_v3_responsible_progress set (security_invoker=tr
 
 drop policy if exists "v3 evidence upload" on storage.objects;
 drop policy if exists "v3 evidence read" on storage.objects;
+drop policy if exists "v58 evidence upload own" on storage.objects;
+drop policy if exists "v58 evidence read permitted" on storage.objects;
 create policy "v58 evidence upload own" on storage.objects for insert to authenticated
 with check(
   bucket_id='accreditation-v3-evidence'
