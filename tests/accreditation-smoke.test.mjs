@@ -36,3 +36,13 @@ test("employee, director and admin convenience surfaces are present",async()=>{
   assert.match(admin,/setTab/);assert.match(admin,/BulkAssignment/);
   assert.match(notifications,/Открыть индикатор/);
 });
+test("new control matrix, priority queue and saved response checklist are wired",async()=>{
+  const [matrix,queue,assistant,admin,director,head,complex,special]=await Promise.all([
+    read("src/components/accreditation/AccreditationControlCenter.tsx"),read("src/components/accreditation/MyPriorityQueue.tsx"),read("src/components/accreditation/EmployeeEvidenceAssistant.tsx"),read("src/components/accreditation/AdminAccreditation.tsx"),read("src/components/accreditation/DirectorDashboard.tsx"),read("src/components/accreditation/HeadCabinet.tsx"),read("src/components/accreditation/ComplexIndicatorMonitor.tsx"),read("src/components/accreditation/SpecialIndicatorMonitor.tsx")
+  ]);
+  assert.match(matrix,/accreditation_v6_risk/);assert.match(matrix,/Прогноз готовности/);
+  assert.match(queue,/Что сделать в первую очередь/);assert.match(queue,/scope=mine/);
+  assert.match(assistant,/localStorage/);assert.match(assistant,/Проверка готовности ответа/);
+  assert.match(admin,/AccreditationControlCenter/);assert.match(director,/AccreditationControlCenter/);
+  assert.match(head,/MyPriorityQueue/);assert.match(complex,/EmployeeEvidenceAssistant/);assert.match(special,/EmployeeEvidenceAssistant/);
+});
