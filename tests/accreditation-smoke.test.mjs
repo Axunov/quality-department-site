@@ -46,3 +46,13 @@ test("new control matrix, priority queue and saved response checklist are wired"
   assert.match(admin,/AccreditationControlCenter/);assert.match(director,/AccreditationControlCenter/);
   assert.match(head,/MyPriorityQueue/);assert.match(complex,/EmployeeEvidenceAssistant/);assert.match(special,/EmployeeEvidenceAssistant/);
 });
+test("V7 collaboration, safe file deletion, Excel control and director trends are wired",async()=>{
+  const [sql,bulk,collab,director,complex,special]=await Promise.all([
+    read("supabase/ACCREDITATION_V7_COLLABORATION_AND_FILES.sql"),read("src/components/accreditation/BulkAssignment.tsx"),read("src/components/accreditation/IndicatorCollaboration.tsx"),read("src/components/accreditation/DirectorV7Insights.tsx"),read("src/components/accreditation/ComplexIndicatorMonitor.tsx"),read("src/components/accreditation/SpecialIndicatorMonitor.tsx")
+  ]);
+  assert.match(sql,/enable row level security/g);assert.match(sql,/revoke all[\s\S]+from anon/i);assert.match(sql,/v7 delete own draft document/);
+  assert.match(bulk,/sheet_to_json/);assert.match(bulk,/Предварительная проверка/);assert.match(bulk,/unknownCode/);
+  assert.match(collab,/accreditation_v7_comments/);assert.match(collab,/accreditation_v7_tasks/);assert.match(collab,/complete_task/);
+  assert.match(director,/Режим презентации/);assert.match(director,/previousProgress/);
+  assert.match(complex,/multiple accept/);assert.match(special,/multiple accept/);assert.match(complex,/removeDoc/);
+});
