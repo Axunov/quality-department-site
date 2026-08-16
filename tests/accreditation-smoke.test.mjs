@@ -20,3 +20,19 @@ test("V6 provides operations requested by accreditation workflow",async()=>{
   const sql=await read("supabase/ACCREDITATION_V6_OPERATIONS_AND_RISK.sql");
   for(const name of ["notifications","audit_log","bulk_assign","set_deadlines","risk","create_snapshot","health"])assert.match(sql,new RegExp(`accreditation_v6_${name}`));
 });
+test("V6.1 closes anonymous administration and schedules reminders",async()=>{
+  const sql=await read("supabase/ACCREDITATION_V6_1_SECURITY_REMINDERS.sql");
+  assert.match(sql,/revoke execute[\s\S]+from public, anon/i);
+  assert.match(sql,/accreditation_v61_deadline_reminders/);
+  assert.match(sql,/accreditation-v61-deadline-reminders/);
+  assert.match(sql,/enable row level security/);
+});
+test("employee, director and admin convenience surfaces are present",async()=>{
+  const [head,director,admin,notifications]=await Promise.all([
+    read("src/components/accreditation/HeadCabinet.tsx"),read("src/components/accreditation/DirectorOperations.tsx"),read("src/components/accreditation/AdminAccreditation.tsx"),read("src/components/accreditation/NotificationCenter.tsx")
+  ]);
+  assert.match(head,/Мои индикаторы/);assert.match(head,/Просрочено/);
+  assert.match(director,/Зона риска/);assert.match(director,/Резервные снимки/);
+  assert.match(admin,/setTab/);assert.match(admin,/BulkAssignment/);
+  assert.match(notifications,/Открыть индикатор/);
+});
