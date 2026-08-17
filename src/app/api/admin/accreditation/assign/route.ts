@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     if (!userId || !responsibleLabel) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     const admin = createAdminClient();
     const { data, error } = await admin.from("accreditation_v3_indicators")
-      .update({ responsible_user_id: userId })
+      .update({ responsible_user_id: userId, assignment_source: "manual", assignment_role_key: null })
       .eq("responsible_label", responsibleLabel)
       .select("id");
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });

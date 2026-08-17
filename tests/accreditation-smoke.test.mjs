@@ -97,3 +97,13 @@ test("responsible labels are localized for complex and special accreditation",as
   assert.match(labels,/Заведующий соответствующей кафедрой/);
   assert.match(labels,/Head of the Relevant Department/);
 });
+test("V7.3 supports admin-only additional employee positions without weakening RLS",async()=>{
+  const [sql,manager,admin,cabinet]=await Promise.all([
+    read("supabase/ACCREDITATION_V7_3_MULTI_POSITIONS.sql"),read("src/components/accreditation/EmployeePositionManager.tsx"),read("src/components/accreditation/AdminAccreditation.tsx"),read("src/components/accreditation/HeadCabinet.tsx")
+  ]);
+  assert.match(sql,/accreditation_v73_employee_positions/);assert.match(sql,/enable row level security/g);
+  assert.match(sql,/revoke all[\s\S]+from public,anon,authenticated/i);assert.match(sql,/accreditation_v73_is_admin/);
+  assert.match(sql,/assignment_source='role'/);assert.match(sql,/assignment_source='manual'/);assert.match(sql,/pg_advisory_xact_lock/);
+  assert.match(manager,/accreditation_v73_add_position/);assert.match(manager,/conflicts/);assert.match(admin,/EmployeePositionManager/);
+  assert.match(cabinet,/Мои обязанности/);assert.match(cabinet,/Qo‘shimcha rol/);assert.match(cabinet,/Additional role/);
+});
