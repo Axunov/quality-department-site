@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { internalEmail, normalizeUsername } from "@/lib/accreditation/localization";
 
 const allowedRoles = new Set(["department_head", "quality_office", "director"]);
 
@@ -12,16 +13,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const body = await request.json();
-    const email = String(body.email || "").trim().toLowerCase();
+    const username = normalizeUsername(String(body.username || ""));
+    const recoveryEmail = String(body.email || "").trim().toLowerCase() || null;
+    const email = internalEmail(username);
     const password = String(body.password || "");
     const fullName = String(body.fullName || "").trim();
     const jobTitle = String(body.jobTitle || "").trim() || null;
     const positionKey = String(body.positionKey || "").trim();
     const role = String(body.role || "department_head");
-    if (!email || password.length < 8 || !fullName || !positionKey || !allowedRoles.has(role)) {
+    if (username.length < 3 || password.length < 8 || !fullName || !positionKey || !allowedRoles.has(role)) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
     const admin = createAdminClient();
+    const {data:existing}=await admin.from("accreditation_v3_profiles").select("user_id").ilike("username",username).maybeSingle();
+    if(existing)return NextResponse.json({error:"Username already exists"},{status:409});
     const { data: created, error: createError } = await admin.auth.admin.createUser({
       email, password, email_confirm: true, app_metadata: { role: "accreditation" },
     });
@@ -29,7 +34,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: createError?.message || "User creation failed" }, { status: 400 });
     }
     const { error: profileError } = await admin.from("accreditation_v3_profiles").upsert({
-      user_id: created.user.id, full_name: fullName, job_title: jobTitle, role, requested_role: role,
+      user_id: created.user.id, full_name: fullName, job_title: jobTitle, role, requested_role: role, username,
+      recovery_email: recoveryEmail, phone: String(body.phone||"").trim()||null, must_change_password: true,
       position_key: positionKey, approval_status: "approved", approved_at: new Date().toISOString(), is_active: true,
     });
     if (profileError) {

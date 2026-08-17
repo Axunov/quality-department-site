@@ -56,3 +56,14 @@ test("V7 collaboration, safe file deletion, Excel control and director trends ar
   assert.match(director,/Режим презентации/);assert.match(director,/previousProgress/);
   assert.match(complex,/multiple accept/);assert.match(special,/multiple accept/);assert.match(complex,/removeDoc/);
 });
+test("V7.1 provides localized username access without weakening anonymous security",async()=>{
+  const [sql,login,route,gate,accounts,labels]=await Promise.all([
+    read("supabase/ACCREDITATION_V7_1_USERNAME_ACCESS.sql"),read("src/components/accreditation/AccreditationLogin.tsx"),read("src/app/api/admin/accreditation/users/route.ts"),read("src/components/accreditation/PasswordChangeGate.tsx"),read("src/components/accreditation/EmployeeAccountImport.tsx"),read("src/lib/accreditation/localization.ts")
+  ]);
+  assert.match(sql,/username text/);assert.match(sql,/must_change_password/);assert.match(sql,/revoke all[\s\S]+from public,anon/i);
+  assert.match(login,/internalEmail/);assert.match(login,/Логин или электронная почта/);assert.match(login,/accreditation_v71_mark_login/);
+  assert.match(route,/normalizeUsername/);assert.match(route,/must_change_password:\s*true/);assert.match(route,/internalEmail/);
+  assert.match(gate,/updateUser/);assert.match(gate,/accreditation_v71_mark_password_changed/);
+  assert.match(accounts,/sheet_to_json/);assert.match(accounts,/temporary_password/);assert.match(accounts,/Предварительная проверка/);
+  for(const helper of ["projectLabel","statusLabel","priorityLabel","responsibleLabel","positionKeyLabel"])assert.match(labels,new RegExp(helper));
+});
