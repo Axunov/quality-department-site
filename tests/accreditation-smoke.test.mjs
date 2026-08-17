@@ -84,3 +84,16 @@ test("all 272 complex indicators have matching RU UZ and EN records",async()=>{
   assert.equal(codes[0].length,272);assert.deepEqual(codes[1],codes[0]);assert.deepEqual(codes[2],codes[0]);
   for(const source of files)for(const field of ["chapter","criterion","indicator","evidence","responsible"])assert.equal((source.match(new RegExp(`"${field}":`,"g"))||[]).length,272);
 });
+test("responsible labels are localized for complex and special accreditation",async()=>{
+  const labels=await read("src/lib/accreditation/localization.ts");
+  for(const value of [
+    "O‘quv ishlari bo‘yicha direktor o‘rinbosari",
+    "Yoshlar masalalari va maʼnaviyiy-maʼrifiy ishlar boʻyicha direktor oʻrinbosari",
+    "Tegishli kafedra mudiri",
+    "Axborot-resurs markazi (kutubxona)",
+    "Raqamli va axborot texnologiyalari bo‘limi",
+  ])assert.match(labels,new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));
+  assert.match(labels,/split\(\/\\s\*;\\s\*\//);
+  assert.match(labels,/Заведующий соответствующей кафедрой/);
+  assert.match(labels,/Head of the Relevant Department/);
+});
