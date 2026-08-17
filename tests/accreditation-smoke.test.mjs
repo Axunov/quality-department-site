@@ -67,3 +67,20 @@ test("V7.1 provides localized username access without weakening anonymous securi
   assert.match(accounts,/sheet_to_json/);assert.match(accounts,/temporary_password/);assert.match(accounts,/Предварительная проверка/);
   for(const helper of ["projectLabel","statusLabel","priorityLabel","responsibleLabel","positionKeyLabel"])assert.match(labels,new RegExp(helper));
 });
+test("V7.2 self-registration requires approval and excludes director role",async()=>{
+  const [login,route,sql]=await Promise.all([read("src/components/accreditation/AccreditationLogin.tsx"),read("src/app/api/accreditation/register/route.ts"),read("supabase/ACCREDITATION_V7_2_REGISTRATION_AND_PROJECT_ACCESS.sql")]);
+  assert.match(login,/\/api\/accreditation\/register/);assert.match(login,/x\.key!=="director"/);assert.match(login,/approval_status/);assert.match(login,/Повторите пароль/);
+  assert.match(route,/filter\(x=>x\.key!=="director"\)/);assert.match(route,/approval_status:"pending"/);assert.match(route,/rate_limited/);assert.match(route,/email_confirm:true/);
+  assert.match(sql,/enable row level security/);assert.match(sql,/revoke all[\s\S]+from public,anon,authenticated/i);assert.match(sql,/user_project_access/);assert.match(sql,/join public\.accreditation_v3_indicators i on i\.responsible_user_id=p\.user_id/);
+});
+test("V7.2 keeps accreditation projects isolated in dashboards and storage",async()=>{
+  const [admin,director,control,operations,bulk,complex,special]=await Promise.all([read("src/components/accreditation/AdminAccreditation.tsx"),read("src/components/accreditation/DirectorDashboard.tsx"),read("src/components/accreditation/AccreditationControlCenter.tsx"),read("src/components/accreditation/DirectorOperations.tsx"),read("src/components/accreditation/BulkAssignment.tsx"),read("src/components/accreditation/ComplexIndicatorMonitor.tsx"),read("src/components/accreditation/SpecialIndicatorMonitor.tsx")]);
+  for(const source of [admin,director,control,operations,bulk])assert.match(source,/projectCode|scope/);
+  assert.match(complex,/\$\{userId\}\/complex\/\$\{st\.id\}/);assert.match(special,/\$\{userId\}\/\$\{projectCode\}\/\$\{st\.id\}/);
+});
+test("all 272 complex indicators have matching RU UZ and EN records",async()=>{
+  const files=await Promise.all([read("src/lib/accreditation/complexData.ts"),read("src/lib/accreditation/complexDataUz.ts"),read("src/lib/accreditation/complexDataEn.ts")]);
+  const codes=files.map(source=>[...source.matchAll(/"code":\s*"([^"]+)"/g)].map(x=>x[1]));
+  assert.equal(codes[0].length,272);assert.deepEqual(codes[1],codes[0]);assert.deepEqual(codes[2],codes[0]);
+  for(const source of files)for(const field of ["chapter","criterion","indicator","evidence","responsible"])assert.equal((source.match(new RegExp(`"${field}":`,"g"))||[]).length,272);
+});
