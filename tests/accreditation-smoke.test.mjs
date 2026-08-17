@@ -42,7 +42,7 @@ test("new control matrix, priority queue and saved response checklist are wired"
   ]);
   assert.match(matrix,/accreditation_v6_risk/);assert.match(matrix,/Прогноз готовности/);
   assert.match(queue,/Что сделать в первую очередь/);assert.match(queue,/scope=mine/);
-  assert.match(assistant,/localStorage/);assert.match(assistant,/Проверка готовности ответа/);
+  assert.match(assistant,/localStorage/);assert.match(assistant,/Подготовка ответа/);
   assert.match(admin,/AccreditationControlCenter/);assert.match(director,/AccreditationControlCenter/);
   assert.match(head,/MyPriorityQueue/);assert.match(complex,/EmployeeEvidenceAssistant/);assert.match(special,/EmployeeEvidenceAssistant/);
 });
@@ -106,4 +106,12 @@ test("V7.3 supports admin-only additional employee positions without weakening R
   assert.match(sql,/assignment_source='role'/);assert.match(sql,/assignment_source='manual'/);assert.match(sql,/pg_advisory_xact_lock/);
   assert.match(manager,/accreditation_v73_add_position/);assert.match(manager,/conflicts/);assert.match(admin,/EmployeePositionManager/);
   assert.match(cabinet,/Мои обязанности/);assert.match(cabinet,/Qo‘shimcha rol/);assert.match(cabinet,/Additional role/);
+});
+test("V7.5 supports written responses, revision editing and admin action journal",async()=>{
+  const [sql,assistant,journal,admin,historyApi]=await Promise.all([
+    read("supabase/ACCREDITATION_V7_5_RESPONSES_AND_AUDIT.sql"),read("src/components/accreditation/EmployeeEvidenceAssistant.tsx"),read("src/components/accreditation/ActionJournal.tsx"),read("src/components/accreditation/AdminAccreditation.tsx"),read("src/app/api/admin/accreditation/history/[id]/route.ts")
+  ]);
+  assert.match(sql,/response_text/);assert.match(assistant,/Редактировать ответ/);assert.match(assistant,/status==="revision"/);
+  assert.match(assistant,/Письменный ответ/);assert.match(journal,/accreditation_v6_audit_log/);assert.match(admin,/ActionJournal/);
+  assert.match(historyApi,/app_metadata/);assert.match(historyApi,/role!=="admin"/);
 });
