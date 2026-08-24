@@ -9,6 +9,7 @@ type Profile = {
   teacher_survey_available: boolean;
   teacher_survey_completed: boolean;
 };
+type GenericSurvey = { id:string; title_ru:string; title_uz:string; title_en:string; description_ru:string|null; description_uz:string|null; description_en:string|null; ends_at:string|null; status:"assigned"|"in_progress"|"completed" };
 
 const content = {
   ru: {
@@ -27,6 +28,7 @@ const content = {
     loading: "Загрузка кабинета…",
     privacy:
       "Личный кабинет подтверждает только факт участия. Ответы анкеты не связываются с вашим Ф.И.О. или Student ID.",
+    continue: "Продолжить", deadline: "Срок", anonymousDone: "Пройден анонимно",
   },
   uz: {
     eyebrow: "Shaxsiy kabinet",
@@ -43,6 +45,7 @@ const content = {
     loading: "Kabinet yuklanmoqda…",
     privacy:
       "Shaxsiy kabinet faqat ishtirok etganlik holatini qayd etadi. Javoblar F.I.Sh. yoki Student ID bilan bog‘lanmaydi.",
+    continue: "Davom ettirish", deadline: "Muddat", anonymousDone: "Anonim yakunlangan",
   },
   en: {
     eyebrow: "Student account",
@@ -59,6 +62,7 @@ const content = {
     loading: "Loading account…",
     privacy:
       "Your account records participation only. Survey answers are not linked to your name or Student ID.",
+    continue: "Continue", deadline: "Deadline", anonymousDone: "Completed anonymously",
   },
 } as const;
 
@@ -67,6 +71,7 @@ export default function StudentDashboard({ locale }: { locale: string }) {
   const t = content[lang];
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [genericSurveys, setGenericSurveys] = useState<GenericSurvey[]>([]);
 
   useEffect(() => {
     void fetch("/api/student/profile", { cache: "no-store" })
@@ -83,6 +88,8 @@ export default function StudentDashboard({ locale }: { locale: string }) {
           return;
         }
         setProfile(result.profile);
+        const surveysResponse = await fetch("/api/student/surveys", { cache: "no-store" });
+        if (surveysResponse.ok) setGenericSurveys(((await surveysResponse.json()) as {surveys?:GenericSurvey[]}).surveys || []);
       });
   }, [router]);
 
@@ -165,6 +172,12 @@ export default function StudentDashboard({ locale }: { locale: string }) {
             )}
           </div>
         </article>
+        {genericSurveys.map((survey) => {
+          const title = survey[`title_${lang}`];
+          const description = survey[`description_${lang}`];
+          const complete = survey.status === "completed";
+          return <article key={survey.id} className="mt-5 overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm"><div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center"><div><h3 className="text-2xl font-black text-slate-900">{title}</h3>{description&&<p className="mt-3 leading-7 text-slate-600">{description}</p>}{survey.ends_at&&<p className="mt-3 text-sm font-semibold text-slate-500">{t.deadline}: {new Date(survey.ends_at).toLocaleDateString(lang==="ru"?"ru-RU":lang==="uz"?"uz-UZ":"en-GB")}</p>}<span className={`mt-5 inline-flex rounded-full px-4 py-2 text-sm font-black ${complete?"bg-emerald-100 text-emerald-800":"bg-blue-100 text-blue-800"}`}>{complete?t.anonymousDone:t.available}</span></div>{!complete&&<button type="button" onClick={()=>router.push(`/surveys/student/${survey.id}`)} className="rounded-2xl bg-blue-700 px-7 py-4 text-lg font-black text-white transition hover:bg-blue-800">{survey.status==="in_progress"?t.continue:t.start}</button>}</div></article>;
+        })}
       </section>
     </main>
   );

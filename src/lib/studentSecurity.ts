@@ -5,6 +5,8 @@ import type { NextRequest, NextResponse } from "next/server";
 export const STUDENT_PORTAL_COOKIE = "qds_student_portal";
 export const SURVEY_SESSION_COOKIE = "qds_survey_session";
 export const SURVEY_RECEIPT_COOKIE = "qds_survey_receipt";
+export const GENERIC_SURVEY_SESSION_COOKIE = "qds_generic_survey_session";
+export const GENERIC_SURVEY_RECEIPT_COOKIE = "qds_generic_survey_receipt";
 
 export function getClientIp(request: NextRequest) {
   const netlifyIp = request.headers.get("x-nf-client-connection-ip");
@@ -39,6 +41,8 @@ export function clearStudentCookies(response: NextResponse) {
     STUDENT_PORTAL_COOKIE,
     SURVEY_SESSION_COOKIE,
     SURVEY_RECEIPT_COOKIE,
+    GENERIC_SURVEY_SESSION_COOKIE,
+    GENERIC_SURVEY_RECEIPT_COOKIE,
   ]) {
     response.cookies.set(name, "", studentCookieOptions(0));
   }
