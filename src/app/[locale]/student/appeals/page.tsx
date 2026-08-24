@@ -1,0 +1,1 @@
+import StudentAppeals from "@/components/student/StudentAppeals";export default async function Page({params}:{params:Promise<{locale:string}>}){const{locale}=await params;return <StudentAppeals locale={locale}/>}

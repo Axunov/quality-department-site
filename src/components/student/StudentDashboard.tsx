@@ -29,6 +29,7 @@ const content = {
     privacy:
       "Личный кабинет подтверждает только факт участия. Ответы анкеты не связываются с вашим Ф.И.О. или Student ID.",
     continue: "Продолжить", deadline: "Срок", anonymousDone: "Пройден анонимно",
+    writeAppeal: "Написать обращение", myAppeals: "Мои обращения", notifications: "Уведомления",
   },
   uz: {
     eyebrow: "Shaxsiy kabinet",
@@ -46,6 +47,7 @@ const content = {
     privacy:
       "Shaxsiy kabinet faqat ishtirok etganlik holatini qayd etadi. Javoblar F.I.Sh. yoki Student ID bilan bog‘lanmaydi.",
     continue: "Davom ettirish", deadline: "Muddat", anonymousDone: "Anonim yakunlangan",
+    writeAppeal: "Murojaat yozish", myAppeals: "Mening murojaatlarim", notifications: "Bildirishnomalar",
   },
   en: {
     eyebrow: "Student account",
@@ -63,6 +65,7 @@ const content = {
     privacy:
       "Your account records participation only. Survey answers are not linked to your name or Student ID.",
     continue: "Continue", deadline: "Deadline", anonymousDone: "Completed anonymously",
+    writeAppeal: "Write an appeal", myAppeals: "My appeals", notifications: "Notifications",
   },
 } as const;
 
@@ -72,6 +75,7 @@ export default function StudentDashboard({ locale }: { locale: string }) {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [genericSurveys, setGenericSurveys] = useState<GenericSurvey[]>([]);
+  const [unread, setUnread] = useState(0);
 
   useEffect(() => {
     void fetch("/api/student/profile", { cache: "no-store" })
@@ -90,6 +94,8 @@ export default function StudentDashboard({ locale }: { locale: string }) {
         setProfile(result.profile);
         const surveysResponse = await fetch("/api/student/surveys", { cache: "no-store" });
         if (surveysResponse.ok) setGenericSurveys(((await surveysResponse.json()) as {surveys?:GenericSurvey[]}).surveys || []);
+        const notificationResponse = await fetch("/api/student/notifications", { cache: "no-store" });
+        if (notificationResponse.ok) setUnread((((await notificationResponse.json()) as {notifications?:{read_at:string|null}[]}).notifications || []).filter(x=>!x.read_at).length);
       });
   }, [router]);
 
@@ -133,6 +139,12 @@ export default function StudentDashboard({ locale }: { locale: string }) {
         >
           {t.logout}
         </button>
+      </div>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <button onClick={()=>router.push("/student/appeals")} className="rounded-2xl bg-blue-700 p-5 text-left font-black text-white shadow-sm"><span className="block text-2xl">✉️</span><span className="mt-2 block">{t.writeAppeal}</span></button>
+        <button onClick={()=>router.push("/student/appeals")} className="rounded-2xl border border-slate-200 bg-white p-5 text-left font-black text-slate-900 shadow-sm"><span className="block text-2xl">📋</span><span className="mt-2 block">{t.myAppeals}</span></button>
+        <button onClick={()=>router.push("/student/notifications")} className="relative rounded-2xl border border-slate-200 bg-white p-5 text-left font-black text-slate-900 shadow-sm"><span className="block text-2xl">🔔</span><span className="mt-2 block">{t.notifications}</span>{unread>0&&<span className="absolute right-4 top-4 rounded-full bg-red-600 px-2.5 py-1 text-xs text-white">{unread}</span>}</button>
       </div>
 
       <p className="mt-7 rounded-2xl border border-cyan-200 bg-cyan-50 p-5 text-sm leading-6 text-cyan-950">

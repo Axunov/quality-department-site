@@ -1,0 +1,1 @@
+import StudentAppealDetail from "@/components/student/StudentAppealDetail";export default async function Page({params}:{params:Promise<{locale:string;id:string}>}){const{locale,id}=await params;return <StudentAppealDetail locale={locale} id={id}/>}
