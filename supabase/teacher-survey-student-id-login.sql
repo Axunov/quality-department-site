@@ -158,7 +158,7 @@ begin
   from public.survey_anonymous_sessions s
   join public.survey_periods p on p.id = s.period_id
   where s.session_hash = digest(trim(p_session_token), 'sha256')
-    and s.receipt_hash = digest(upper(trim(p_completion_receipt)), 'sha256')
+    and s.receipt_hash = digest(trim(p_completion_receipt), 'sha256')
     and s.expires_at > now()
     and p.active = true
     and p.starts_at <= now()
@@ -234,7 +234,7 @@ begin
   where id = v_session.id;
 
   return jsonb_build_object(
-    'receipt', upper(trim(p_completion_receipt)),
+    'receipt', trim(p_completion_receipt),
     'completed_on', current_date
   );
 end;
