@@ -31,3 +31,5 @@ test("teacher survey opens publicly by group without a student account", async (
   assert.match(migration,/teacher_survey_public_participation/);assert.match(migration,/enable row level security/);
   assert.match(migration,/revoke all[\s\S]*from public,anon,authenticated/);
 });
+
+test("admin teacher survey dashboard uses anonymous public statistics",async()=>{const[admin,api]=await Promise.all([readFile(new URL("../src/components/admin/TeacherSurveyAdmin.tsx",import.meta.url),"utf8"),readFile(new URL("../src/app/api/admin/teacher-survey-stats/route.ts",import.meta.url),"utf8")]);assert.doesNotMatch(admin,/studentNames|participant_name|student_identifier|addParticipants/);assert.match(admin,/groupStats/);assert.match(admin,/teacherStats/);assert.match(admin,/Письменные ответы и сигналы/);for(const locale of ["ru","uz","en"])assert.match(admin,new RegExp(`${locale}:\\{`));assert.match(api,/requireAdminMfa/);assert.match(api,/teacher_survey_public_participation/);assert.doesNotMatch(api,/participant_hash/)});
