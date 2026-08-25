@@ -29,7 +29,7 @@ export function Header() {
     { href: "/open-data", label: portal.open },
     { href: "/appeals", label: portal.appeals },
     { href: "/faq", label: portal.faq },
-    { href: "/surveys/student", label: portal.survey },
+    { href: "/surveys/teacher", label: portal.survey },
     { href: "/surveys/employers", label: portal.employerSurvey },
   ];
 

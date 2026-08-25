@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
-  SURVEY_RECEIPT_COOKIE,
-  SURVEY_SESSION_COOKIE,
-  studentCookieOptions,
+  getClientIp,hashClientIp,hashPublicSurveyParticipant,PUBLIC_SURVEY_DEVICE_COOKIE,
 } from "@/lib/studentSecurity";
 
 export const runtime = "nodejs";
@@ -13,13 +11,12 @@ type Submission = {
   answers?: unknown;
   finalSatisfaction?: number;
   finalSuggestions?: string | null;
+  groupId?: string;
 };
 
 export async function POST(request: NextRequest) {
-  const sessionToken = request.cookies.get(SURVEY_SESSION_COOKIE)?.value;
-  const receiptToken = request.cookies.get(SURVEY_RECEIPT_COOKIE)?.value;
-
-  if (!sessionToken || !receiptToken) {
+  const device=request.cookies.get(PUBLIC_SURVEY_DEVICE_COOKIE)?.value;
+  if (!device||!/^[0-9a-f]{64}$/i.test(device)) {
     return NextResponse.json(
       { ok: false },
       { status: 401, headers: { "Cache-Control": "no-store" } },
@@ -40,6 +37,7 @@ export async function POST(request: NextRequest) {
 
   if (
     !Array.isArray(payload.answers) ||
+    !payload.groupId||!/^[0-9a-f-]{36}$/i.test(payload.groupId)||
     !Number.isInteger(payload.finalSatisfaction) ||
     Number(payload.finalSatisfaction) < 1 ||
     Number(payload.finalSatisfaction) > 5
@@ -49,11 +47,14 @@ export async function POST(request: NextRequest) {
 
   try {
     const supabase = createAdminClient();
+    const ipHash=hashClientIp(getClientIp(request)),since=new Date(Date.now()-3_600_000).toISOString();
+    const{count}=await supabase.from("site_security_events").select("id",{count:"exact",head:true}).eq("endpoint","teacher_survey").eq("ip_hash",ipHash).gte("created_at",since);
+    if((count||0)>=120)return NextResponse.json({ok:false,code:"rate_limited"},{status:429});
     const { error } = await supabase.rpc(
-      "submit_teacher_survey_anonymous",
+      "submit_public_teacher_survey",
       {
-        p_session_token: sessionToken,
-        p_completion_receipt: receiptToken,
+        p_group_id:payload.groupId,
+        p_participant_hash:hashPublicSurveyParticipant(device,`teacher:${payload.groupId}`),
         p_locale: locale,
         p_answers: payload.answers,
         p_final_satisfaction: payload.finalSatisfaction,
@@ -70,19 +71,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    await supabase.from("site_security_events").insert({endpoint:"teacher_survey",ip_hash:ipHash,outcome:error?"rejected":"accepted"});
     const response = NextResponse.json(
       { ok: true },
       { headers: { "Cache-Control": "no-store" } },
-    );
-    response.cookies.set(
-      SURVEY_SESSION_COOKIE,
-      "",
-      studentCookieOptions(0),
-    );
-    response.cookies.set(
-      SURVEY_RECEIPT_COOKIE,
-      "",
-      studentCookieOptions(0),
     );
     return response;
   } catch {

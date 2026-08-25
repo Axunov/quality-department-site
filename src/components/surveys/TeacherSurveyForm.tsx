@@ -10,6 +10,7 @@ type Teacher = {
   subject: string | null;
   teachers: { full_name: string } | { full_name: string }[] | null;
 };
+type Group = { id:string; name:string };
 
 type TeacherAnswer = {
   teacherId: string;
@@ -39,11 +40,12 @@ const content = {
     submit: "Отправить анкету",
     required: "Ответьте на все обязательные вопросы.",
     noTeachers: "Для вашей группы преподаватели пока не добавлены.",
-    error: "Не удалось открыть опрос. Вернитесь в личный кабинет и попробуйте ещё раз.",
+    group: "Выберите свою учебную группу", open: "Открыть анкету",
+    error: "Не удалось открыть или отправить опрос. Попробуйте ещё раз.",
     success: "Спасибо! Анонимная анкета успешно отправлена.",
     successText:
-      "В личном кабинете статус опроса изменён на «Опрос завершён». Содержание ответов не связано с вашими личными данными.",
-    cabinet: "Вернуться в личный кабинет",
+      "Анкета принята. Содержание ответов не связано с вашими личными данными.",
+    cabinet: "Вернуться на сайт",
   },
   uz: {
     eyebrow: "Anonim so‘rov",
@@ -63,11 +65,12 @@ const content = {
     submit: "Anketani yuborish",
     required: "Barcha majburiy savollarga javob bering.",
     noTeachers: "Guruhingiz uchun o‘qituvchilar hali kiritilmagan.",
-    error: "So‘rovni ochib bo‘lmadi. Shaxsiy kabinetga qaytib, yana urinib ko‘ring.",
+    group: "O‘quv guruhingizni tanlang", open: "So‘rovni ochish",
+    error: "So‘rovni ochib yoki yuborib bo‘lmadi. Qayta urinib ko‘ring.",
     success: "Rahmat! Anonim anketa muvaffaqiyatli yuborildi.",
     successText:
-      "Shaxsiy kabinetda so‘rov holati «So‘rov yakunlangan» deb o‘zgartirildi. Javoblar shaxsiy ma’lumotlaringiz bilan bog‘lanmaydi.",
-    cabinet: "Shaxsiy kabinetga qaytish",
+      "So‘rov qabul qilindi. Javoblar shaxsiy ma’lumotlaringiz bilan bog‘lanmaydi.",
+    cabinet: "Saytga qaytish",
   },
   en: {
     eyebrow: "Anonymous survey",
@@ -86,11 +89,12 @@ const content = {
     submit: "Submit survey",
     required: "Answer all required questions.",
     noTeachers: "No teachers have been added for your group yet.",
-    error: "Unable to open the survey. Return to your account and try again.",
+    group: "Select your study group", open: "Open survey",
+    error: "Unable to open or submit the survey. Please try again.",
     success: "Thank you! Your anonymous survey was submitted.",
     successText:
-      "Your account now shows the survey as completed. Your answers are not linked to your personal details.",
-    cabinet: "Return to student account",
+      "The survey was accepted. Your answers are not linked to your personal details.",
+    cabinet: "Return to website",
   },
 } as const;
 
@@ -102,6 +106,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
   const started = useRef(false);
 
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [groups,setGroups]=useState<Group[]>([]),[groupId,setGroupId]=useState("");
   const [answers, setAnswers] = useState<TeacherAnswer[]>([]);
   const [satisfaction, setSatisfaction] = useState(0);
   const [suggestions, setSuggestions] = useState("");
@@ -113,23 +118,22 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
     if (started.current) return;
     started.current = true;
 
-    async function loadSurvey() {
+    async function loadGroups() {
       const response = await fetch("/api/student/survey/start", {
         method: "POST",
+        headers:{"Content-Type":"application/json"},body:"{}",
       });
-      if (response.status === 401) {
-        router.replace("/student/login");
-        return;
-      }
       if (!response.ok) {
         setMessage(t.error);
         setBusy(false);
         return;
       }
-      const result = (await response.json()) as {
-        teachers?: Teacher[];
-      };
-      const list = result.teachers || [];
+      const result=(await response.json()) as {groups?:Group[]};setGroups(result.groups||[]);setBusy(false);
+    }
+    void loadGroups();
+  }, [t.error]);
+
+  async function loadSurvey(){if(!groupId)return;setBusy(true);setMessage("");const response=await fetch("/api/student/survey/start",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({groupId})});if(!response.ok){setMessage(t.error);setBusy(false);return;}const result=await response.json() as {teachers?:Teacher[]};const list=result.teachers||[];
       setTeachers(list);
       setAnswers(
         list.map((item) => ({
@@ -141,10 +145,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
       );
       if (list.length === 0) setMessage(t.noTeachers);
       setBusy(false);
-    }
-
-    void loadSurvey();
-  }, [router, surveyText.questions.length, t.error, t.noTeachers]);
+  }
 
   function updateRating(teacherIndex: number, questionIndex: number, value: number) {
     setAnswers((current) =>
@@ -180,6 +181,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         locale: lang,
+        groupId,
         answers,
         finalSatisfaction: satisfaction,
         finalSuggestions: suggestions.trim() || null,
@@ -204,7 +206,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
           <p className="mt-4 leading-7 text-emerald-900">{t.successText}</p>
           <button
             type="button"
-            onClick={() => router.replace("/student")}
+            onClick={() => router.replace("/")}
             className="mt-7 rounded-2xl bg-emerald-700 px-7 py-4 font-black text-white hover:bg-emerald-800"
           >
             {t.cabinet}
@@ -225,6 +227,8 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
           <p className="mt-4 max-w-3xl leading-7 text-blue-50">{t.intro}</p>
         </header>
 
+        {teachers.length===0&&<section className="rounded-[28px] border bg-white p-6 shadow-sm sm:p-8"><label className="block font-black">{t.group}<select value={groupId} onChange={e=>setGroupId(e.target.value)} className="mt-3 w-full rounded-xl border bg-white p-4"><option value="">—</option>{groups.map(group=><option key={group.id} value={group.id}>{group.name}</option>)}</select></label><button disabled={!groupId||busy} onClick={()=>void loadSurvey()} className="mt-4 rounded-xl bg-blue-700 px-6 py-3 font-black text-white disabled:opacity-50">{t.open}</button></section>}
+
         {busy && teachers.length === 0 && (
           <section className="rounded-[28px] border border-slate-200 bg-white p-10 text-center shadow-sm">
             <p className="font-semibold text-slate-600">{t.loading}</p>
@@ -236,7 +240,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
             <p className="font-semibold text-amber-900">{message}</p>
             <button
               type="button"
-              onClick={() => router.replace("/student")}
+              onClick={() => router.replace("/")}
               className="mt-5 rounded-xl bg-blue-700 px-5 py-3 font-bold text-white"
             >
               {t.cabinet}

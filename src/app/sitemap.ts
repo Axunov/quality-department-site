@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 const baseUrl = "https://qualitydepartment.netlify.app";
 const locales = ["ru", "uz", "en"];
-const pages = ["", "/about", "/employees", "/news", "/documents", "/accreditation", "/self-assessment", "/monitoring", "/analytics", "/open-data", "/appeals", "/faq", "/contacts", "/surveys/student"];
+const pages = ["", "/about", "/employees", "/news", "/documents", "/accreditation", "/self-assessment", "/monitoring", "/analytics", "/open-data", "/appeals", "/faq", "/contacts", "/surveys/teacher", "/surveys/student"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
