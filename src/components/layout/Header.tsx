@@ -16,9 +16,9 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const portalLabels = {
-    ru: { quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов" },
-    uz: { quality: "Sifat tizimi", self: "O‘zini o‘zi baholash", monitoring: "Monitoring", analytics: "Tahlil", open: "Ochiq materiallar", appeals: "Murojaatlar", faq: "FAQ", survey: "Talabalar so‘rovi" },
-    en: { quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ", survey: "Student survey" },
+    ru: { quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов", employerSurvey: "Опрос работодателей" },
+    uz: { quality: "Sifat tizimi", self: "O‘zini o‘zi baholash", monitoring: "Monitoring", analytics: "Tahlil", open: "Ochiq materiallar", appeals: "Murojaatlar", faq: "FAQ", survey: "Talabalar so‘rovi", employerSurvey: "Ish beruvchilar so‘rovi" },
+    en: { quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ", survey: "Student survey", employerSurvey: "Employer survey" },
   } as const;
   const currentLocale = locale === "uz" || locale === "en" ? locale : "ru";
   const portal = portalLabels[currentLocale];
@@ -30,6 +30,7 @@ export function Header() {
     { href: "/appeals", label: portal.appeals },
     { href: "/faq", label: portal.faq },
     { href: "/student/login", label: portal.survey },
+    { href: "/surveys/employers", label: portal.employerSurvey },
   ];
 
   const navItems = [
