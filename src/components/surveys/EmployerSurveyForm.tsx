@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import Script from "next/script";
 import { Building2, CheckCircle2, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
 import {
   cooperationOptions,
@@ -36,6 +37,7 @@ type FormState = {
   contactName: string;
   contactPhone: string;
   contactEmail: string;
+  captchaToken: string;
   consent: boolean;
 };
 
@@ -43,8 +45,10 @@ const initialState: FormState = {
   organizationName: "", activityArea: "", respondentPosition: "", programmes: [], otherProgramme: "", graduatesCount: "",
   curriculumParticipation: "", commissionParticipation: "", practiceParticipation: [], graduateQualities: [], ratings: Array(10).fill(0),
   practiceRating: 0, programmeRelevance: "", cooperationDirections: [], improvementAreas: [], demandedCompetencies: "",
-  proposals: "", hiringReadiness: "", recommendationScore: -1, cooperationReadiness: "", contactName: "", contactPhone: "", contactEmail: "", consent: false,
+  proposals: "", hiringReadiness: "", recommendationScore: -1, cooperationReadiness: "", contactName: "", contactPhone: "", contactEmail: "", captchaToken: "", consent: false,
 };
+
+declare global { interface Window { onEmployerTurnstileSuccess?: (token: string) => void; onEmployerTurnstileExpired?: () => void; turnstile?: { reset: () => void }; } }
 
 function ToggleList({ options, values, onChange }: { options: string[]; values: string[]; onChange: (values: string[]) => void }) {
   return <div className="grid gap-2 sm:grid-cols-2">{options.map((option) => {
@@ -70,15 +74,21 @@ export default function EmployerSurveyForm({ locale }: { locale: string }) {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const progress = useMemo(() => ((step + 1) / t.steps.length) * 100, [step, t.steps.length]);
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((current) => ({ ...current, [key]: value }));
+  useEffect(() => {
+    window.onEmployerTurnstileSuccess = (token) => setForm(current => ({ ...current, captchaToken: token }));
+    window.onEmployerTurnstileExpired = () => setForm(current => ({ ...current, captchaToken: "" }));
+    return () => { delete window.onEmployerTurnstileSuccess; delete window.onEmployerTurnstileExpired; };
+  }, []);
 
   function isStepValid() {
     if (step === 0) return Boolean(form.organizationName.trim() && form.activityArea.trim() && form.respondentPosition.trim());
     if (step === 1) return Boolean(form.programmes.length && form.curriculumParticipation && form.commissionParticipation && form.practiceParticipation.length);
     if (step === 2) return form.ratings.every((value) => value >= 1) && Boolean(form.programmeRelevance && form.hiringReadiness && form.recommendationScore >= 0);
     if (step === 3) return Boolean(form.cooperationDirections.length && form.improvementAreas.length && form.cooperationReadiness);
-    return form.consent;
+    return form.consent && Boolean(form.captchaToken);
   }
 
   function next() {
@@ -93,7 +103,7 @@ export default function EmployerSurveyForm({ locale }: { locale: string }) {
       const response = await fetch("/api/employer-survey/submit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ locale: lang, ...form }) });
       if (!response.ok) throw new Error("submit_failed");
       setDone(true);
-    } catch { setMessage(t.error); } finally { setBusy(false); }
+    } catch { setMessage(t.error); window.turnstile?.reset(); set("captchaToken", ""); } finally { setBusy(false); }
   }
 
   if (done) return <main className="container-main py-12 sm:py-20"><section className="mx-auto max-w-2xl rounded-[32px] border border-emerald-200 bg-emerald-50 p-8 text-center shadow-sm sm:p-12"><CheckCircle2 className="mx-auto h-16 w-16 text-emerald-700" /><h1 className="mt-5 text-3xl font-black text-emerald-950">{t.success}</h1><p className="mt-4 leading-7 text-emerald-900">{t.successText}</p><button onClick={() => { setForm(initialState); setStep(0); setDone(false); }} className="mt-7 rounded-2xl bg-emerald-700 px-7 py-4 font-black text-white hover:bg-emerald-800">{t.again}</button></section></main>;
@@ -118,11 +128,10 @@ export default function EmployerSurveyForm({ locale }: { locale: string }) {
 
       {step === 3 && <div className="grid gap-7"><div><FieldLabel required>15. Перспективные направления сотрудничества</FieldLabel><ToggleList options={cooperationOptions} values={form.cooperationDirections} onChange={(v) => set("cooperationDirections", v)} /></div><div><FieldLabel required>16. Что следует улучшить в подготовке выпускников?</FieldLabel><ToggleList options={improvementOptions} values={form.improvementAreas} onChange={(v) => set("improvementAreas", v)} /></div><label><FieldLabel>17. Наиболее востребованные знания и компетенции</FieldLabel><textarea className={`${inputClass} min-h-28`} value={form.demandedCompetencies} onChange={(e) => set("demandedCompetencies", e.target.value)} maxLength={3000} /></label><label><FieldLabel>18. Дополнительные предложения</FieldLabel><textarea className={`${inputClass} min-h-28`} value={form.proposals} onChange={(e) => set("proposals", e.target.value)} maxLength={3000} /></label><label><FieldLabel required>19. Готовы ли Вы к дальнейшему сотрудничеству?</FieldLabel><select className={inputClass} value={form.cooperationReadiness} onChange={(e) => set("cooperationReadiness", e.target.value)}><option value="">Выберите вариант</option><option>{t.yes}</option><option>Скорее да</option><option>При наличии конкретных предложений</option><option>Скорее нет</option><option>{t.no}</option></select></label></div>}
 
-      {step === 4 && <div className="grid gap-6"><div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-sm leading-6 text-blue-950"><strong>20. Контактные данные заполняются добровольно.</strong> Они могут использоваться только для связи по вопросам сотрудничества.</div><label><FieldLabel>Ф.И.О. представителя</FieldLabel><input className={inputClass} value={form.contactName} onChange={(e) => set("contactName", e.target.value)} maxLength={200} /></label><div className="grid gap-6 sm:grid-cols-2"><label><FieldLabel>Телефон</FieldLabel><input className={inputClass} value={form.contactPhone} onChange={(e) => set("contactPhone", e.target.value)} maxLength={50} /></label><label><FieldLabel>E-mail</FieldLabel><input className={inputClass} type="email" value={form.contactEmail} onChange={(e) => set("contactEmail", e.target.value)} maxLength={200} /></label></div><label className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-5 ${form.consent ? "border-blue-600 bg-blue-50" : "border-slate-200"}`}><input type="checkbox" className="mt-1 h-5 w-5" checked={form.consent} onChange={(e) => set("consent", e.target.checked)} /><span className="font-semibold leading-6 text-slate-800">Подтверждаю достоверность информации и согласен(на) на обработку предоставленных данных для анализа качества подготовки специалистов и организации взаимодействия с работодателями. <span className="text-red-600">*</span></span></label></div>}
+      {step === 4 && <div className="grid gap-6"><div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-sm leading-6 text-blue-950"><strong>20. Контактные данные заполняются добровольно.</strong> Они могут использоваться только для связи по вопросам сотрудничества.</div><label><FieldLabel>Ф.И.О. представителя</FieldLabel><input className={inputClass} value={form.contactName} onChange={(e) => set("contactName", e.target.value)} maxLength={200} /></label><div className="grid gap-6 sm:grid-cols-2"><label><FieldLabel>Телефон</FieldLabel><input className={inputClass} value={form.contactPhone} onChange={(e) => set("contactPhone", e.target.value)} maxLength={50} /></label><label><FieldLabel>E-mail</FieldLabel><input className={inputClass} type="email" value={form.contactEmail} onChange={(e) => set("contactEmail", e.target.value)} maxLength={200} /></label></div><label className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-5 ${form.consent ? "border-blue-600 bg-blue-50" : "border-slate-200"}`}><input type="checkbox" className="mt-1 h-5 w-5" checked={form.consent} onChange={(e) => set("consent", e.target.checked)} /><span className="font-semibold leading-6 text-slate-800">Подтверждаю достоверность информации и согласен(на) на обработку предоставленных данных для анализа качества подготовки специалистов и организации взаимодействия с работодателями. <span className="text-red-600">*</span></span></label><div className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive"/><div className="cf-turnstile" data-sitekey={turnstileSiteKey} data-action="employer_survey" data-size="flexible" data-callback="onEmployerTurnstileSuccess" data-expired-callback="onEmployerTurnstileExpired"/></div></div>}
 
       {message && <p className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 font-semibold text-red-800">{message}</p>}
       <div className="mt-8 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-between"><button type="button" disabled={step === 0 || busy} onClick={() => { setMessage(""); setStep((v) => Math.max(0, v - 1)); }} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 px-6 py-3.5 font-black text-slate-700 disabled:opacity-40"><ChevronLeft size={19} />{t.back}</button>{step < t.steps.length - 1 ? <button type="button" onClick={next} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-700 px-7 py-3.5 font-black text-white hover:bg-blue-800">{t.next}<ChevronRight size={19} /></button> : <button type="button" disabled={busy} onClick={submit} className="rounded-2xl bg-emerald-700 px-8 py-3.5 font-black text-white hover:bg-emerald-800 disabled:opacity-60">{busy ? t.sending : t.submit}</button>}</div>
     </section>
   </main>;
 }
-

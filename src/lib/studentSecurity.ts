@@ -51,6 +51,7 @@ export function clearStudentCookies(response: NextResponse) {
 export async function verifyTurnstile(
   token: string,
   remoteIp: string,
+  expectedAction = "student_login",
 ) {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret || !token) return false;
@@ -78,5 +79,5 @@ export async function verifyTurnstile(
   };
 
   return result.success === true &&
-    (!result.action || result.action === "student_login");
+    (!result.action || result.action === expectedAction);
 }

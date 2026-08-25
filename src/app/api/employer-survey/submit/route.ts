@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getClientIp, hashClientIp, verifyTurnstile } from "@/lib/studentSecurity";
 
 export const runtime = "nodejs";
 
@@ -7,6 +8,8 @@ const text = (value: unknown, max = 3000) => String(value ?? "").trim().slice(0,
 const list = (value: unknown, maxItems = 30) => Array.isArray(value) ? value.slice(0, maxItems).map((item) => text(item, 250)).filter(Boolean) : [];
 
 export async function POST(request: NextRequest) {
+  const contentLength = Number(request.headers.get("content-length") || 0);
+  if (contentLength > 100_000) return NextResponse.json({ ok: false }, { status: 413 });
   let body: Record<string, unknown>;
   try { body = await request.json(); } catch { return NextResponse.json({ ok: false }, { status: 400 }); }
 
@@ -31,9 +34,19 @@ export async function POST(request: NextRequest) {
 
   try {
     const supabase = createAdminClient();
+    const clientIp = getClientIp(request);
+    const ipHash = hashClientIp(clientIp);
+    const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { count } = await supabase.from("site_security_events").select("id", { count: "exact", head: true }).eq("endpoint", "employer_survey").eq("ip_hash", ipHash).gte("created_at", since);
+    if ((count || 0) >= 5) return NextResponse.json({ ok: false, code: "rate_limited" }, { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": "3600" } });
+    const captchaValid = await verifyTurnstile(text(body.captchaToken, 3000), clientIp, "employer_survey");
+    if (!captchaValid) {
+      await supabase.from("site_security_events").insert({ endpoint: "employer_survey", ip_hash: ipHash, outcome: "captcha_failed" });
+      return NextResponse.json({ ok: false, code: "captcha_failed" }, { status: 403, headers: { "Cache-Control": "no-store" } });
+    }
     const { error } = await supabase.from("employer_survey_responses").insert(payload);
+    await supabase.from("site_security_events").insert({ endpoint: "employer_survey", ip_hash: ipHash, outcome: error ? "database_failed" : "accepted" });
     if (error) return NextResponse.json({ ok: false }, { status: 503, headers: { "Cache-Control": "no-store" } });
     return NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
   } catch { return NextResponse.json({ ok: false }, { status: 503, headers: { "Cache-Control": "no-store" } }); }
 }
-
