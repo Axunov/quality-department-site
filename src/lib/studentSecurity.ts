@@ -7,6 +7,7 @@ export const SURVEY_SESSION_COOKIE = "qds_survey_session";
 export const SURVEY_RECEIPT_COOKIE = "qds_survey_receipt";
 export const GENERIC_SURVEY_SESSION_COOKIE = "qds_generic_survey_session";
 export const GENERIC_SURVEY_RECEIPT_COOKIE = "qds_generic_survey_receipt";
+export const PUBLIC_SURVEY_DEVICE_COOKIE = "qds_public_survey_device";
 
 export function getClientIp(request: NextRequest) {
   const netlifyIp = request.headers.get("x-nf-client-connection-ip");
@@ -24,6 +25,12 @@ export function hashClientIp(ip: string) {
   }
 
   return createHmac("sha256", secret).update(ip).digest("hex");
+}
+
+export function hashPublicSurveyParticipant(deviceToken: string, surveyId: string) {
+  const secret = process.env.STUDENT_SECURITY_PEPPER || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!secret) throw new Error("Student security pepper is not configured");
+  return createHmac("sha256", secret).update(`${surveyId}:${deviceToken}`).digest("hex");
 }
 
 export function studentCookieOptions(maxAge: number) {

@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { STUDENT_PORTAL_COOKIE } from "@/lib/studentSecurity";
 
 export const runtime = "nodejs";
-export async function GET(request: NextRequest) {
-  const token = request.cookies.get(STUDENT_PORTAL_COOKIE)?.value;
-  if (!token) return NextResponse.json({ ok: false }, { status: 401 });
-  const { data, error } = await createAdminClient().rpc("student_generic_surveys", { p_portal_token: token });
-  return error ? NextResponse.json({ ok: false }, { status: 401 }) : NextResponse.json({ ok: true, surveys: data || [] }, { headers: { "Cache-Control": "no-store" } });
+export async function GET() {
+  const now = new Date().toISOString();
+  const { data, error } = await createAdminClient().from("student_surveys")
+    .select("id,title_ru,title_uz,title_en,description_ru,description_uz,description_en,starts_at,ends_at")
+    .eq("status", "published").lte("starts_at", now)
+    .or(`ends_at.is.null,ends_at.gt.${now}`).order("created_at", { ascending: false });
+  return error ? NextResponse.json({ ok: false }, { status: 503 }) : NextResponse.json({ ok: true, surveys: data || [] }, { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
 }
