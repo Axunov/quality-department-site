@@ -1,17 +1,13 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminMfa } from "@/lib/adminSecurity";
 import { internalEmail, normalizeUsername } from "@/lib/accreditation/localization";
 
 const allowedRoles = new Set(["department_head", "quality_office", "director"]);
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user || user.app_metadata?.role !== "admin") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    if (!await requireAdminMfa()) return NextResponse.json({ error: "MFA required" }, { status: 403 });
     const body = await request.json();
     const username = normalizeUsername(String(body.username || ""));
     const recoveryEmail = String(body.email || "").trim().toLowerCase() || null;

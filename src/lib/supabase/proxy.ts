@@ -7,6 +7,7 @@ export async function updateSession(request: NextRequest) {
   const locale = localeMatch?.[1] || "ru";
   const adminPrefix = `/${locale}/admin`;
   const loginPath = `${adminPrefix}/login`;
+  const mfaPath = `${adminPrefix}/mfa`;
   const isAdminRoute =
     pathname === adminPrefix || pathname.startsWith(`${adminPrefix}/`);
   const teacherPrefix = `/${locale}/teacher`;
@@ -59,7 +60,12 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isLoginPage = pathname === loginPath;
+  const isMfaPage = pathname === mfaPath;
   const isAdmin = user?.app_metadata?.role === "admin";
+  const { data: assurance } = user && isAdmin
+    ? await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+    : { data: { currentLevel: null } };
+  const hasAdminMfa = assurance?.currentLevel === "aal2";
   const isTeacherPublicPage =
     pathname === teacherLoginPath || pathname === teacherRegisterPath;
   const isTeacher = user?.app_metadata?.role === "teacher";
@@ -75,7 +81,7 @@ export async function updateSession(request: NextRequest) {
     if(!allowed){const url=request.nextUrl.clone();url.pathname=cabinetRoute;url.search="";return NextResponse.redirect(url);}
   }
 
-  if (isAdminRoute && !isLoginPage && (!user || !isAdmin)) {
+  if (isAdminRoute && !isLoginPage && !isMfaPage && (!user || !isAdmin)) {
     const url = request.nextUrl.clone();
     url.pathname = loginPath;
     url.searchParams.set("redirect", pathname);
@@ -87,11 +93,26 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (isAdminRoute && !isLoginPage && !isMfaPage && isAdmin && !hasAdminMfa) {
+    const url = request.nextUrl.clone(); url.pathname = mfaPath; url.search = "";
+    return NextResponse.redirect(url);
+  }
+
   if (isLoginPage && user && isAdmin) {
     const url = request.nextUrl.clone();
-    url.pathname = adminPrefix;
+    url.pathname = hasAdminMfa ? adminPrefix : mfaPath;
     url.search = "";
 
+    return NextResponse.redirect(url);
+  }
+
+
+  if (isMfaPage && (!user || !isAdmin)) {
+    const url = request.nextUrl.clone(); url.pathname = loginPath; url.search = "";
+    return NextResponse.redirect(url);
+  }
+  if (isMfaPage && hasAdminMfa) {
+    const url = request.nextUrl.clone(); url.pathname = adminPrefix; url.search = "";
     return NextResponse.redirect(url);
   }
 

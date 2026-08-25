@@ -1,11 +1,10 @@
 import {NextResponse} from "next/server";
-import {createClient} from "@/lib/supabase/server";
 import {createAdminClient} from "@/lib/supabase/admin";
+import {requireAdminMfa} from "@/lib/adminSecurity";
 
 export async function DELETE(_:Request,{params}:{params:Promise<{id:string}>}){
  try{
-  const s=await createClient(),{data:{user}}=await s.auth.getUser();
-  if(!user||user.app_metadata?.role!=="admin")return NextResponse.json({error:"Unauthorized"},{status:401});
+  const auth=await requireAdminMfa();if(!auth)return NextResponse.json({error:"MFA required"},{status:403});const user=auth.user;
   const{id}=await params;if(!/^[0-9a-f-]{36}$/i.test(id))return NextResponse.json({error:"Invalid document"},{status:400});
   const admin=createAdminClient(),{data:doc,error:readError}=await admin.from("accreditation_v3_documents").select("id,indicator_id,file_name,storage_path,version").eq("id",id).maybeSingle();
   if(readError||!doc)return NextResponse.json({error:readError?.message||"Document not found"},{status:404});

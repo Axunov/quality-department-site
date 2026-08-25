@@ -26,7 +26,7 @@ test("employer survey is linked, protected, visible to admins and stored server-
   assert.match(route, /rate_limited/);
   assert.match(route, /verifyTurnstile/);
   assert.match(adminLayout, /\/admin\/surveys\/employers/);
-  assert.match(adminRoute, /user\.app_metadata\?\.role !== "admin"/);
+  assert.match(adminRoute, /requireAdminMfa/);
   assert.match(adminRoute, /Cache-Control": "private, no-store"/);
   assert.match(sql, /enable row level security/);
   assert.match(sql, /revoke all .* from public, anon, authenticated/);

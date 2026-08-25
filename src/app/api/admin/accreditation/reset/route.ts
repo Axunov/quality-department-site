@@ -1,10 +1,9 @@
 import {NextResponse} from "next/server";
-import {createClient} from "@/lib/supabase/server";
 import {createAdminClient} from "@/lib/supabase/admin";
+import {requireAdminMfa} from "@/lib/adminSecurity";
 
 export async function POST(){
- const s=await createClient(),{data:{user}}=await s.auth.getUser();
- if(!user||user.app_metadata?.role!=="admin")return NextResponse.json({error:"Forbidden"},{status:403});
+ if(!await requireAdminMfa())return NextResponse.json({error:"MFA required"},{status:403});
  const admin=createAdminClient(),{data:documents,error:readError}=await admin.from("accreditation_v3_documents").select("storage_path");
  if(readError)return NextResponse.json({error:readError.message},{status:400});
  const paths=(documents||[]).map(x=>x.storage_path).filter(Boolean);

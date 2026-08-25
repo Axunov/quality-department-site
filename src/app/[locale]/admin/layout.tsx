@@ -19,6 +19,7 @@ const labels = {
     studentAppeals: "Обращения студентов",
     hemisQuiz: "Тест HEMIS",
     accreditation: "Аккредитация",
+    security: "Безопасность",
     site: "← На сайт",
   },
   uz: {
@@ -34,6 +35,7 @@ const labels = {
     studentAppeals: "Talabalar murojaatlari",
     hemisQuiz: "HEMIS testi",
     accreditation: "Akkreditatsiya",
+    security: "Xavfsizlik",
     site: "← Saytga qaytish",
   },
   en: {
@@ -49,6 +51,7 @@ const labels = {
     studentAppeals: "Student appeals",
     hemisQuiz: "HEMIS test",
     accreditation: "Accreditation",
+    security: "Security",
     site: "← Back to site",
   },
 };
@@ -66,7 +69,7 @@ export default function AdminLayout({
 
   const t = labels[currentLocale];
 
-  const isLoginPage = pathname === "/admin/login";
+  const isLoginPage = pathname === "/admin/login" || pathname === "/admin/mfa";
 
   const menuItems = [
     { href: "/admin", label: t.dashboard, icon: "📊" },
@@ -78,6 +81,7 @@ export default function AdminLayout({
     { href: "/admin/tools/appeals", label: t.studentAppeals, icon: "✉️" },
     { href: "/admin/hemis-quiz", label: t.hemisQuiz, icon: "✅" },
     { href: "/admin/accreditation", label: t.accreditation, icon: "🏛️" },
+    { href: "/admin/security", label: t.security, icon: "🛡️" },
     { href: "/admin/tools",  label: t.tools,  icon: "🛠️",},
   ];
 

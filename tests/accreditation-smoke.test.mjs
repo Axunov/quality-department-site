@@ -113,5 +113,5 @@ test("V7.5 supports written responses, revision editing and admin action journal
   ]);
   assert.match(sql,/response_text/);assert.match(assistant,/Редактировать ответ/);assert.match(assistant,/status==="revision"/);
   assert.match(assistant,/Письменный ответ/);assert.match(journal,/accreditation_v6_audit_log/);assert.match(admin,/ActionJournal/);
-  assert.match(historyApi,/app_metadata/);assert.match(historyApi,/role!=="admin"/);
+  assert.match(historyApi,/requireAdminMfa/);assert.match(historyApi,/MFA required/);
 });

@@ -1,14 +1,10 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminMfa } from "@/lib/adminSecurity";
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user || user.app_metadata?.role !== "admin") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    if (!await requireAdminMfa()) return NextResponse.json({ error: "MFA required" }, { status: 403 });
     const body = await request.json();
     const userId = String(body.userId || "");
     const responsibleLabel = String(body.responsibleLabel || "").trim();

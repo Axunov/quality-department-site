@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
     }
     const { error } = await supabase.from("employer_survey_responses").insert(payload);
     await supabase.from("site_security_events").insert({ endpoint: "employer_survey", ip_hash: ipHash, outcome: error ? "database_failed" : "accepted" });
+    await supabase.from("site_security_events").delete().lt("created_at", new Date(Date.now() - 30 * 86_400_000).toISOString());
     if (error) return NextResponse.json({ ok: false }, { status: 503, headers: { "Cache-Control": "no-store" } });
     return NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
   } catch { return NextResponse.json({ ok: false }, { status: 503, headers: { "Cache-Control": "no-store" } }); }

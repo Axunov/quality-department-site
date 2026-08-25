@@ -1,17 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminMfa } from "@/lib/adminSecurity";
 
 export const runtime = "nodejs";
 
 const columns = "id,created_at,locale,organization_name,activity_area,respondent_position,programmes,graduates_count,curriculum_participation,commission_participation,practice_participation,graduate_qualities,ratings,practice_rating,programme_relevance,cooperation_directions,improvement_areas,demanded_competencies,proposals,hiring_readiness,recommendation_score,cooperation_readiness,contact_name,contact_phone,contact_email";
 
 export async function GET(request: NextRequest) {
-  const auth = await createClient();
-  const { data: { user } } = await auth.auth.getUser();
-  if (!user || user.app_metadata?.role !== "admin") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  if (!await requireAdminMfa()) return NextResponse.json({ error: "MFA required" }, { status: 403 });
 
   const params = request.nextUrl.searchParams;
   const page = Math.max(1, Number(params.get("page")) || 1);
