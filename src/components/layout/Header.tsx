@@ -16,9 +16,9 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const portalLabels = {
-    ru: { quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов", employerSurvey: "Опрос работодателей" },
-    uz: { quality: "Sifat tizimi", self: "O‘zini o‘zi baholash", monitoring: "Monitoring", analytics: "Tahlil", open: "Ochiq materiallar", appeals: "Murojaatlar", faq: "FAQ", survey: "Talabalar so‘rovi", employerSurvey: "Ish beruvchilar so‘rovi" },
-    en: { quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ", survey: "Student survey", employerSurvey: "Employer survey" },
+    ru: { quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов", employerSurvey: "Опрос работодателей", graduateSurvey: "Опрос выпускников", doctoralSurvey: "Опрос докторантов" },
+    uz: { quality: "Sifat tizimi", self: "O‘zini o‘zi baholash", monitoring: "Monitoring", analytics: "Tahlil", open: "Ochiq materiallar", appeals: "Murojaatlar", faq: "FAQ", survey: "Talabalar so‘rovi", employerSurvey: "Ish beruvchilar so‘rovi", graduateSurvey: "Bitiruvchilar so‘rovi", doctoralSurvey: "Doktorantlar so‘rovi" },
+    en: { quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ", survey: "Student survey", employerSurvey: "Employer survey", graduateSurvey: "Graduate survey", doctoralSurvey: "Doctoral survey" },
   } as const;
   const currentLocale = locale === "uz" || locale === "en" ? locale : "ru";
   const portal = portalLabels[currentLocale];
@@ -31,6 +31,8 @@ export function Header() {
     { href: "/faq", label: portal.faq },
     { href: "/surveys/teacher", label: portal.survey },
     { href: "/surveys/employers", label: portal.employerSurvey },
+    { href: "/surveys/graduates", label: portal.graduateSurvey },
+    { href: "/surveys/doctoral", label: portal.doctoralSurvey },
   ];
 
   const navItems = [
