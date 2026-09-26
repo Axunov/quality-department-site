@@ -5,10 +5,11 @@ import test from "node:test";
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 test("employer survey is linked, protected, visible to admins and stored server-side", async () => {
-  const [header, adminLayout, form, route, adminRoute, sql, securitySql] = await Promise.all([
+  const [header, adminLayout, form, data, route, adminRoute, sql, securitySql] = await Promise.all([
     read("src/components/layout/Header.tsx"),
     read("src/app/[locale]/admin/layout.tsx"),
     read("src/components/surveys/EmployerSurveyForm.tsx"),
+    read("src/data/employerSurvey.ts"),
     read("src/app/api/employer-survey/submit/route.ts"),
     read("src/app/api/admin/employer-surveys/route.ts"),
     read("supabase/employer-survey.sql"),
@@ -21,6 +22,9 @@ test("employer survey is linked, protected, visible to admins and stored server-
   assert.match(header, /Employer survey/);
   assert.match(form, /\/api\/employer-survey\/submit/);
   assert.match(form, /data-action="employer_survey"/);
+  assert.match(data, /Автоматизация технологических процессов и производств \(Компьютерная мехатроника\) — бакалавриат/);
+  assert.match(data, /Инженерный бизнес — магистратура/);
+  assert.doesNotMatch(data, /60730900 — Mexanika va mashinasozlik/);
   assert.match(route, /createAdminClient/);
   assert.match(route, /body\.consent !== true/);
   assert.match(route, /rate_limited/);
