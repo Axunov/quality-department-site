@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  productionBrowserSourceMaps: false,
+  compress: true,
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 14400,
@@ -22,7 +24,7 @@ const nextConfig: NextConfig = {
       "default-src 'self'",
       "base-uri 'self'",
       "form-action 'self'",
-      "frame-ancestors 'self'",
+      "frame-ancestors 'none'",
       "object-src 'none'",
       "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline'",
@@ -38,9 +40,12 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: [
           { key: "Content-Security-Policy", value: contentSecurityPolicy },
+          { key: "X-DNS-Prefetch-Control", value: "off" },
+          { key: "X-Download-Options", value: "noopen" },
+          { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Frame-Options", value: "DENY" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
           { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
@@ -49,7 +54,19 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale/admin/:path*",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet" },
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+          { key: "Pragma", value: "no-cache" },
+        ],
+      },
+      {
+        source: "/api/admin/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+          { key: "Pragma", value: "no-cache" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet" },
+        ],
       },
     ];
   },
