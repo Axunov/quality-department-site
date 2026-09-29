@@ -1,6 +1,7 @@
 "use client";
 
 import { Link, usePathname } from "@/i18n/routing";
+import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
 import ThemeToggle from "@/components/layout/ThemeToggle";
@@ -68,6 +69,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [unreadAppeals, setUnreadAppeals] = useState(0);
   const locale = useLocale();
 
   const currentLocale: "ru" | "uz" | "en" =
@@ -76,6 +78,11 @@ export default function AdminLayout({
   const t = labels[currentLocale];
 
   const isLoginPage = pathname === "/admin/login" || pathname === "/admin/mfa";
+  useEffect(() => {
+    if (isLoginPage) return;
+    const load = async () => { const response = await fetch("/api/admin/appeal-notifications", { cache: "no-store" }); if (response.ok) setUnreadAppeals((await response.json()).unread || 0); };
+    void load(); const timer = window.setInterval(load, 60_000); return () => window.clearInterval(timer);
+  }, [isLoginPage, pathname]);
 
   const menuItems = [
     { href: "/admin", label: t.dashboard, icon: "📊" },
@@ -86,7 +93,7 @@ export default function AdminLayout({
     { href: "/admin/surveys/employers", label: t.employerSurveys, icon: "🏢" },
     { href: "/admin/surveys/graduates", label: t.graduateSurveys, icon: "🎓" },
     { href: "/admin/surveys/doctoral", label: t.doctoralSurveys, icon: "🔬" },
-    { href: "/admin/tools/appeals", label: t.studentAppeals, icon: "✉️" },
+    { href: "/admin/tools/appeals", label: t.studentAppeals, icon: "✉️", badge: unreadAppeals },
     { href: "/admin/hemis-quiz", label: t.hemisQuiz, icon: "✅" },
     { href: "/admin/accreditation", label: t.accreditation, icon: "🏛️" },
     { href: "/admin/security", label: t.security, icon: "🛡️" },
@@ -128,6 +135,7 @@ export default function AdminLayout({
                 >
                   <span className="mr-2">{item.icon}</span>
                   {item.label}
+                  {Boolean(item.badge) && <span className="ml-2 inline-flex min-w-6 items-center justify-center rounded-full bg-red-600 px-2 py-0.5 text-xs font-black text-white">{item.badge}</span>}
                 </Link>
               );
             })}
