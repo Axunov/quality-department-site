@@ -1,5 +1,15 @@
 // Translate displayed labels while preserving canonical stored answers.
 const translations: Record<string, { uz: string; en: string }> = {
+  "Опросы": {uz: "So‘rovnomalar", en: "Surveys"},
+  "Внутренние положения": {uz: "Ichki nizomlar", en: "Internal regulations"},
+  "Шаблоны": {uz: "Shablonlar", en: "Templates"},
+  "Аккредитация": {uz: "Akkreditatsiya", en: "Accreditation"},
+  "Объявления": {uz: "E’lonlar", en: "Announcements"},
+  "Мероприятия": {uz: "Tadbirlar", en: "Events"},
+  "Нормативные документы": {uz: "Me’yoriy hujjatlar", en: "Regulatory documents"},
+  "Методические материалы": {uz: "Uslubiy materiallar", en: "Guidance materials"},
+  "Отчеты": {uz: "Hisobotlar", en: "Reports"},
+  "Положения": {uz: "Nizomlar", en: "Regulations"},
   "Общая информация": {
     "uz": "Umumiy ma’lumotlar",
     "en": "General information"

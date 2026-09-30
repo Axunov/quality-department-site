@@ -57,6 +57,7 @@ test('every standard programme, rating and choice has Uzbek and English labels',
   assert.equal(surveyText('en','1. Наименование организации'),'1. Organisation name');
   assert.equal(surveyText('en','Новости'),'News');
   assert.equal(surveyText('uz','Документы'),'Hujjatlar');
+  assert.equal(surveyText('en','Аккредитация'),'Accreditation');
 });
 
 test('all steps of graduate, doctoral and employer forms are fully localized',()=>{
