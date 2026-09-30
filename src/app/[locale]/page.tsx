@@ -1,3 +1,4 @@
+import { surveyText } from "@/lib/surveyI18n";
 import { getNews } from "@/services/news.service";
 import { getDocuments } from "@/services/documents.service";
 import { Link } from "@/i18n/routing";
@@ -550,7 +551,7 @@ export default async function HomePage({
                 <div className="absolute inset-x-0 bottom-0 p-7 text-white sm:p-10">
                   <div className="flex flex-wrap items-center gap-3 text-xs">
                     <span className="rounded-full bg-white/15 px-3 py-1.5 font-bold backdrop-blur">
-                      {featuredNews.category || t.defaultNewsCategory}
+                      {surveyText(locale, featuredNews.category || t.defaultNewsCategory)}
                     </span>
                     <span className="text-blue-100">
                       {new Date(featuredNews.created_at).toLocaleDateString(
@@ -605,7 +606,7 @@ export default async function HomePage({
 
                     <div className="flex flex-col justify-center p-6">
                       <div className="text-xs font-bold uppercase tracking-wider text-blue-700">
-                        {item.category || t.defaultNewsCategory}
+                        {surveyText(locale, item.category || t.defaultNewsCategory)}
                       </div>
                       <h3 className="mt-3 line-clamp-3 text-xl font-extrabold leading-snug text-slate-950">
                         {getNewsTitle(item)}
@@ -690,7 +691,7 @@ export default async function HomePage({
                   </div>
 
                   <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-extrabold uppercase tracking-wider text-slate-600">
-                    {document.category || t.defaultDocumentCategory}
+                    {surveyText(locale, document.category || t.defaultDocumentCategory)}
                   </span>
                 </div>
 

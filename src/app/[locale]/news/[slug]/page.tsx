@@ -1,3 +1,4 @@
+import { surveyText } from "@/lib/surveyI18n";
 import { PageHeader } from "@/components/common/PageHeader";
 import { NewsGallery } from "@/components/news/NewsGallery";
 import { Link } from "@/i18n/routing";
@@ -126,7 +127,7 @@ export default async function NewsDetailPage({
   return (
     <main>
       <PageHeader
-        label={item.category || t.news}
+        label={surveyText(locale, item.category || t.news)}
         title={title}
         description={`${new Date(item.created_at).toLocaleDateString(t.locale)} · ${
           item.author === "Admin" ? t.author : item.author || t.author

@@ -1,3 +1,4 @@
+import { surveyText } from "@/lib/surveyI18n";
 import { getDocuments } from "@/services/documents.service";
 import { getLocalizedText } from "@/utils/getLocalizedText";
 
@@ -379,7 +380,7 @@ export default async function DocumentsPage({
 
                   <div className="absolute bottom-5 right-5">
                     <span className="inline-flex rounded-full border border-white/70 bg-white/90 px-3 py-1.5 text-xs font-bold text-slate-600 shadow-sm backdrop-blur">
-                      {doc.category || t.defaultCategory}
+                      {surveyText(locale, doc.category || t.defaultCategory)}
                     </span>
                   </div>
                 </div>

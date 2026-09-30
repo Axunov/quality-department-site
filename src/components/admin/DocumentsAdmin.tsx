@@ -1,4 +1,5 @@
 "use client";
+import { surveyText } from "@/lib/surveyI18n";
 
 import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "next-intl";
@@ -363,7 +364,7 @@ export default function DocumentsAdmin() {
             </div>
 
             <div className="p-6">
-              <p className="text-xs font-bold uppercase tracking-wide text-blue-700">{doc.category || t.defaultCategory}</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-blue-700">{surveyText(locale, doc.category || t.defaultCategory)}</p>
               <h3 className="mt-3 line-clamp-2 text-xl font-black text-slate-900">{doc.title_ru || doc.title_uz || doc.title_en}</h3>
               <p className="mt-3 break-all text-sm text-slate-500">{doc.file_name}</p>
               <p className="mt-1 text-sm text-slate-500">{formatFileSize(doc.file_size)}</p>

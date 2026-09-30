@@ -55,6 +55,8 @@ test('every standard programme, rating and choice has Uzbek and English labels',
   for(const locale of ['uz','en']) for(const phrase of phrases) assert.doesNotMatch(surveyText(locale,phrase),/[А-Яа-яЁё]/,`${locale}: ${phrase}`);
   assert.equal(surveyText('ru','1. Наименование организации'),'1. Наименование организации');
   assert.equal(surveyText('en','1. Наименование организации'),'1. Organisation name');
+  assert.equal(surveyText('en','Новости'),'News');
+  assert.equal(surveyText('uz','Документы'),'Hujjatlar');
 });
 
 test('all steps of graduate, doctoral and employer forms are fully localized',()=>{

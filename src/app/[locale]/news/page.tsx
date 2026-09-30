@@ -1,3 +1,4 @@
+import { surveyText } from "@/lib/surveyI18n";
 import { Link } from "@/i18n/routing";
 import { getNews } from "@/services/news.service";
 import { getLocalizedText } from "@/utils/getLocalizedText";
@@ -312,7 +313,7 @@ export default async function NewsPage({
 
                   <div className="absolute bottom-5 left-5">
                     <span className="inline-flex rounded-full border border-white/20 bg-slate-950/60 px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-white backdrop-blur-md">
-                      {item.category || t.defaultCategory}
+                      {surveyText(locale, item.category || t.defaultCategory)}
                     </span>
                   </div>
                 </div>

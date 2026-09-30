@@ -1,4 +1,5 @@
 "use client";
+import { surveyText } from "@/lib/surveyI18n";
 
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
@@ -102,7 +103,7 @@ export default function AdminNewsTable({ news }: { news: any[] }) {
                 </td>
 
                 <td className="p-4 text-slate-600">
-                  {item.category || t.defaultCategory}
+                  {surveyText(locale, item.category || t.defaultCategory)}
                 </td>
 
                 <td className="whitespace-nowrap p-4 text-slate-500">
