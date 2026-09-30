@@ -1,26 +1,27 @@
+import { getLocale } from "next-intl/server";
+import { surveyText } from "@/lib/surveyI18n";
 import { getNews } from "@/services/news.service";
 import { Link } from "@/i18n/routing";
 import AdminNewsTable from "@/components/admin/AdminNewsTable";
 
 export default async function AdminNewsPage() {
+  const currentLocale = await getLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const news = await getNews();
 
   return (
     <div>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-slate-900">Новости</h1>
-          <p className="mt-2 text-slate-500">
-            Управление новостями сайта
-          </p>
+          <h1 className="text-4xl font-bold text-slate-900">{tr("Новости")}</h1>
+          <p className="mt-2 text-slate-500">{tr("Управление новостями сайта")}</p>
         </div>
 
         <Link
           href="/admin/news/new"
           className="rounded-xl bg-blue-700 px-6 py-3 font-semibold text-white hover:bg-blue-800"
-        >
-          + Новая новость
-        </Link>
+        >{tr("+ Новая новость")}</Link>
       </div>
 
       <AdminNewsTable news={news} />

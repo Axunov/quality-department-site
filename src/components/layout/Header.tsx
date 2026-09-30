@@ -1,4 +1,6 @@
 "use client";
+import { surveyText } from "@/lib/surveyI18n";
+
 
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
@@ -10,6 +12,8 @@ import { Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 
 export function Header() {
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const t = useTranslations("Header");
   const pathname = usePathname();
   const locale = useLocale();
@@ -76,7 +80,7 @@ export function Header() {
           <Link href="/" locale={locale} className="flex min-w-0 items-center gap-3 lg:gap-4">
             <Image
               src="/images/logo.jpg"
-              alt="Logo"
+              alt={tr("Логотип института")}
               width={72}
               height={72}
               priority

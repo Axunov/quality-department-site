@@ -1,7 +1,12 @@
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 export function DocumentsPreview() {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const t = useTranslations("DocumentsPreview");
   const docs = t.raw("items") as string[];
 
@@ -9,13 +14,11 @@ export function DocumentsPreview() {
     <section className="py-14">
       <div className="mb-8 flex items-end justify-between">
         <div>
-          <p className="soft-label">Документы</p>
+          <p className="soft-label">{tr("Документы")}</p>
           <h2 className="mt-4 section-title">{t("title")}</h2>
         </div>
 
-        <Link href="/documents" className="btn-secondary">
-          Все документы →
-        </Link>
+        <Link href="/documents" className="btn-secondary">{tr("Все документы →")}</Link>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

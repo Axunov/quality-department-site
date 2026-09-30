@@ -1,3 +1,5 @@
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
 import { Link } from "@/i18n/routing";
 
 type PageHeaderProps = {
@@ -7,11 +9,14 @@ type PageHeaderProps = {
 };
 
 export function PageHeader({ title, description, label }: PageHeaderProps) {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-r from-[#003b7a] via-[#005eb8] to-[#0ea5a3] text-white">
       <div className="container-main py-16">
         <div className="mb-6 text-sm font-semibold text-blue-100">
-          <Link href="/">Главная</Link>
+          <Link href="/">{tr("Главная")}</Link>
           <span className="mx-2">/</span>
           <span>{label}</span>
         </div>

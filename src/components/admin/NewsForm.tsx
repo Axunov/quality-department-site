@@ -1,4 +1,7 @@
 "use client";
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
+
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
@@ -16,6 +19,9 @@ function makeSlug(text: string) {
 }
 
 export default function NewsForm() {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -53,7 +59,7 @@ export default function NewsForm() {
         .upload(fileName, file);
 
       if (uploadError) {
-        setMessage("Ошибка загрузки фото: " + uploadError.message);
+        setMessage(tr("Ошибка загрузки фото: ") + uploadError.message);
         setLoading(false);
         return;
       }
@@ -85,9 +91,9 @@ export default function NewsForm() {
     });
 
     if (error) {
-      setMessage("Ошибка сохранения: " + error.message);
+      setMessage(tr("Ошибка сохранения: ") + error.message);
     } else {
-      setMessage("Новость успешно опубликована!");
+      setMessage(tr("Новость успешно опубликована!"));
       (event.target as HTMLFormElement).reset();
     }
 
@@ -99,46 +105,46 @@ export default function NewsForm() {
       onSubmit={handleSubmit}
       className="mx-auto mt-8 max-w-5xl rounded-2xl bg-white p-8 shadow"
     >
-      <h2 className="mb-6 text-2xl font-bold">Новая новость</h2>
+      <h2 className="mb-6 text-2xl font-bold">{tr("Новая новость")}</h2>
 
       <div className="space-y-5">
         <input
           name="title_ru"
           className="w-full rounded-lg border p-3"
-          placeholder="Заголовок RU"
+          placeholder={tr("Заголовок RU")}
         />
 
         <input
           name="title_uz"
           className="w-full rounded-lg border p-3"
-          placeholder="Заголовок UZ"
+          placeholder={tr("Заголовок UZ")}
         />
 
         <input
           name="title_en"
           className="w-full rounded-lg border p-3"
-          placeholder="Заголовок EN"
+          placeholder={tr("Заголовок EN")}
         />
 
         <div>
-         <p className="mb-2 font-semibold">Текст новости RU</p>
+         <p className="mb-2 font-semibold">{tr("Текст новости RU")}</p>
          <RichTextEditor name="text_ru" />
         </div>
 
         <div>
-        <p className="mb-2 font-semibold">Текст новости UZ</p>
+        <p className="mb-2 font-semibold">{tr("Текст новости UZ")}</p>
         <RichTextEditor name="text_uz" />
         </div>
 
         <div>
-        <p className="mb-2 font-semibold">Текст новости EN</p>
+        <p className="mb-2 font-semibold">{tr("Текст новости EN")}</p>
         <RichTextEditor name="text_en" />
         </div>
 
         <input
           name="category"
           className="w-full rounded-lg border p-3"
-          placeholder="Категория, например: Новости"
+          placeholder={tr("Категория, например: Новости")}
         />
 
         <input
@@ -153,7 +159,7 @@ export default function NewsForm() {
           disabled={loading}
           className="rounded-xl bg-blue-700 px-8 py-3 font-semibold text-white disabled:opacity-60"
         >
-          {loading ? "Публикуется..." : "Опубликовать"}
+          {tr(loading ? "Публикуется..." : "Опубликовать")}
         </button>
 
         {message && (

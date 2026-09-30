@@ -1,10 +1,16 @@
 "use client";
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
+
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function NewsEditForm({ item }: { item: any }) {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -33,9 +39,9 @@ export default function NewsEditForm({ item }: { item: any }) {
       .eq("id", item.id);
 
     if (error) {
-      setMessage("Ошибка сохранения: " + error.message);
+      setMessage(tr("Ошибка сохранения: ") + error.message);
     } else {
-      setMessage("Новость обновлена!");
+      setMessage(tr("Новость обновлена!"));
       router.refresh();
     }
 
@@ -48,18 +54,18 @@ export default function NewsEditForm({ item }: { item: any }) {
       className="mx-auto mt-8 max-w-5xl rounded-2xl bg-white p-8 shadow"
     >
       <div className="space-y-5">
-       <textarea name="title_ru" defaultValue={item.title_ru || ""} className="h-16 w-full rounded-lg border p-3" placeholder="Заголовок RU" />
-<textarea name="title_uz" defaultValue={item.title_uz || ""} className="h-16 w-full rounded-lg border p-3" placeholder="Заголовок UZ" />
-<textarea name="title_en" defaultValue={item.title_en || ""} className="h-16 w-full rounded-lg border p-3" placeholder="Заголовок EN" />
+       <textarea name="title_ru" defaultValue={item.title_ru || ""} className="h-16 w-full rounded-lg border p-3" placeholder={tr("Заголовок RU")} />
+<textarea name="title_uz" defaultValue={item.title_uz || ""} className="h-16 w-full rounded-lg border p-3" placeholder={tr("Заголовок UZ")} />
+<textarea name="title_en" defaultValue={item.title_en || ""} className="h-16 w-full rounded-lg border p-3" placeholder={tr("Заголовок EN")} />
 
-        <textarea name="text_ru" defaultValue={item.content_ru || item.text_ru || ""} className="h-36 w-full rounded-lg border p-3" placeholder="Текст RU" />
-        <textarea name="text_uz" defaultValue={item.content_uz || item.text_uz || ""} className="h-36 w-full rounded-lg border p-3" placeholder="Текст UZ" />
-        <textarea name="text_en" defaultValue={item.content_en || item.text_en || ""} className="h-36 w-full rounded-lg border p-3" placeholder="Текст EN" />
+        <textarea name="text_ru" defaultValue={item.content_ru || item.text_ru || ""} className="h-36 w-full rounded-lg border p-3" placeholder={tr("Текст RU")} />
+        <textarea name="text_uz" defaultValue={item.content_uz || item.text_uz || ""} className="h-36 w-full rounded-lg border p-3" placeholder={tr("Текст UZ")} />
+        <textarea name="text_en" defaultValue={item.content_en || item.text_en || ""} className="h-36 w-full rounded-lg border p-3" placeholder={tr("Текст EN")} />
 
-        <textarea name="category" defaultValue={item.category || ""} className="h-14 w-full rounded-lg border p-3" placeholder="Категория" />
+        <textarea name="category" defaultValue={item.category || ""} className="h-14 w-full rounded-lg border p-3" placeholder={tr("Категория")} />
 
         <button disabled={loading} className="rounded-xl bg-blue-700 px-8 py-3 font-semibold text-white disabled:opacity-60">
-          {loading ? "Сохраняется..." : "Сохранить изменения"}
+          {tr(loading ? "Сохраняется..." : "Сохранить изменения")}
         </button>
 
         {message && <p className="rounded-lg bg-slate-100 p-4 text-sm font-medium">{message}</p>}

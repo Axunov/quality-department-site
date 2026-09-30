@@ -1,7 +1,12 @@
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 export function Statistics() {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const t = useTranslations("Statistics");
 
   const statistics = [
@@ -39,9 +44,7 @@ export function Statistics() {
               <div className={`h-1 w-12 rounded-full ${item.line}`} />
             </div>
 
-            <p className="mt-3 text-xs font-semibold text-blue-700">
-              Подробнее →
-            </p>
+            <p className="mt-3 text-xs font-semibold text-blue-700">{tr("Подробнее →")}</p>
           </Link>
         ))}
       </div>

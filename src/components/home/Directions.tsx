@@ -1,3 +1,5 @@
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
@@ -18,6 +20,9 @@ type DirectionItem = {
 };
 
 export function Directions() {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const t = useTranslations("Directions");
   const items = t.raw("items") as DirectionItem[];
 
@@ -40,7 +45,7 @@ export function Directions() {
               {item.title}
             </h3>
             <p className="mt-4 leading-7 text-slate-600">{item.text}</p>
-            <p className="mt-6 font-bold text-blue-700">Открыть →</p>
+            <p className="mt-6 font-bold text-blue-700">{tr("Открыть →")}</p>
           </Link>
         ))}
       </div>

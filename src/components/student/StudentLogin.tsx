@@ -1,4 +1,7 @@
 "use client";
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
+
 
 import Script from "next/script";
 import { FormEvent, useEffect, useState } from "react";
@@ -58,6 +61,9 @@ const content = {
 } as const;
 
 export default function StudentLogin({ locale }: { locale: string }) {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const lang = locale === "uz" || locale === "en" ? locale : "ru";
   const t = content[lang];
   const router = useRouter();
@@ -167,16 +173,14 @@ export default function StudentLogin({ locale }: { locale: string }) {
                     <div
                       className="cf-turnstile"
                       data-sitekey={turnstileSiteKey}
-                      data-action="student_login"
+                      data-language={currentLocale} data-action="student_login"
                       data-size="flexible"
                       data-callback="onStudentTurnstileSuccess"
                       data-expired-callback="onStudentTurnstileExpired"
                     />
                   </>
                 ) : (
-                  <p className="text-sm font-semibold text-red-700">
-                    CAPTCHA ещё не настроена администратором.
-                  </p>
+                  <p className="text-sm font-semibold text-red-700">{tr("CAPTCHA ещё не настроена администратором.")}</p>
                 )}
               </div>
             )}

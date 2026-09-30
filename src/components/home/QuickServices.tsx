@@ -1,3 +1,5 @@
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
 import { Link } from "@/i18n/routing";
 
 const services = [
@@ -34,17 +36,20 @@ const services = [
 ];
 
 export function QuickServices() {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   return (
     <section className="container-main py-14">
       <div className="mb-8">
-        <p className="soft-label">Сервисы</p>
-        <h2 className="mt-4 section-title">Быстрые сервисы отдела</h2>
+        <p className="soft-label">{tr("Сервисы")}</p>
+        <h2 className="mt-4 section-title">{tr("Быстрые сервисы отдела")}</h2>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
         {services.map((item) => (
           <Link
-            key={item.title}
+            key={tr(item.title)}
             href={item.href}
             className="rounded-[28px] bg-white p-6 shadow-xl shadow-slate-200/70 transition hover:-translate-y-1 hover:shadow-2xl"
           >
@@ -52,8 +57,8 @@ export function QuickServices() {
             <h3 className="mt-5 text-xl font-bold text-slate-900">
               {item.title}
             </h3>
-            <p className="mt-3 text-sm leading-6 text-slate-600">{item.text}</p>
-            <p className="mt-5 text-sm font-bold text-blue-700">Открыть →</p>
+            <p className="mt-3 text-sm leading-6 text-slate-600">{tr(item.text)}</p>
+            <p className="mt-5 text-sm font-bold text-blue-700">{tr("Открыть →")}</p>
           </Link>
         ))}
       </div>

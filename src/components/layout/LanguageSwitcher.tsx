@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
     if (newLocale === locale) return;
 
     startTransition(() => {
-      router.replace(pathname, {
+      router.replace(pathname + window.location.search + window.location.hash, {
         locale: newLocale,
       });
     });

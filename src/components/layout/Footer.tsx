@@ -1,10 +1,16 @@
 "use client";
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
+
 
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const t = useTranslations("Footer");
   const header = useTranslations("Header");
   return (
@@ -15,7 +21,7 @@ export function Footer() {
             <div className="flex items-center gap-4">
               <Image
                 src="/images/logo.jpg"
-                alt="Логотип института"
+                alt={tr("Логотип института")}
                 width={72}
                 height={72}
                 className="h-[72px] w-[72px] rounded-full object-cover bg-white"

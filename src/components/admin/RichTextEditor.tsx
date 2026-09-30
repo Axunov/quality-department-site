@@ -1,4 +1,7 @@
 "use client";
+import { useLocale } from "next-intl";
+import { surveyText } from "@/lib/surveyI18n";
+
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -11,6 +14,9 @@ export default function RichTextEditor({
   name: string;
   initialContent?: string;
 }) {
+  const currentLocale = useLocale();
+  const tr = (text: string) => surveyText(currentLocale, text);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -35,21 +41,13 @@ export default function RichTextEditor({
           I
         </button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className="rounded border px-3 py-1">
-          • Список
-        </button>
+        <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className="rounded border px-3 py-1">{tr("• Список")}</button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className="rounded border px-3 py-1">
-          1. Список
-        </button>
+        <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className="rounded border px-3 py-1">{tr("1. Список")}</button>
 
-        <button type="button" onClick={() => editor.chain().focus().setParagraph().run()} className="rounded border px-3 py-1">
-          Текст
-        </button>
+        <button type="button" onClick={() => editor.chain().focus().setParagraph().run()} className="rounded border px-3 py-1">{tr("Текст")}</button>
 
-        <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="rounded border px-3 py-1">
-          Заголовок
-        </button>
+        <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="rounded border px-3 py-1">{tr("Заголовок")}</button>
       </div>
 
       <EditorContent editor={editor} className="min-h-[260px] p-4 leading-7 outline-none" />
