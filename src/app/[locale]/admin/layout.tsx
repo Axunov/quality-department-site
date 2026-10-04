@@ -4,6 +4,8 @@ import { Link, usePathname } from "@/i18n/routing";
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
+import { LayoutDashboard, Newspaper, FileText, Users, ClipboardList, Building2, GraduationCap, FlaskConical, Mail, ListChecks, Landmark, ShieldCheck, Wrench, Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 
 const labels = {
@@ -11,7 +13,7 @@ const labels = {
     panel: "Админ-панель",
     subtitle: "Управление сайтом",
     tools: "Инструменты",
-    dashboard: "Dashboard",
+    dashboard: "Обзор",
     news: "Новости",
     documents: "Документы",
     employees: "Сотрудники",
@@ -29,7 +31,7 @@ const labels = {
     panel: "Admin panel",
     subtitle: "Saytni boshqarish",
     tools: "Vositalar",
-    dashboard: "Dashboard",
+    dashboard: "Umumiy ko‘rinish",
     news: "Yangiliklar",
     documents: "Hujjatlar",
     employees: "Xodimlar",
@@ -69,6 +71,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [navigationOpen, setNavigationOpen] = useState(false);
   const [unreadAppeals, setUnreadAppeals] = useState(0);
   const locale = useLocale();
 
@@ -85,19 +88,19 @@ export default function AdminLayout({
   }, [isLoginPage, pathname]);
 
   const menuItems = [
-    { href: "/admin", label: t.dashboard, icon: "📊" },
-    { href: "/admin/news", label: t.news, icon: "📰" },
-    { href: "/admin/documents", label: t.documents, icon: "📄" },
-    { href: "/admin/employees", label: t.employees, icon: "👨‍🏫" },
-    { href: "/admin/surveys/teacher", label: t.surveys, icon: "🗳️" },
-    { href: "/admin/surveys/employers", label: t.employerSurveys, icon: "🏢" },
-    { href: "/admin/surveys/graduates", label: t.graduateSurveys, icon: "🎓" },
-    { href: "/admin/surveys/doctoral", label: t.doctoralSurveys, icon: "🔬" },
-    { href: "/admin/tools/appeals", label: t.studentAppeals, icon: "✉️", badge: unreadAppeals },
-    { href: "/admin/hemis-quiz", label: t.hemisQuiz, icon: "✅" },
-    { href: "/admin/accreditation", label: t.accreditation, icon: "🏛️" },
-    { href: "/admin/security", label: t.security, icon: "🛡️" },
-    { href: "/admin/tools",  label: t.tools,  icon: "🛠️",},
+    { href: "/admin", label: t.dashboard, icon: LayoutDashboard },
+    { href: "/admin/news", label: t.news, icon: Newspaper },
+    { href: "/admin/documents", label: t.documents, icon: FileText },
+    { href: "/admin/employees", label: t.employees, icon: Users },
+    { href: "/admin/surveys/teacher", label: t.surveys, icon: ClipboardList },
+    { href: "/admin/surveys/employers", label: t.employerSurveys, icon: Building2 },
+    { href: "/admin/surveys/graduates", label: t.graduateSurveys, icon: GraduationCap },
+    { href: "/admin/surveys/doctoral", label: t.doctoralSurveys, icon: FlaskConical },
+    { href: "/admin/tools/appeals", label: t.studentAppeals, icon: Mail, badge: unreadAppeals },
+    { href: "/admin/hemis-quiz", label: t.hemisQuiz, icon: ListChecks },
+    { href: "/admin/accreditation", label: t.accreditation, icon: Landmark },
+    { href: "/admin/security", label: t.security, icon: ShieldCheck },
+    { href: "/admin/tools",  label: t.tools,  icon: Wrench,},
   ];
 
   if (isLoginPage) {
@@ -105,35 +108,38 @@ export default function AdminLayout({
   }
 
   return (
-    <main className="min-h-screen bg-slate-100">
+    <main className="admin-shell min-h-screen bg-slate-50">
       <div className="flex flex-col md:flex-row">
-        <aside className="w-full bg-gradient-to-br from-[#083b73] via-[#063565] to-[#05243f] p-4 text-white md:sticky md:top-0 md:min-h-screen md:w-72 md:self-start md:p-6">
+        <aside className="admin-sidebar w-full border-b border-slate-200 bg-white p-4 text-slate-900 md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:self-start md:overflow-y-auto md:border-r md:border-b-0">
           <div className="flex items-start justify-between gap-3">
             <div>
-            <h1 className="text-2xl font-bold">{t.panel}</h1>
-            <p className="mt-2 text-sm text-blue-100">{t.subtitle}</p>
+            <h1 className="text-lg font-bold">{t.panel}</h1>
+            <p className="mt-1 text-xs text-slate-500">{t.subtitle}</p>
             </div>
-            <ThemeToggle />
+            <div className="flex gap-1"><ThemeToggle/><button type="button" className="header-control md:hidden" onClick={()=>setNavigationOpen(v=>!v)} aria-expanded={navigationOpen} aria-controls="admin-navigation" aria-label={t.tools}>{navigationOpen?<X size={18}/>:<Menu size={18}/>}</button></div>
           </div>
 
-          <nav className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 md:mt-8 md:block md:space-y-2">
+          <nav id="admin-navigation" className={`${navigationOpen ? "grid" : "hidden"} mt-5 gap-1 md:block md:space-y-1`}>
             {menuItems.map((item) => {
               const active =
                 item.href === "/admin"
                   ? pathname === "/admin"
-                  : pathname.startsWith(item.href);
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+              const Icon = item.icon;
 
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block rounded-xl px-4 py-3 transition ${
+                  aria-current={active ? "page" : undefined}
+                  onClick={()=>setNavigationOpen(false)}
+                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition ${
                     active
-                      ? "bg-white text-[#083b73]"
-                      : "text-white hover:bg-white/10"
+                      ? "bg-blue-50 font-semibold text-blue-800"
+                      : "text-slate-600 hover:bg-slate-100"
                   }`}
                 >
-                  <span className="mr-2">{item.icon}</span>
+                  <Icon size={17} className="shrink-0"/>
                   {item.label}
                   {Boolean(item.badge) && <span className="ml-2 inline-flex min-w-6 items-center justify-center rounded-full bg-red-600 px-2 py-0.5 text-xs font-black text-white">{item.badge}</span>}
                 </Link>
@@ -142,7 +148,7 @@ export default function AdminLayout({
 
             <Link
               href="/"
-              className="block rounded-xl bg-white/10 px-4 py-3 hover:bg-white/20 md:mt-8"
+              className="block rounded-lg bg-slate-100 px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-200 md:mt-6"
             >
               {t.site}
             </Link>
@@ -150,7 +156,7 @@ export default function AdminLayout({
           </nav>
         </aside>
 
-        <section className="admin-content min-w-0 flex-1 p-4 sm:p-6 md:p-8 lg:p-10">{children}</section>
+        <section className="admin-content min-w-0 flex-1"><div className="admin-topbar"><p className="text-sm font-semibold text-slate-600">{menuItems.filter(x=>x.href==='/admin'?pathname===x.href:pathname===x.href||pathname.startsWith(`${x.href}/`)).sort((a,b)=>b.href.length-a.href.length)[0]?.label || t.panel}</p><LanguageSwitcher/></div><div className="p-4 sm:p-6 lg:p-8">{children}</div></section>
       </div>
     </main>
   );

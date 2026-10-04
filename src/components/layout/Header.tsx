@@ -51,53 +51,33 @@ export function Header() {
 
   return (
     <header className="site-header sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl">
-      <div className="bg-[#083b73] text-white">
-        <div className="container-main flex items-center justify-between gap-3 py-2 text-xs">
-          <div className="flex min-w-0 items-center gap-4">
-            <span className="hidden truncate md:inline">📍 {t("address")}</span>
-            <a className="whitespace-nowrap hover:underline" href="tel:+998903222629">
-              ☎ +998 90 322-26-29
-            </a>
-            <a className="hidden hover:underline sm:inline" href="mailto:quality@sbumiptk.uz">
-              ✉ quality@sbumiptk.uz
-            </a>
-          </div>
-
-          <div className="hidden items-center gap-2 lg:flex">
-            <ThemeToggle />
-            <AccessibilityToggle label={t("accessibility")} />
-            <span aria-hidden="true">|</span>
-            <Link href="/search" className="flex items-center gap-1 rounded px-2 py-1 hover:bg-white/10">
-              <Search aria-hidden="true" size={14} />
-              {t("search")}
-            </Link>
-          </div>
-        </div>
-      </div>
-
       <div className="container-main">
-        <div className="flex items-center justify-between gap-3 py-3 lg:gap-8 lg:py-4">
+        <div className="flex items-center justify-between gap-3 py-3 lg:gap-5">
           <Link href="/" locale={locale} className="flex min-w-0 items-center gap-3 lg:gap-4">
             <Image
               src="/images/logo.jpg"
               alt={tr("Логотип института")}
-              width={72}
-              height={72}
+              width={48}
+              height={48}
               priority
-              className="h-14 w-14 shrink-0 rounded-full object-cover lg:h-[72px] lg:w-[72px]"
+              className="h-10 w-10 shrink-0 rounded-full object-cover lg:h-12 lg:w-12"
             />
 
             <div className="min-w-0">
-              <div className="text-sm font-extrabold leading-5 text-slate-900 sm:text-base lg:text-xl">
+              <div className="max-w-[360px] text-sm font-bold leading-5 text-slate-900 sm:text-base">
                 {t("title")}
               </div>
-              <p className="mt-1 hidden max-w-[520px] text-xs leading-5 text-slate-600 md:block">
+              <p className="mt-1 hidden max-w-[390px] truncate text-[11px] leading-4 text-slate-500 xl:block">
                 {t("institute")}
               </p>
             </div>
           </Link>
 
-          <div className="hidden lg:block"><LanguageSwitcher /></div>
+          <div className="hidden shrink-0 items-center gap-2 lg:flex">
+            <Link href="/search" className="header-control" aria-label={t("search")}><Search size={19}/></Link>
+            <ThemeToggle/><LanguageSwitcher/>
+            <Link href="/accreditation/login" className="rounded-xl bg-[#123b60] px-4 py-2.5 text-sm font-semibold text-white">{currentLocale === 'ru' ? 'Войти' : currentLocale === 'uz' ? 'Kirish' : 'Sign in'}</Link>
+          </div>
 
           <div className="flex items-center gap-2 lg:hidden">
           <ThemeToggle />
@@ -113,7 +93,7 @@ export function Header() {
           </div>
         </div>
 
-        <nav className="hidden items-center justify-center gap-2 border-t border-slate-100 py-3 text-sm font-semibold lg:flex">
+        <nav className="hidden items-center justify-between gap-1 border-t border-slate-100 py-2 text-xs font-semibold lg:flex">
           {navItems.map((item) => {
             const active = pathname === item.href;
                        
@@ -123,7 +103,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 locale={locale}
-                className={`rounded-full px-4 py-2 transition ${
+                className={`rounded-lg px-3 py-2 transition ${
                   active
                     ? "bg-[#0b3b78] text-white"
                     : "text-slate-700 hover:bg-blue-50 hover:text-blue-700"
@@ -134,7 +114,7 @@ export function Header() {
             );
           })}
           <details className="group relative">
-            <summary className="cursor-pointer list-none rounded-full px-4 py-2 text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
+            <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
               {portal.quality} <span aria-hidden="true" className="ml-1">⌄</span>
             </summary>
             <div className="absolute right-0 top-[calc(100%+.6rem)] z-50 grid min-w-64 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
@@ -168,7 +148,7 @@ export function Header() {
                 <Link key={item.href} href={item.href} locale={locale} onClick={() => setMenuOpen(false)} className="rounded-xl px-4 py-3 text-slate-700 hover:bg-blue-50">{item.label}</Link>
               ))}
             </nav>
-            <div className="mt-3 border-t border-slate-100 pt-3">
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3"><Link href="/accreditation/login" onClick={() => setMenuOpen(false)} className="rounded-xl bg-[#123b60] px-4 py-3 font-semibold text-white">{currentLocale === 'ru' ? 'Войти' : currentLocale === 'uz' ? 'Kirish' : 'Sign in'}</Link>
               <AccessibilityToggle label={t("accessibility")} />
             </div>
           </div>

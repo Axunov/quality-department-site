@@ -1,0 +1,10 @@
+"use client";
+import { useId, useRef, type ReactNode } from "react";
+import { ArrowUpRight, X } from "lucide-react";
+import type { Locale } from "@/lib/accreditation/specialData";
+const copy={ru:{open:"Открыть индикатор",close:"Закрыть",deadline:"Срок",noDeadline:"Не назначен",progress:"Готовность"},uz:{open:"Indikatorni ochish",close:"Yopish",deadline:"Muddat",noDeadline:"Belgilanmagan",progress:"Tayyorlik"},en:{open:"Open indicator",close:"Close",deadline:"Deadline",noDeadline:"Not assigned",progress:"Readiness"}};
+export default function IndicatorDrawer({locale,code,title,status,statusKind,progress,dueDate,children}:{locale:Locale;code:string;title:string;status:string;statusKind:string;progress:number;dueDate:string|null;children:ReactNode}){
+ const dialog=useRef<HTMLDialogElement>(null);const id=useId(),t=copy[locale];
+ return <><button type="button" onClick={()=>dialog.current?.showModal()} className="indicator-row" aria-label={`${t.open} ${code}: ${title}`} aria-haspopup="dialog"><span className="text-sm font-bold text-blue-700">{code}</span><span className="min-w-0 text-left text-sm font-semibold leading-6">{title}</span><span className="indicator-row-status" data-status={statusKind}>{status}</span><span className="text-left text-xs text-slate-500"><span className="block">{t.deadline}</span>{dueDate||t.noDeadline}</span><span className="text-right text-sm font-bold text-blue-800" aria-label={`${t.progress}: ${progress}%`}>{progress}%</span><ArrowUpRight size={18} className="text-slate-400"/></button>
+ <dialog ref={dialog} className="indicator-drawer" aria-labelledby={id} onClick={e=>{if(e.target===e.currentTarget){const r=e.currentTarget.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.current?.close()}}}><div className="drawer-toolbar"><h2 id={id} className="text-base font-bold">{code}</h2><button autoFocus type="button" onClick={()=>dialog.current?.close()} className="header-control" aria-label={t.close}><X size={20}/></button></div><div className="drawer-body">{children}</div></dialog></>;
+}

@@ -14,7 +14,7 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div id="main-content" className="flex-1">{children}</div>
+      <div id="main-content" className={`flex-1 ${pathname.startsWith("/surveys/") || pathname === "/appeals" ? "service-form-page" : ""}`}>{children}</div>
       <Footer />
     </div>
   );

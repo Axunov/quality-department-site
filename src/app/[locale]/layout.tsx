@@ -18,16 +18,16 @@ export function generateStaticParams() {
 
 const metadataByLocale = {
   ru: {
-    title: "Отдел контроля качества образования",
-    description: "Официальный сайт отдела контроля качества образования СБУМИПТК",
+    title: "Отдел обеспечения качества образования",
+    description: "Официальный сайт отдела обеспечения качества образования СБУМИПТК",
   },
   uz: {
-    title: "Ta’lim sifatini nazorat qilish bo‘limi",
-    description: "Ta’lim sifatini nazorat qilish bo‘limining rasmiy sayti",
+    title: "Ta’lim sifatini ta’minlash bo‘limi",
+    description: "Ta’lim sifatini ta’minlash bo‘limining rasmiy sayti",
   },
   en: {
-    title: "Education Quality Control Department",
-    description: "Official website of the Education Quality Control Department",
+    title: "Education Quality Assurance Department",
+    description: "Official website of the Education Quality Assurance Department",
   },
 };
 

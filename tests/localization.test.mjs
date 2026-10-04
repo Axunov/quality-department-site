@@ -18,12 +18,14 @@ function load(file) {
   const source = ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2020}}).outputText;
   const localRequire = id => {
     if (id === 'next-intl') return {useLocale:()=>language};
+    if (id === '@/i18n/routing') return {Link:({children,href,...props})=>React.createElement('a',{href,...props},children)};
     if (id === 'next/script') return {__esModule:true,default:()=>null};
     if (id === '@/lib/supabase/client') return {createClient:()=>({})};
     if (id.startsWith('@/')) {
       const base = path.join(root,id.slice(2));
       return load(fs.existsSync(base+'.ts')?base+'.ts':base+'.tsx');
     }
+    if (id.startsWith('.')) { const base=path.resolve(path.dirname(file),id); return load(fs.existsSync(base+'.ts')?base+'.ts':base+'.tsx'); }
     return require(id);
   };
   vm.runInThisContext('(function(require,module,exports){'+source+'\n})',{filename:file})(localRequire,compiled,compiled.exports);
@@ -103,4 +105,25 @@ test('site components contain no untranslated static labels',()=>{
       ts.forEachChild(node,visit);
     }visit(source);
   }}visitDirectory(root);
+});
+
+
+test('service cards, accreditation tabs and indicator dialogs stay accessible and localized',()=>{
+  for(const locale of ['ru','uz','en']) {
+    language=locale;
+    const {ServiceHub}=load('src/components/home/ServiceHub.tsx');
+    const services=renderToStaticMarkup(React.createElement(ServiceHub,{locale}));
+    for(const kind of ['teacher','employers','graduates','doctoral']) assert.ok(services.includes(`/surveys/${kind}`));
+    assert.ok(services.includes('/appeals')); assert.ok(services.includes('/accreditation?type=special'));
+    for(const type of ['complex','special']) {
+      const tabs=render('src/components/accreditation/AccreditationOverview.tsx',{locale,initialType:type});
+      assert.match(tabs,new RegExp(`id="accreditation-tab-${type}"[^>]+aria-selected="true"`));
+      assert.ok(tabs.includes(`aria-labelledby="accreditation-tab-${type}"`));
+      if(locale!=='ru') assertLocalized(tabs);
+    }
+    const dialog=render('src/components/accreditation/IndicatorDrawer.tsx',{locale,code:'1.1',title:'Example indicator',status:'Review',statusKind:'review',progress:25,dueDate:null,children:React.createElement('p',null,'Evidence details')});
+    assert.match(dialog,/aria-haspopup="dialog"/);assert.match(dialog,/<dialog[^>]+aria-labelledby=/);
+    assert.doesNotMatch(dialog,/<dialog[^>]+\sopen(?:=|>)/);assert.match(dialog,/data-status="review"/);
+    if(locale!=='ru'){assertLocalized(services);assertLocalized(dialog);}
+  }
 });

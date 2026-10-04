@@ -14,8 +14,8 @@ export function Footer() {
   const t = useTranslations("Footer");
   const header = useTranslations("Header");
   return (
-    <footer className="mt-16 bg-[#083b73] text-white">
-      <div className="container-main py-14">
+    <footer className="mt-0 bg-[#102a43] text-white">
+      <div className="container-main py-10">
         <div className="grid gap-10 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-4">
@@ -24,11 +24,11 @@ export function Footer() {
                 alt={tr("Логотип института")}
                 width={72}
                 height={72}
-                className="h-[72px] w-[72px] rounded-full object-cover bg-white"
+                className="h-12 w-12 rounded-full object-cover bg-white"
               />
 
               <div>
-                <h2 className="text-2xl font-extrabold">
+                <h2 className="text-xl font-bold">
                   {t("title")}
                 </h2>
                 <p className="mt-2 text-sm text-blue-100">

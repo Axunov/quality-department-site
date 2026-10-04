@@ -2,7 +2,8 @@
 import { useLocale } from "next-intl";
 import { surveyText } from "@/lib/surveyI18n";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import FormSteps from "@/components/common/FormSteps";
+import { useEffect, useState, type ReactNode } from "react";
 import Script from "next/script";
 import { Building2, CheckCircle2, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
 import {
@@ -80,7 +81,6 @@ export default function EmployerSurveyForm({ locale }: { locale: string }) {
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const progress = useMemo(() => ((step + 1) / t.steps.length) * 100, [step, t.steps.length]);
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((current) => ({ ...current, [key]: value }));
   useEffect(() => {
     window.onEmployerTurnstileSuccess = (token) => setForm(current => ({ ...current, captchaToken: token }));
@@ -118,11 +118,7 @@ export default function EmployerSurveyForm({ locale }: { locale: string }) {
       <div className="flex items-start gap-4"><div className="hidden rounded-2xl bg-white/15 p-4 sm:block"><Building2 className="h-9 w-9" /></div><div><p className="text-sm font-black uppercase tracking-[.18em] text-cyan-100">{t.eyebrow}</p><h1 className="mt-3 max-w-4xl text-3xl font-black sm:text-5xl">{t.title}</h1><p className="mt-4 max-w-4xl leading-7 text-blue-50">{t.intro}</p><div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold"><span className="rounded-full bg-white/15 px-4 py-2">{t.time}</span><span className="flex items-center gap-2 rounded-full bg-white/15 px-4 py-2"><ShieldCheck size={17} />{t.privacy}</span></div></div></div>
     </header>
 
-    <section className="mt-7 rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
-      <div className="mb-3 flex items-center justify-between text-sm font-bold text-slate-600"><span>{t.steps[step]}</span><span>{step + 1}/{t.steps.length}</span></div>
-      <div className="h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-blue-700 to-cyan-600 transition-all" style={{ width: `${progress}%` }} /></div>
-      <div className="mt-4 hidden grid-cols-5 gap-2 text-center text-xs font-bold sm:grid">{t.steps.map((label, index) => <span key={label} className={index <= step ? "text-blue-700" : "text-slate-400"}>{label}</span>)}</div>
-    </section>
+    <FormSteps locale={lang} steps={t.steps} current={step}/>
 
     <section className="mt-7 rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
       {step === 0 && <div className="grid gap-6"><label><FieldLabel required>{tr("1. Наименование организации")}</FieldLabel><input className={inputClass} value={form.organizationName} onChange={(e) => set("organizationName", e.target.value)} maxLength={250} /></label><label><FieldLabel required>{tr("2. Сфера деятельности организации")}</FieldLabel><input className={inputClass} value={form.activityArea} onChange={(e) => set("activityArea", e.target.value)} maxLength={250} /></label><label><FieldLabel required>{tr("3. Ваша должность")}</FieldLabel><input className={inputClass} value={form.respondentPosition} onChange={(e) => set("respondentPosition", e.target.value)} maxLength={200} /></label><label><FieldLabel>{tr("4. Количество выпускников института в организации")}</FieldLabel><select className={inputClass} value={form.graduatesCount} onChange={(e) => set("graduatesCount", e.target.value)}><option value="">{tr("Выберите вариант")}</option><option>1–5</option><option>6–10</option><option value="Более 10">{tr("Более 10")}</option><option value="В настоящее время не работают">{tr("В настоящее время не работают")}</option></select></label></div>}
@@ -135,7 +131,7 @@ export default function EmployerSurveyForm({ locale }: { locale: string }) {
 
       {step === 4 && <div className="grid gap-6"><div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-sm leading-6 text-blue-950"><strong>{tr("20. Контактные данные заполняются добровольно.")}</strong>{tr("Они могут использоваться только для связи по вопросам сотрудничества.")}</div><label><FieldLabel>{tr("Ф.И.О. представителя")}</FieldLabel><input className={inputClass} value={form.contactName} onChange={(e) => set("contactName", e.target.value)} maxLength={200} /></label><div className="grid gap-6 sm:grid-cols-2"><label><FieldLabel>{tr("Телефон")}</FieldLabel><input className={inputClass} value={form.contactPhone} onChange={(e) => set("contactPhone", e.target.value)} maxLength={50} /></label><label><FieldLabel>E-mail</FieldLabel><input className={inputClass} type="email" value={form.contactEmail} onChange={(e) => set("contactEmail", e.target.value)} maxLength={200} /></label></div><label className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-5 ${form.consent ? "border-blue-600 bg-blue-50" : "border-slate-200"}`}><input type="checkbox" className="mt-1 h-5 w-5" checked={form.consent} onChange={(e) => set("consent", e.target.checked)} /><span className="font-semibold leading-6 text-slate-800">{tr("Подтверждаю достоверность информации и согласен(на) на обработку предоставленных данных для анализа качества подготовки специалистов и организации взаимодействия с работодателями.")}<span className="text-red-600">*</span></span></label><div className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive"/><div className="cf-turnstile" data-sitekey={turnstileSiteKey} data-language={lang} data-action="employer_survey" data-size="flexible" data-callback="onEmployerTurnstileSuccess" data-expired-callback="onEmployerTurnstileExpired"/></div></div>}
 
-      {message && <p className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 font-semibold text-red-800">{message}</p>}
+      {message && <p role="alert" className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 font-semibold text-red-800">{message}</p>}
       <div className="mt-8 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-between"><button type="button" disabled={step === 0 || busy} onClick={() => { setMessage(""); setStep((v) => Math.max(0, v - 1)); }} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 px-6 py-3.5 font-black text-slate-700 disabled:opacity-40"><ChevronLeft size={19} />{t.back}</button>{step < t.steps.length - 1 ? <button type="button" onClick={next} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-700 px-7 py-3.5 font-black text-white hover:bg-blue-800">{t.next}<ChevronRight size={19} /></button> : <button type="button" disabled={busy} onClick={submit} className="rounded-2xl bg-emerald-700 px-8 py-3.5 font-black text-white hover:bg-emerald-800 disabled:opacity-60">{busy ? t.sending : t.submit}</button>}</div>
     </section>
   </main>;
