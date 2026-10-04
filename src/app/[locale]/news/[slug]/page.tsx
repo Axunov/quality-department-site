@@ -11,7 +11,7 @@ import sanitizeHtml from "sanitize-html";
 const labels = {
   ru: {
     news: "Новости",
-    author: "Отдел контроля качества образования",
+    author: "Отдел обеспечения качества образования",
     notice:
       "Материал опубликован отделом контроля качества образования для информирования студентов, преподавателей, сотрудников института и заинтересованных сторон.",
     back: "← Назад к новостям",
@@ -19,7 +19,7 @@ const labels = {
   },
   uz: {
     news: "Yangiliklar",
-    author: "Ta’lim sifatini nazorat qilish bo‘limi",
+    author: "Ta’lim sifatini ta’minlash bo‘limi",
     notice:
       "Material talabalar, professor-o‘qituvchilar, institut xodimlari va manfaatdor tomonlarni xabardor qilish maqsadida e’lon qilindi.",
     back: "← Yangiliklarga qaytish",
@@ -27,7 +27,7 @@ const labels = {
   },
   en: {
     news: "News",
-    author: "Education Quality Control Department",
+    author: "Education Quality Assurance Department",
     notice:
       "This material was published to inform students, faculty, institute staff and other stakeholders.",
     back: "← Back to news",

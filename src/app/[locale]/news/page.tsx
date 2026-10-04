@@ -11,7 +11,7 @@ const labels = {
     label: "Новости",
     title: "Новости и объявления",
     description:
-      "Актуальная информация о деятельности отдела контроля качества образования, мероприятиях, мониторинге и аккредитационных процессах.",
+      "Актуальная информация о деятельности отдела обеспечения качества образования, мероприятиях, мониторинге и аккредитационных процессах.",
 
     heroCardLabel: "Информационный центр",
     heroCardTitle: "Главные направления публикаций",
@@ -26,7 +26,7 @@ const labels = {
     sectionLabel: "Последние публикации",
     sectionTitle: "Актуальные новости",
     sectionDescription:
-      "Следите за событиями, объявлениями и результатами работы отдела контроля качества образования.",
+      "Следите за событиями, объявлениями и результатами работы отдела обеспечения качества образования.",
 
     newsCount: "Количество публикаций",
     readMore: "Читать подробнее",
@@ -38,7 +38,7 @@ const labels = {
     label: "Yangiliklar",
     title: "Yangiliklar va e’lonlar",
     description:
-      "Ta’lim sifatini nazorat qilish bo‘limi faoliyati, tadbirlar, monitoring va akkreditatsiya jarayonlari haqidagi dolzarb ma’lumotlar.",
+      "Ta’lim sifatini ta’minlash bo‘limi faoliyati, tadbirlar, monitoring va akkreditatsiya jarayonlari haqidagi dolzarb ma’lumotlar.",
 
     heroCardLabel: "Axborot markazi",
     heroCardTitle: "Nashrlarning asosiy yo‘nalishlari",
@@ -53,7 +53,7 @@ const labels = {
     sectionLabel: "So‘nggi nashrlar",
     sectionTitle: "Dolzarb yangiliklar",
     sectionDescription:
-      "Ta’lim sifatini nazorat qilish bo‘limining tadbirlari, e’lonlari va faoliyat natijalarini kuzatib boring.",
+      "Ta’lim sifatini ta’minlash bo‘limining tadbirlari, e’lonlari va faoliyat natijalarini kuzatib boring.",
 
     newsCount: "Nashrlar soni",
     readMore: "Batafsil o‘qish",
@@ -65,7 +65,7 @@ const labels = {
     label: "News",
     title: "News and announcements",
     description:
-      "Current information about the activities of the Education Quality Control Department, events, monitoring and accreditation processes.",
+      "Current information about the activities of the Education Quality Assurance Department, events, monitoring and accreditation processes.",
 
     heroCardLabel: "Information centre",
     heroCardTitle: "Key publication areas",
@@ -80,7 +80,7 @@ const labels = {
     sectionLabel: "Latest publications",
     sectionTitle: "Current news",
     sectionDescription:
-      "Follow events, announcements and the results of the Education Quality Control Department’s activities.",
+      "Follow events, announcements and the results of the Education Quality Assurance Department’s activities.",
 
     newsCount: "Number of publications",
     readMore: "Read more",

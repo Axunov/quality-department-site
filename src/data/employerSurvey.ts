@@ -4,7 +4,7 @@ export const employerSurveyText = {
   ru: {
     eyebrow: "Обратная связь работодателей",
     title: "Оценка качества подготовки выпускников",
-    intro: "Отдел контроля качества образования приглашает работодателей оценить подготовку выпускников, практико-ориентированность образовательных программ и перспективы сотрудничества с институтом. Ответы анализируются в обобщённом виде.",
+    intro: "Отдел обеспечения качества образования приглашает работодателей оценить подготовку выпускников, практико-ориентированность образовательных программ и перспективы сотрудничества с институтом. Ответы анализируются в обобщённом виде.",
     time: "Время заполнения: 7–10 минут",
     privacy: "Контактные данные указываются добровольно и не публикуются.",
     steps: ["Организация", "Взаимодействие", "Оценка подготовки", "Предложения", "Контакты"],
@@ -16,7 +16,7 @@ export const employerSurveyText = {
   uz: {
     eyebrow: "Ish beruvchilar fikri",
     title: "Bitiruvchilar tayyorgarligi sifatini baholash",
-    intro: "Ta’lim sifatini nazorat qilish bo‘limi ish beruvchilarni bitiruvchilar tayyorgarligi, ta’lim dasturlarining amaliy yo‘naltirilganligi va institut bilan hamkorlik istiqbollarini baholashga taklif etadi. Javoblar umumlashtirilgan holda tahlil qilinadi.",
+    intro: "Ta’lim sifatini ta’minlash bo‘limi ish beruvchilarni bitiruvchilar tayyorgarligi, ta’lim dasturlarining amaliy yo‘naltirilganligi va institut bilan hamkorlik istiqbollarini baholashga taklif etadi. Javoblar umumlashtirilgan holda tahlil qilinadi.",
     time: "To‘ldirish vaqti: 7–10 daqiqa",
     privacy: "Aloqa ma’lumotlarini ko‘rsatish ixtiyoriy va ular e’lon qilinmaydi.",
     steps: ["Tashkilot", "Hamkorlik", "Tayyorgarlik bahosi", "Takliflar", "Aloqa"],
@@ -28,7 +28,7 @@ export const employerSurveyText = {
   en: {
     eyebrow: "Employer feedback",
     title: "Graduate Preparation Quality Survey",
-    intro: "The Education Quality Control Department invites employers to assess graduate preparation, the practical relevance of educational programmes and opportunities for cooperation with the institute. Responses are analysed in aggregate.",
+    intro: "The Education Quality Assurance Department invites employers to assess graduate preparation, the practical relevance of educational programmes and opportunities for cooperation with the institute. Responses are analysed in aggregate.",
     time: "Completion time: 7–10 minutes",
     privacy: "Contact details are optional and are not published.",
     steps: ["Organisation", "Cooperation", "Preparation", "Suggestions", "Contacts"],

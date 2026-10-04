@@ -7,7 +7,7 @@ import { getLocalizedText } from "@/utils/getLocalizedText";
 const labels = {
   ru: {
     title: "Панель управления",
-    subtitle: "Управление сайтом отдела контроля качества образования",
+    subtitle: "Управление сайтом отдела обеспечения качества образования",
     news: "Новости",
     documents: "Документы",
     employees: "Сотрудники",
@@ -26,7 +26,7 @@ const labels = {
   },
   uz: {
     title: "Boshqaruv paneli",
-    subtitle: "Ta’lim sifatini nazorat qilish bo‘limi saytini boshqarish",
+    subtitle: "Ta’lim sifatini ta’minlash bo‘limi saytini boshqarish",
     news: "Yangiliklar",
     documents: "Hujjatlar",
     employees: "Xodimlar",
@@ -45,7 +45,7 @@ const labels = {
   },
   en: {
     title: "Dashboard",
-    subtitle: "Education Quality Control Department website management",
+    subtitle: "Education Quality Assurance Department website management",
     news: "News",
     documents: "Documents",
     employees: "Employees",

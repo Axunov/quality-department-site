@@ -4,7 +4,7 @@ const labels = {
   ru: {
     title: "Инструменты администратора",
     subtitle:
-      "Внутренние сервисы отдела контроля качества образования",
+      "Внутренние сервисы отдела обеспечения качества образования",
     dashboard: "Админ-панель",
     dashboardDesc: "Управление новостями, документами и сотрудниками",
     appeals: "Обращения",
@@ -18,7 +18,7 @@ const labels = {
   uz: {
     title: "Administrator vositalari",
     subtitle:
-      "Ta’lim sifatini nazorat qilish bo‘limining ichki xizmatlari",
+      "Ta’lim sifatini ta’minlash bo‘limining ichki xizmatlari",
     dashboard: "Admin panel",
     dashboardDesc:
       "Yangiliklar, hujjatlar va xodimlarni boshqarish",
@@ -36,7 +36,7 @@ const labels = {
   en: {
     title: "Administrator tools",
     subtitle:
-      "Internal services of the Education Quality Control Department",
+      "Internal services of the Education Quality Assurance Department",
     dashboard: "Admin panel",
     dashboardDesc: "Manage news, documents and employees",
     appeals: "Appeals",

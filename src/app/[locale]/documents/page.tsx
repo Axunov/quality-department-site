@@ -26,7 +26,7 @@ const labels = {
     sectionLabel: "Электронный архив",
     sectionTitle: "Актуальные документы",
     sectionDescription:
-      "Ознакомьтесь с действующими положениями, нормативными материалами и документами отдела контроля качества образования.",
+      "Ознакомьтесь с действующими положениями, нормативными материалами и документами отдела обеспечения качества образования.",
 
     defaultCategory: "Документы",
     file: "Файл",
@@ -57,7 +57,7 @@ const labels = {
     sectionLabel: "Elektron arxiv",
     sectionTitle: "Dolzarb hujjatlar",
     sectionDescription:
-      "Ta’lim sifatini nazorat qilish bo‘limining amaldagi nizomlari, me’yoriy materiallari va hujjatlari bilan tanishing.",
+      "Ta’lim sifatini ta’minlash bo‘limining amaldagi nizomlari, me’yoriy materiallari va hujjatlari bilan tanishing.",
 
     defaultCategory: "Hujjatlar",
     file: "Fayl",
@@ -88,7 +88,7 @@ const labels = {
     sectionLabel: "Electronic archive",
     sectionTitle: "Current documents",
     sectionDescription:
-      "Review the current policies, regulatory materials and documents of the Education Quality Control Department.",
+      "Review the current policies, regulatory materials and documents of the Education Quality Assurance Department.",
 
     defaultCategory: "Documents",
     file: "File",

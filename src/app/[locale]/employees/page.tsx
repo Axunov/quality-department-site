@@ -6,7 +6,7 @@ const labels = {
     label: "Сотрудники",
     title: "Сотрудники отдела",
     description:
-      "Команда отдела контроля качества образования, обеспечивающая мониторинг, аналитику, сопровождение аккредитации и развитие внутренней системы качества.",
+      "Команда отдела обеспечения качества образования, обеспечивающая мониторинг, аналитику, сопровождение аккредитации и развитие внутренней системы качества.",
 
     heroCardLabel: "Команда отдела",
     heroCardTitle: "Профессиональная работа в сфере качества",
@@ -21,7 +21,7 @@ const labels = {
     sectionLabel: "Наша команда",
     sectionTitle: "Специалисты отдела",
     sectionDescription:
-      "Контактная информация, должности и график приёма сотрудников отдела контроля качества образования.",
+      "Контактная информация, должности и график приёма сотрудников отдела обеспечения качества образования.",
 
     employeesCount: "Количество сотрудников",
     contactInformation: "Контактная информация",
@@ -53,7 +53,7 @@ const labels = {
     sectionLabel: "Bizning jamoa",
     sectionTitle: "Bo‘lim mutaxassislari",
     sectionDescription:
-      "Ta’lim sifatini nazorat qilish bo‘limi xodimlarining lavozimlari, aloqa ma’lumotlari va qabul jadvali.",
+      "Ta’lim sifatini ta’minlash bo‘limi xodimlarining lavozimlari, aloqa ma’lumotlari va qabul jadvali.",
 
     employeesCount: "Xodimlar soni",
     contactInformation: "Aloqa ma’lumotlari",
@@ -85,7 +85,7 @@ const labels = {
     sectionLabel: "Our team",
     sectionTitle: "Department specialists",
     sectionDescription:
-      "Positions, contact details and reception schedules of the Education Quality Control Department employees.",
+      "Positions, contact details and reception schedules of the Education Quality Assurance Department employees.",
 
     employeesCount: "Number of employees",
     contactInformation: "Contact information",

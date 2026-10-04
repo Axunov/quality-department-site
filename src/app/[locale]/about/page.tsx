@@ -3,7 +3,7 @@ import { Link } from "@/i18n/routing";
 const labels = {
   ru: {
     badge: "О подразделении",
-    title: "Отдел контроля качества образования",
+    title: "Отдел обеспечения качества образования",
     description:
       "Структурное подразделение института, обеспечивающее функционирование внутренней системы качества, мониторинг образовательного процесса и сопровождение аккредитационных процедур.",
 
@@ -110,7 +110,7 @@ const labels = {
 
   uz: {
     badge: "Bo‘lim haqida",
-    title: "Ta’lim sifatini nazorat qilish bo‘limi",
+    title: "Ta’lim sifatini ta’minlash bo‘limi",
     description:
       "Institutning ichki sifat tizimi faoliyatini ta’minlovchi, ta’lim jarayonini monitoring qiluvchi va akkreditatsiya jarayonlarini muvofiqlashtiruvchi tarkibiy bo‘linma.",
 
@@ -217,7 +217,7 @@ const labels = {
 
   en: {
     badge: "About the department",
-    title: "Education Quality Control Department",
+    title: "Education Quality Assurance Department",
     description:
       "A structural unit responsible for the internal quality assurance system, monitoring of the educational process and coordination of accreditation procedures.",
 

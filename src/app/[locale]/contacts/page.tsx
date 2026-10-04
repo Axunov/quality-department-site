@@ -5,7 +5,7 @@ const labels = {
     label: "Контакты",
     title: "Контакты отдела",
     description:
-      "Адрес, телефон, электронная почта, график работы и контактная информация отдела контроля качества образования.",
+      "Адрес, телефон, электронная почта, график работы и контактная информация отдела обеспечения качества образования.",
 
     heroCardLabel: "Связь с отделом",
     heroCardTitle: "Мы открыты для обращений",
@@ -63,7 +63,7 @@ const labels = {
     label: "Aloqa",
     title: "Bo‘lim bilan bog‘lanish",
     description:
-      "Ta’lim sifatini nazorat qilish bo‘limining manzili, telefon raqami, elektron pochtasi, ish vaqti va aloqa ma’lumotlari.",
+      "Ta’lim sifatini ta’minlash bo‘limining manzili, telefon raqami, elektron pochtasi, ish vaqti va aloqa ma’lumotlari.",
 
     heroCardLabel: "Bo‘lim bilan aloqa",
     heroCardTitle: "Murojaatlar uchun ochiqmiz",
@@ -121,7 +121,7 @@ const labels = {
     label: "Contacts",
     title: "Department contacts",
     description:
-      "Address, telephone number, email, working hours and contact details of the Education Quality Control Department.",
+      "Address, telephone number, email, working hours and contact details of the Education Quality Assurance Department.",
 
     heroCardLabel: "Contact the department",
     heroCardTitle: "We are open to enquiries",

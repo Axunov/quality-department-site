@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Education Quality Control Department",
+    name: "Education Quality Assurance Department",
     short_name: "Quality Department",
-    description: "Official website of the Education Quality Control Department",
+    description: "Official website of the Education Quality Assurance Department",
     start_url: "/ru",
     display: "standalone",
     background_color: "#eef4fb",
