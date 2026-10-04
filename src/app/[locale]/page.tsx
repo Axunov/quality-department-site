@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import { ArrowDown, ArrowUpRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { getNews } from "@/services/news.service";
 import { getDocuments } from "@/services/documents.service";
@@ -19,12 +19,15 @@ export default async function HomePage({params}:{params:Promise<{locale:string}>
  const dateLocale=l==='uz'?'uz-UZ':l==='en'?'en-GB':'ru-RU';
  return <main className="public-main home-modern">
   <section className="home-hero">
-   <div className="container-main grid items-center gap-8 py-12 lg:grid-cols-[1.3fr_.7fr] lg:py-16">
-    <div><p className="hero-eyebrow">{t.name}</p><h1 className="mt-5 max-w-3xl text-4xl font-bold leading-[1.08] tracking-[-.045em] sm:text-6xl">{t.title}</h1><p className="mt-5 max-w-2xl text-lg leading-7 text-blue-100">{t.text}</p>
-     <div className="mt-7 flex flex-wrap gap-3"><Link href="/accreditation" className="hero-action-primary">{t.accreditation}<ArrowUpRight size={18}/></Link><Link href="/surveys/teacher" className="hero-action">{t.survey}</Link><Link href="/appeals" className="hero-action">{t.appeal}</Link></div>
-     <Link href="/about" className="mt-6 inline-flex items-center gap-2 text-sm text-blue-100 underline underline-offset-4">{t.about}<ArrowUpRight size={15}/></Link>
+   <Image src="/images/institute.webp" alt="" fill priority sizes="100vw" quality={85} className="hero-campus-photo"/>
+   <div className="hero-campus-shade" aria-hidden="true"/>
+   <div className="container-main hero-campus-content">
+    <div className="hero-copy"><p className="hero-eyebrow">{t.name}</p><h1 className="hero-title">{t.title}</h1><p className="hero-description">{t.text}</p>
+     <div className="hero-actions"><Link href="/surveys/teacher" className="hero-action-primary">{t.survey}<ArrowUpRight size={18}/></Link><Link href="/appeals" className="hero-action">{t.appeal}</Link><Link href="/accreditation" className="hero-action hero-action-quiet">{t.accreditation}<ArrowUpRight size={16}/></Link></div>
+     <p className="hero-privacy"><ShieldCheck size={18} aria-hidden="true"/><span>{t.privacy}</span></p>
+     <div className="hero-secondary"><a href="#services">{l==='uz'?'Barcha xizmatlar':l==='en'?'Explore services':'Все сервисы'}<ArrowDown size={15}/></a><Link href="/about">{t.about}<ArrowUpRight size={15}/></Link></div>
     </div>
-    <div className="hero-note"><ShieldCheck size={28} className="text-teal-300"/><p className="mt-5 text-2xl font-semibold leading-tight">{t.note}</p><p className="mt-4 border-t border-white/20 pt-4 text-sm leading-6 text-blue-100">{t.privacy}</p></div>
+    <p className="hero-campus-caption"><span>{l==='uz'?'Bizning institut':l==='en'?'Our institute':'Наш институт'}</span>{l==='uz'?'SBUMIPTK · Toshkent':l==='en'?'SBUMIPTK · Tashkent':'СБУМИПТК · Ташкент'}</p>
    </div>
   </section>
   <ServiceHub locale={l}/>

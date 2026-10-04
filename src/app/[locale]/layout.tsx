@@ -85,6 +85,8 @@ export default async function LocaleLayout({
   return (
     <html data-scroll-behavior="smooth" lang={locale} suppressHydrationWarning>
       <head>
+        <link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous"/>
+        <link rel="preload" href="/fonts/manrope-variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous"/>
         <script
           id="theme-initializer"
           suppressHydrationWarning
