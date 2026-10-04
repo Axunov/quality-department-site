@@ -1,8 +1,9 @@
 "use client";
 
+import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function AccessibilityToggle({ label }: { label: string }) {
+export default function AccessibilityToggle({ label, compact = false }: { label: string; compact?: boolean }) {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -23,9 +24,11 @@ export default function AccessibilityToggle({ label }: { label: string }) {
       type="button"
       onClick={toggle}
       aria-pressed={enabled}
-      className="rounded px-2 py-1 transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      aria-label={label}
+      title={label}
+      className={compact ? "header-control" : "rounded px-2 py-1 text-sm transition hover:bg-slate-100"}
     >
-      {label}
+      {compact ? <Eye aria-hidden="true" size={19}/> : label}
     </button>
   );
 }

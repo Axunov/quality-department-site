@@ -75,7 +75,7 @@ export function Header() {
 
           <div className="hidden shrink-0 items-center gap-2 lg:flex">
             <Link href="/search" className="header-control" aria-label={t("search")}><Search size={19}/></Link>
-            <ThemeToggle/><LanguageSwitcher/>
+            <ThemeToggle/><AccessibilityToggle compact label={t("accessibility")}/><LanguageSwitcher/>
             <Link href="/accreditation/login" className="rounded-xl bg-[#123b60] px-4 py-2.5 text-sm font-semibold text-white">{currentLocale === 'ru' ? 'Войти' : currentLocale === 'uz' ? 'Kirish' : 'Sign in'}</Link>
           </div>
 
@@ -124,7 +124,7 @@ export function Header() {
         </nav>
 
         {menuOpen && (
-          <div className="border-t border-slate-100 py-4 lg:hidden">
+          <div className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-slate-100 py-4 lg:hidden">
             <div className="mb-4 flex items-center justify-between gap-3">
               <LanguageSwitcher />
               <Link href="/search" onClick={() => setMenuOpen(false)} className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700" aria-label={t("search")}>
