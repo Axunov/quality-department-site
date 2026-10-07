@@ -6,6 +6,8 @@ import { getDocuments } from "@/services/documents.service";
 import { getLocalizedText } from "@/utils/getLocalizedText";
 import { surveyText } from "@/lib/surveyI18n";
 import { ServiceHub } from "@/components/home/ServiceHub";
+import PresidentQuote from "@/components/home/PresidentQuote";
+import OfficialPortals from "@/components/home/OfficialPortals";
 
 export const revalidate = 300;
 const copy = {
@@ -35,5 +37,7 @@ export default async function HomePage({params}:{params:Promise<{locale:string}>
    <div className="mt-6 grid gap-4 md:grid-cols-3">{news.map(item=>{const title=getLocalizedText(l,item.title_ru,item.title_uz,item.title_en);return <Link key={item.id} href={`/news/${item.slug}`} className="news-compact group">{item.image_url&&<div className="relative h-40 overflow-hidden"><Image src={item.image_url} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-300 group-hover:scale-105"/></div>}<div className="p-5"><p className="text-xs text-slate-500">{item.created_at?new Date(item.created_at).toLocaleDateString(dateLocale):''}</p><h3 className="mt-3 line-clamp-3 text-lg font-semibold leading-6">{title}</h3><span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">{t.open}<ArrowUpRight size={16}/></span></div></Link>})}{!news.length&&<p className="col-span-full rounded-2xl border border-slate-200 bg-white p-8 text-slate-500">{t.emptyNews}</p>}</div>
   </section>
   <section className="container-main pb-14" aria-labelledby="home-documents"><div className="section-heading"><div><p className="section-eyebrow">{t.resources}</p><h2 id="home-documents" className="mt-2 text-3xl font-bold tracking-tight">{t.documents}</h2></div><Link href="/documents" className="text-sm font-semibold text-blue-700">{t.allDocuments} →</Link></div><div className="mt-6 grid gap-3">{documents.map(d=><a key={d.id} href={d.file_url||"/documents"} target="_blank" rel="noreferrer" className="document-row"><span className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-bold text-blue-700">{surveyText(l,d.category||t.documents)}</span><span className="min-w-0 flex-1 font-semibold">{getLocalizedText(l,d.title_ru||"",d.title_uz||"",d.title_en||"")}</span><ArrowUpRight size={20} className="shrink-0 text-slate-500"/></a>)}{!documents.length&&<p className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500">{t.emptyDocuments}</p>}</div></section>
+  <PresidentQuote locale={l}/>
+  <OfficialPortals locale={l}/>
  </main>;
 }

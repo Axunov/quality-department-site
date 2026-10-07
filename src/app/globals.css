@@ -637,3 +637,69 @@ button:not(:disabled), summary { cursor: pointer; }
 .service-form-page label:has(input:focus-visible) { outline: 3px solid #0ea5e9; outline-offset: 3px; }
 .admin-sidebar nav button[class*="bg-red"] { color: white; }
 .dark .site-header details > div { background: #10243a; border-color: #29405a; }
+
+.president-section { padding-block: 4px 48px; scroll-margin-top: 140px; }
+.president-card { display: grid; grid-template-columns: 1.25fr 1fr; overflow: hidden; border: 1px solid #dce6eb; border-radius: 24px; background: #fff; }
+.president-message { padding: 40px; background: radial-gradient(ellipse at top left,#edf8f5,transparent 65%); }
+.president-quote-mark { margin-top: 22px; color: #16857e; }
+.president-message blockquote { margin-block: 18px 30px; font-family: "Manrope","Inter",sans-serif; font-size: clamp(1.5rem,2.5vw,2.125rem); font-weight: 700; line-height: 1.45; letter-spacing: -.025em; color: #123451; }
+.president-author { display: flex; align-items: center; gap: 14px; }
+.president-author img { object-fit: contain; width: 52px; height: 56px; }
+.president-name { font-weight: 700; color: #123451; }
+.president-role { margin-top: 3px; font-size: .8125rem; color: #52647b; }
+.president-source { display: inline-flex; align-items: center; gap: 12px; margin-top: 26px; font-size: .6875rem; line-height: 1.7; color: #52647b; }
+.president-source:hover { color: #096c69; text-decoration: underline; text-underline-offset: 3px; }
+.president-source time { display: block; }
+.president-source svg { flex-shrink: 0; }
+.president-portrait { position: relative; min-height: 440px; border-left: 5px solid #199e91; background: #e8eceb; }
+.president-photo { object-fit: cover; object-position: 52% center; }
+.official-portals { padding-block: 40px 56px; background: #edf2f6; border-top: 1px solid #e0e7ee; }
+.portal-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 26px; }
+.portal-heading h2 { margin-top: 8px; font-size: clamp(1.5rem,2.5vw,1.875rem); font-weight: 700; letter-spacing: -.025em; }
+.portal-description { margin-top: 10px; max-width: 650px; color: #52647b; font-size: .875rem; }
+.portal-controls { display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
+.portal-controls button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 10px 12px; border: 1px solid #cbd7e2; border-radius: 10px; background: #fff; color: #16436c; font-size: .75rem; font-weight: 600; cursor: pointer; }
+.portal-controls button:hover { border-color: #16857e; background: #f0faf7; }
+.portal-viewport { overflow: hidden; padding: 5px; margin: -5px; }
+.portal-track { display: flex; width: max-content; animation: portal-marquee 52s linear infinite; }
+.portal-group { display: flex; gap: 16px; padding-right: 16px; flex: 0 0 auto; }
+.portal-card { display: flex; flex-direction: column; align-items: center; width: 250px; min-height: 242px; padding: 24px 18px 18px; border: 1px solid #dbe4ec; border-radius: 16px; background: #fff; text-align: center; transition: border-color .18s, box-shadow .18s; }
+.portal-card:hover { border-color: #16857e; box-shadow: 0 6px 20px rgb(15 60 70 / .08); }
+.portal-logo { display: flex; align-items: center; justify-content: center; height: 72px; width: 150px; margin-bottom: 16px; border-radius: 8px; background: #fff; }
+.portal-logo-image { object-fit: contain; width: 132px; height: 72px; }
+.portal-card h3 { font-family: "Inter",sans-serif; font-size: .8125rem; font-weight: 600; line-height: 1.6; color: #123451; }
+.portal-domain { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 18px; font-size: .75rem; color: #08766d; }
+.portal-viewport:hover .portal-track, .portal-viewport:focus-within .portal-track, .portal-viewport[data-paused="true"] .portal-track { animation-play-state: paused; }
+.portal-viewport.is-expanded .portal-track { width: 100%; animation: none; }
+.portal-viewport.is-expanded .portal-group { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); width: 100%; padding-right: 0; }
+.portal-viewport.is-expanded .portal-card { width: 100%; }
+@keyframes portal-marquee { to { transform: translateX(-50%); } }
+.dark .president-card { background: #10243a; border-color: #29405a; }
+.dark .president-message { background: radial-gradient(ellipse at top left,#123b41,transparent 70%); }
+.dark .president-message blockquote, .dark .president-name, .dark .portal-card h3 { color: #e4edf7; }
+.dark .president-role, .dark .president-source, .dark .portal-description { color: #b4c7dc; }
+.dark .official-portals { background: #091726; border-color: #29405a; }
+.dark .portal-card, .dark .portal-controls button { background: #10243a; color: #d8eef4; border-color: #29405a; }
+.dark .portal-domain { color: #8fe3ce; }
+.accessibility-mode .portal-track { width: 100%; animation: none; }
+.accessibility-mode .portal-group { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); width: 100%; padding: 0; }
+.accessibility-mode .portal-card { width: 100%; }
+.accessibility-mode .portal-duplicates, .accessibility-mode .portal-motion-toggle { display: none; }
+@media (max-width: 1023px) { .portal-heading { align-items: start; flex-direction: column; } .president-message { padding: 28px; } }
+@media (max-width: 767px) {
+ .president-section { padding-bottom: 32px; scroll-margin-top: 100px; }
+ .president-card { grid-template-columns: 1fr; }
+ .president-message { padding: 26px 22px; }
+ .president-portrait { min-height: 320px; aspect-ratio: 4/3; border-left: 0; border-top: 4px solid #199e91; }
+ .president-photo { object-position: center 35%; }
+ .president-message blockquote { font-size: 1.5rem; }
+ .official-portals { padding-block: 32px 40px; }
+ .portal-card { width: 230px; }
+ .portal-viewport.is-expanded .portal-group { grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+ .portal-track { width: 100%; animation: none; }
+ .portal-group { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); width: 100%; padding: 0; }
+ .portal-card { width: 100%; }
+ .portal-duplicates, .portal-motion-toggle { display: none; }
+}
