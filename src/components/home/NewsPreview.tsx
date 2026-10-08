@@ -1,3 +1,4 @@
+import { NewsViews } from "@/components/news/NewsViews";
 import { getLocale } from "next-intl/server";
 import { surveyText } from "@/lib/surveyI18n";
 import { Link } from "@/i18n/routing";
@@ -61,6 +62,7 @@ export async function NewsPreview({ locale }: { locale: string }) {
                   {new Date(item.created_at).toLocaleDateString(locale)}
                 </p>
 
+                <NewsViews id={item.id} count={item.view_count} locale={locale} />
                 <Link
                   href={`/news/${item.slug}`}
                   className="mt-5 inline-block font-semibold text-blue-700"

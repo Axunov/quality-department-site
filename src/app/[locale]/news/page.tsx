@@ -1,3 +1,4 @@
+import { NewsViews } from "@/components/news/NewsViews";
 import { surveyText } from "@/lib/surveyI18n";
 import { Link } from "@/i18n/routing";
 import { getNews } from "@/services/news.service";
@@ -320,7 +321,7 @@ export default async function NewsPage({
 
                 {/* Содержание */}
                 <div className="flex flex-1 flex-col p-7">
-                  <div className="flex items-center gap-2 text-sm text-slate-500">
+                  <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -337,6 +338,7 @@ export default async function NewsPage({
                     <span>
                       {new Date(item.created_at).toLocaleDateString(dateLocale)}
                     </span>
+                    <span className="ml-auto"><NewsViews id={item.id} count={item.view_count} locale={locale} /></span>
                   </div>
 
                   <h2 className="mt-5 line-clamp-2 text-2xl font-black leading-tight text-slate-950">

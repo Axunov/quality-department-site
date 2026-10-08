@@ -1,3 +1,4 @@
+import { NewsViews } from "@/components/news/NewsViews";
 import { surveyText } from "@/lib/surveyI18n";
 import { PageHeader } from "@/components/common/PageHeader";
 import { NewsGallery } from "@/components/news/NewsGallery";
@@ -136,6 +137,7 @@ export default async function NewsDetailPage({
 
       <section className="container-main py-16">
         <article className="rounded-[30px] bg-white p-8 shadow-xl shadow-slate-200/70">
+          <div className="mb-6"><NewsViews id={item.id} count={item.view_count} locale={locale} track /></div>
           {images.length > 0 ? (
             <NewsGallery title={title} images={images} />
           ) : (

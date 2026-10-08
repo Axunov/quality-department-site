@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabase";
 
 export type NewsItem = {
   id: string;
+  view_count?: number;
+  news_view_counts?: { count: number } | null;
   slug: string;
 
   title_ru: string;
@@ -27,7 +29,7 @@ export type NewsItem = {
 export async function getNews(limit?: number) {
   let query = supabase
     .from("news")
-    .select("*")
+    .select("*, news_view_counts(count)")
     .eq("published", true)
     .order("created_at", { ascending: false });
 
@@ -40,13 +42,13 @@ export async function getNews(limit?: number) {
     return [];
   }
 
-  return data as NewsItem[];
+  return (data as NewsItem[]).map(item => ({ ...item, view_count: item.news_view_counts?.count ?? 0 }));
 }
 
 export async function getNewsBySlug(slug: string) {
   const { data, error } = await supabase
     .from("news")
-    .select("*")
+    .select("*, news_view_counts(count)")
     .eq("slug", slug)
     .eq("published", true)
     .single();
@@ -56,5 +58,6 @@ export async function getNewsBySlug(slug: string) {
     return null;
   }
 
-  return data as NewsItem;
+  const item = data as NewsItem;
+  return { ...item, view_count: item.news_view_counts?.count ?? 0 };
 }
