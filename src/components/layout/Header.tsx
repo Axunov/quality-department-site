@@ -1,4 +1,5 @@
 "use client";
+import { learningLocale, learningQualityCopy } from "@/data/learningQualityCopy";
 import { surveyText } from "@/lib/surveyI18n";
 
 
@@ -37,6 +38,7 @@ export function Header() {
     { href: "/surveys/employers", label: portal.employerSurvey },
     { href: "/surveys/graduates", label: portal.graduateSurvey },
     { href: "/surveys/doctoral", label: portal.doctoralSurvey },
+    { href: "/surveys/learning-quality", label: learningQualityCopy[learningLocale(locale)].menu },
   ];
 
   const navItems = [

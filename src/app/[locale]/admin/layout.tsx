@@ -1,4 +1,5 @@
 "use client";
+import { learningLocale, learningQualityCopy } from "@/data/learningQualityCopy";
 
 import { Link, usePathname } from "@/i18n/routing";
 import { useEffect, useState } from "react";
@@ -96,6 +97,7 @@ export default function AdminLayout({
     { href: "/admin/surveys/employers", label: t.employerSurveys, icon: Building2 },
     { href: "/admin/surveys/graduates", label: t.graduateSurveys, icon: GraduationCap },
     { href: "/admin/surveys/doctoral", label: t.doctoralSurveys, icon: FlaskConical },
+    { href: "/admin/surveys/learning-quality", label: learningQualityCopy[learningLocale(locale)].menu, icon: GraduationCap },
     { href: "/admin/tools/appeals", label: t.studentAppeals, icon: Mail, badge: unreadAppeals },
     { href: "/admin/hemis-quiz", label: t.hemisQuiz, icon: ListChecks },
     { href: "/admin/accreditation", label: t.accreditation, icon: Landmark },
