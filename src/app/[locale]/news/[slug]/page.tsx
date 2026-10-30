@@ -1,3 +1,4 @@
+import { getNewsMedia } from "@/lib/newsMedia";
 import { NewsViews } from "@/components/news/NewsViews";
 import { surveyText } from "@/lib/surveyI18n";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -118,12 +119,7 @@ export default async function NewsDetailPage({
     },
   });
 
-  const images =
-    item.gallery_urls?.length
-      ? item.gallery_urls
-      : item.image_url
-      ? [item.image_url]
-      : [];
+  const media = getNewsMedia(item);
 
   return (
     <main>
@@ -136,10 +132,10 @@ export default async function NewsDetailPage({
       />
 
       <section className="container-main py-16">
-        <article className="rounded-[30px] bg-white p-8 shadow-xl shadow-slate-200/70">
+        <article className="rounded-[30px] bg-white p-4 sm:p-8 shadow-xl shadow-slate-200/70">
           <div className="mb-6"><NewsViews id={item.id} count={item.view_count} locale={locale} track /></div>
-          {images.length > 0 ? (
-            <NewsGallery title={title} images={images} />
+          {media.length > 0 ? (
+            <NewsGallery title={title} media={media} locale={locale} />
           ) : (
             <div className="mb-8 flex h-72 items-center justify-center rounded-[24px] bg-gradient-to-br from-[#0b3b78] to-[#0ea5a3] text-7xl text-white">
               📰

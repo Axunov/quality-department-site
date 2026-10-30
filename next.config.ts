@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
       "img-src 'self' data: blob: https://*.supabase.co",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com",
       "frame-src https://www.google.com https://maps.google.com https://challenges.cloudflare.com",
+      "media-src 'self' blob: https://*.supabase.co",
       "font-src 'self' data:",
       "upgrade-insecure-requests",
     ].join("; ");

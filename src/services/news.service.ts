@@ -1,3 +1,4 @@
+import type { NewsMedia } from "@/lib/newsMedia";
 import { supabase } from "@/lib/supabase";
 
 export type NewsItem = {
@@ -22,6 +23,7 @@ export type NewsItem = {
   author?: string | null;
   image_url?: string | null;
   gallery_urls?: string[] | null;
+  media_items?: NewsMedia[] | null;
   published?: boolean;
   created_at: string;
 };

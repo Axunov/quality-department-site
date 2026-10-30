@@ -1,3 +1,4 @@
+import { NewsCover } from "@/components/news/NewsCover";
 import { NewsViews } from "@/components/news/NewsViews";
 import { getLocale } from "next-intl/server";
 import { surveyText } from "@/lib/surveyI18n";
@@ -24,7 +25,7 @@ export async function NewsPreview({ locale }: { locale: string }) {
       </div>
 
       <div className="grid gap-7 md:grid-cols-3">
-        {latestNews.map((item, index) => {
+        {latestNews.map((item) => {
           const title = getLocalizedText(
             locale,
             item.title_ru,
@@ -37,17 +38,7 @@ export async function NewsPreview({ locale }: { locale: string }) {
               key={item.id}
               className="overflow-hidden rounded-[28px] bg-white shadow-xl shadow-slate-200/70 transition hover:-translate-y-1 hover:shadow-2xl"
             >
-              {item.image_url ? (
-  <img
-    src={item.image_url}
-    alt={title}
-    className="h-48 w-full object-cover"
-  />
-) : (
-  <div className="flex h-48 items-center justify-center bg-gradient-to-br from-[#0b3b78] to-[#0ea5a3] text-5xl text-white">
-    {index === 0 ? "📊" : index === 1 ? "🏛️" : "📝"}
-  </div>
-)}
+              <Link href={`/news/${item.slug}`} aria-label={title}><NewsCover item={item} title={title} locale={locale} /></Link>
 
               <div className="p-6">
                 <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">

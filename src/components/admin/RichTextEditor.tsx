@@ -3,6 +3,7 @@ import { useLocale } from "next-intl";
 import { surveyText } from "@/lib/surveyI18n";
 
 
+import { useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -17,7 +18,9 @@ export default function RichTextEditor({
   const currentLocale = useLocale();
   const tr = (text: string) => surveyText(currentLocale, text);
 
+  const [html, setHtml] = useState(initialContent);
   const editor = useEditor({
+    onUpdate: ({ editor }) => setHtml(editor.getHTML()),
     extensions: [
       StarterKit,
       Link.configure({
@@ -52,7 +55,7 @@ export default function RichTextEditor({
 
       <EditorContent editor={editor} className="min-h-[260px] p-4 leading-7 outline-none" />
 
-      <input type="hidden" name={name} value={editor.getHTML()} readOnly />
+      <input type="hidden" name={name} value={html} readOnly />
     </div>
   );
 }

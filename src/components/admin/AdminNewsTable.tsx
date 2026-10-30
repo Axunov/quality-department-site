@@ -1,4 +1,5 @@
 "use client";
+import { NewsCover } from "@/components/news/NewsCover";
 import { surveyText } from "@/lib/surveyI18n";
 
 import { useLocale } from "next-intl";
@@ -8,7 +9,7 @@ import { getLocalizedText } from "@/utils/getLocalizedText";
 
 const labels = {
   ru: {
-    photo: "Фото",
+    photo: "Фото / видео",
     title: "Заголовок",
     category: "Категория",
     date: "Дата",
@@ -19,7 +20,7 @@ const labels = {
     edit: "Редактировать",
   },
   uz: {
-    photo: "Rasm",
+    photo: "Foto / video",
     title: "Sarlavha",
     category: "Toifa",
     date: "Sana",
@@ -30,7 +31,7 @@ const labels = {
     edit: "Tahrirlash",
   },
   en: {
-    photo: "Photo",
+    photo: "Photo / video",
     title: "Title",
     category: "Category",
     date: "Date",
@@ -85,17 +86,7 @@ export default function AdminNewsTable({ news }: { news: any[] }) {
                 className="border-t border-slate-100 transition hover:bg-slate-50"
               >
                 <td className="p-4">
-                  {item.image_url ? (
-                    <img
-                      src={item.image_url}
-                      alt={title}
-                      className="h-14 w-20 rounded-lg object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-14 w-20 items-center justify-center rounded-lg bg-slate-100 text-2xl">
-                      📰
-                    </div>
-                  )}
+                  <div className="w-28 overflow-hidden rounded-lg"><NewsCover item={item} title={title} locale={locale} className="h-20" /></div>
                 </td>
 
                 <td className="max-w-md p-4 font-semibold text-slate-900">

@@ -3,7 +3,7 @@ import { surveyText } from "@/lib/surveyI18n";
 import { Link } from "@/i18n/routing";
 import { getNews } from "@/services/news.service";
 import { getLocalizedText } from "@/utils/getLocalizedText";
-import Image from "next/image";
+import { NewsCover } from "@/components/news/NewsCover";
 
 export const revalidate = 300;
 
@@ -285,30 +285,7 @@ export default async function NewsPage({
               >
                 {/* Изображение */}
                 <div className="relative h-[250px] overflow-hidden bg-gradient-to-br from-blue-700 to-cyan-600">
-                  {item.image_url ? (
-                    <Image
-                      src={item.image_url}
-                      alt={title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-white">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-20 w-20 opacity-80"
-                      >
-                        <path d="M4 5h16v14H4z" />
-                        <path d="M8 9h8M8 13h5M8 17h8" />
-                      </svg>
-                    </div>
-                  )}
+                  <NewsCover item={item} title={title} locale={locale} className="h-full" />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-transparent to-transparent" />
 
