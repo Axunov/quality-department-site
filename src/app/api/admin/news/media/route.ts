@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
     const supabaseUrl = process.env.SUPABASE_SERVER_URL || "https://cnattbgholeiihfhbfzd.supabase.co";
     const projectHost = new URL(supabaseUrl).hostname.replace(/\\.supabase\\.co$/, "");
     const endpoint = `https://${projectHost}.storage.supabase.co/storage/v1/upload/resumable`;
-    return NextResponse.json({ path, token: data.token, url, endpoint }, { headers: { "Cache-Control": "private, no-store" } });
+    const uploadUrl = `${supabaseUrl}/storage/v1/object/upload/sign/news/${path}?token=${encodeURIComponent(data.token)}`;
+    return NextResponse.json({ path, token: data.token, url, endpoint, uploadUrl }, { headers: { "Cache-Control": "private, no-store" } });
   } catch { return NextResponse.json({ error: "uploadError" }, { status: 400 }); }
 }
