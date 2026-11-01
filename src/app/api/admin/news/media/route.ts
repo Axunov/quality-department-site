@@ -18,7 +18,9 @@ export async function POST(request: NextRequest) {
     const { data, error: uploadError } = await storage.createSignedUploadUrl(path);
     if (uploadError || !data) return NextResponse.json({ error: "uploadError" }, { status: 503 });
     const url = storage.getPublicUrl(path).data.publicUrl;
-    const origin = new URL(url).origin;
-    return NextResponse.json({ path, token: data.token, url, endpoint: `${origin.replace('.supabase.co', '.storage.supabase.co')}/storage/v1/upload/resumable` }, { headers: { "Cache-Control": "private, no-store" } });
+    const supabaseUrl = process.env.SUPABASE_SERVER_URL || "https://cnattbgholeiihfhbfzd.supabase.co";
+    const projectHost = new URL(supabaseUrl).hostname.replace(/\\.supabase\\.co$/, "");
+    const endpoint = `https://${projectHost}.storage.supabase.co/storage/v1/upload/resumable`;
+    return NextResponse.json({ path, token: data.token, url, endpoint }, { headers: { "Cache-Control": "private, no-store" } });
   } catch { return NextResponse.json({ error: "uploadError" }, { status: 400 }); }
 }
