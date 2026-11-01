@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
-import { Upload } from "tus-js-client";
 import { MAX_NEWS_MEDIA, MEDIA_TYPES, NEWS_MEDIA_ACCEPT, mediaFileError, type NewsMedia } from "@/lib/newsMedia";
 import { newsMediaCopy } from "@/lib/newsMediaCopy";
 
