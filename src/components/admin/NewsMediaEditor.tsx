@@ -20,23 +20,32 @@ export default function NewsMediaEditor({ items, setItems, locale, disabled, onB
     if (!response.ok) throw new Error(data.error === "session" ? t.session : t.uploadError);
     signal.throwIfAborted();
     await new Promise<void>((resolve, reject) => {
-      const clean = () => signal.removeEventListener("abort", cancel);
-      const task = new Upload(file, {
-        endpoint: data.endpoint,
-        headers: { "x-signature": data.token },
-        chunkSize: 6 * 1024 * 1024,
-        retryDelays: [0, 1000, 3000, 5000, 10000],
-        uploadDataDuringCreation: true,
-        removeFingerprintOnSuccess: true,
-        storeFingerprintForResuming: false,
-        metadata: { bucketName: "news", objectName: data.path, contentType: file.type, cacheControl: "31536000" },
-        onProgress: (sent, total) => setProgress({ name: file.name, percent: Math.round(sent / total * 100) }),
-        onError: () => { clean(); reject(new Error(t.uploadError)); },
-        onSuccess: () => { clean(); resolve(); },
-      });
-      const cancel = () => { void task.abort().catch(() => {}); clean(); reject(new DOMException("Aborted", "AbortError")); };
+      const xhr = new XMLHttpRequest();
+      let settled = false;
+      const finish = (error?: Error) => {
+        if (settled) return;
+        settled = true;
+        signal.removeEventListener("abort", cancel);
+        error ? reject(error) : resolve();
+      };
+      const cancel = () => {
+        xhr.abort();
+        finish(new DOMException("Aborted", "AbortError"));
+      };
+      xhr.open("PUT", data.uploadUrl);
+      xhr.setRequestHeader("Content-Type", file.type);
+      xhr.setRequestHeader("Cache-Control", "31536000");
+      xhr.upload.onprogress = event => {
+        if (event.lengthComputable) setProgress({ name: file.name, percent: Math.round(event.loaded / event.total * 100) });
+      };
+      xhr.onerror = () => finish(new Error(t.uploadError));
+      xhr.onabort = () => { if (!signal.aborted) finish(new Error(t.uploadError)); };
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) finish();
+        else finish(new Error(t.uploadError));
+      };
       signal.addEventListener("abort", cancel, { once: true });
-      task.start();
+      xhr.send(file);
     });
     signal.throwIfAborted();
     return { type: MEDIA_TYPES[file.type].type, url: data.url };
