@@ -132,8 +132,8 @@ export async function buildSurveyMonitoring(): Promise<SurveyMonitoringPayload> 
     return questions;
   };
 
-  const studentCategories = countValues(student.map(row => groupNames.get(String(row.group_id))));
-  const teacherCategories = countValues(teacherRows.map(row => groupNames.get(String(row.group_id))));
+  const studentCategories = countValues(student.map(row => groupNames.get(String(row.group_id)) || text(row.group_id)));
+  const teacherCategories = countValues(teacherRows.map(row => groupNames.get(String(row.group_id)) || text(row.group_id)));
   const qualityReport = (kind: "graduates" | "doctoral", title: string): SurveyReport => {
     const rows = quality.filter(row => row.survey_type === kind);
     const questions = qualityQuestions(kind);
