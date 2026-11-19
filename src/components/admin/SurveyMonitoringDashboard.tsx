@@ -15,6 +15,8 @@ const copy = {
 
 const colors = ["#0b4f8a", "#10a3a3", "#2f9e62", "#f2a93b", "#da5a65", "#6b62c5"];
 
+type Copy = { [K in keyof typeof copy.ru]: string };
+
 function topItems(items: Item[]) { return items.filter(item => item.value > 0).slice(0, 6); }
 
 function DonutChart({ items, center, label }: { items: Item[]; center: string; label: string }) {
@@ -46,7 +48,7 @@ function drawWrapped(ctx: CanvasRenderingContext2D, text: string, x: number, y: 
   return y;
 }
 
-function drawPdfReport(report: Report, generatedAt: string, locale: string, t: typeof copy.ru) {
+function drawPdfReport(report: Report, generatedAt: string, locale: string, t: Copy) {
   const W = 794, H = 1123, scale = 2;
   const canvas = document.createElement("canvas"); canvas.width = W * scale; canvas.height = H * scale;
   const ctx = canvas.getContext("2d"); if (!ctx) return;
