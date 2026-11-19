@@ -92,6 +92,22 @@ function drawPdfReport(report: Report, generatedAt: string, locale: string, t: C
   }
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   doc.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, 595.28, 841.89, undefined, "FAST");
+  const questionChunks = Array.from({ length: Math.ceil(report.questions.length / 4) }, (_, index) => report.questions.slice(index * 4, index * 4 + 4));
+  for (const chunk of questionChunks) {
+    const qCanvas = document.createElement("canvas"); qCanvas.width = W * scale; qCanvas.height = H * scale;
+    const qctx = qCanvas.getContext("2d"); if (!qctx) continue; qctx.scale(scale, scale);
+    qctx.fillStyle = "#f4f8fb"; qctx.fillRect(0, 0, W, H);
+    const qHeader = qctx.createLinearGradient(0, 0, W, 0); qHeader.addColorStop(0, "#073b73"); qHeader.addColorStop(1, "#087d83"); qctx.fillStyle = qHeader; qctx.fillRect(0, 0, W, 130);
+    qctx.fillStyle = "#fff"; qctx.font = "700 22px Arial"; qctx.fillText(t.report, 44, 48); qctx.font = "700 24px Arial"; qctx.fillText(report.title.slice(0, 52), 44, 92);
+    chunk.forEach((question, index) => {
+      const cardY = 160 + index * 220; qctx.beginPath(); qctx.fillStyle = "#fff"; qctx.roundRect(44, cardY, 706, 190, 18); qctx.fill();
+      qctx.fillStyle = "#172b4d"; qctx.font = "700 16px Arial"; drawWrapped(qctx, (index + 1) + ". " + question.label, 68, cardY + 32, 620, 21);
+      qctx.fillStyle = "#687789"; qctx.font = "600 12px Arial"; qctx.fillText(question.total + " " + t.responses + (question.average === null ? "" : " · " + t.average + ": " + question.average), 68, cardY + 75);
+      const max = Math.max(1, ...question.values.map(item => item.value));
+      question.values.slice(0, 6).forEach((item, itemIndex) => { const yy = cardY + 105 + itemIndex * 19; qctx.fillStyle = "#687789"; qctx.font = "500 11px Arial"; qctx.fillText(item.label.slice(0, 30), 68, yy); qctx.beginPath(); qctx.fillStyle = colors[itemIndex % colors.length]; qctx.roundRect(285, yy - 9, Math.max(4, 350 * item.value / max), 9, 4); qctx.fill(); qctx.fillStyle = "#172b4d"; qctx.font = "700 11px Arial"; qctx.fillText(String(item.value), 655, yy); });
+    });
+    doc.addPage(); doc.addImage(qCanvas.toDataURL("image/png"), "PNG", 0, 0, 595.28, 841.89, undefined, "FAST");
+  }
   doc.save(`monitoring-${report.key}.pdf`);
 }
 
