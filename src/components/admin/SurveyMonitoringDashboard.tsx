@@ -4,7 +4,8 @@ import { jsPDF } from "jspdf";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Item = { label: string; value: number };
-type Question = { id: string; label: string; total: number; average: number | null; values: Item[] };\ntype Report = { key: string; title: string; total: number; average: number | null; byPeriod: Item[]; byCategory: Item[]; distributions: { label: string; values: Item[] }[]; questions: Question[] };
+type Question = { id: string; label: string; total: number; average: number | null; values: Item[] };
+type Report = { key: string; title: string; total: number; average: number | null; byPeriod: Item[]; byCategory: Item[]; distributions: { label: string; values: Item[] }[]; questions: Question[] };
 type Payload = { generatedAt: string; reports: Report[] };
 
 const copy = {
