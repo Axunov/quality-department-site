@@ -2,7 +2,8 @@ import "server-only";
 
 import learningQualitySurvey from "@/data/learningQualitySurvey.json";
 import { graduateRatingItems, doctoralRatingItems } from "@/data/qualitySurveys";
-import { ratingItems, teacherSurveyQuestions, violationOptions } from "@/data/teacherSurvey";
+import { ratingItems } from "@/data/employerSurvey";
+import { teacherSurveyQuestions } from "@/data/teacherSurvey";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type Row = Record<string, unknown>;
@@ -110,7 +111,7 @@ export async function buildSurveyMonitoring(): Promise<SurveyMonitoringPayload> 
   const groupNames = new Map(groups.map(row => [String(row.id), text(row.name)]));
   const teacherRows = submissions;
   const teacherRatingValues = teacherAnswers.flatMap(row => arrayValues(row, "ratings"));
-  const studentQuestions = learningQualitySurvey.questions.map(question => optionQuestion(question.id, question.prompt.ru, student, "answers", question.options));
+  const studentQuestions = (learningQualitySurvey.questions as Array<{ id: string; prompt: { ru: string }; options: { ru: string }[] }>).map(question => optionQuestion(question.id, question.prompt.ru, student, "answers", question.options));
   const teacherQuestions = teacherSurveyQuestions.map((question, index) => averageQuestion(`teacher-${index + 1}`, question, teacherAnswers.flatMap(row => [arrayValues(row, "ratings")[index]]), true));
   teacherQuestions.push(averageQuestion("teacher-overall", "Общая удовлетворённость качеством преподавания", submissions.map(row => row.final_satisfaction), true));
   teacherQuestions.push(textQuestion("teacher-violations", "Ситуации, требующие внимания администрации", teacherAnswers.map(row => row.violation)));
