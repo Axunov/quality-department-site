@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
-import { LayoutDashboard, Newspaper, FileText, Users, ClipboardList, Building2, GraduationCap, FlaskConical, Mail, ListChecks, Landmark, ShieldCheck, Wrench, Menu, X } from "lucide-react";
+import { LayoutDashboard, Newspaper, FileText, Users, ClipboardList, Building2, GraduationCap, FlaskConical, Mail, ListChecks, Landmark, ShieldCheck, Wrench, BarChart3, Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 
 const labels = {
@@ -26,6 +26,7 @@ const labels = {
     hemisQuiz: "Тест HEMIS",
     accreditation: "Аккредитация",
     security: "Безопасность",
+    monitoring: "Мониторинг опросов",
     site: "← На сайт",
   },
   uz: {
@@ -44,6 +45,7 @@ const labels = {
     hemisQuiz: "HEMIS testi",
     accreditation: "Akkreditatsiya",
     security: "Xavfsizlik",
+    monitoring: "So‘rovnomalar monitoringi",
     site: "← Saytga qaytish",
   },
   en: {
@@ -62,6 +64,7 @@ const labels = {
     hemisQuiz: "HEMIS test",
     accreditation: "Accreditation",
     security: "Security",
+    monitoring: "Survey monitoring",
     site: "← Back to site",
   },
 };
@@ -102,6 +105,7 @@ export default function AdminLayout({
     { href: "/admin/hemis-quiz", label: t.hemisQuiz, icon: ListChecks },
     { href: "/admin/accreditation", label: t.accreditation, icon: Landmark },
     { href: "/admin/security", label: t.security, icon: ShieldCheck },
+    { href: "/admin/monitoring", label: t.monitoring, icon: BarChart3 },
     { href: "/admin/tools",  label: t.tools,  icon: Wrench,},
   ];
 
