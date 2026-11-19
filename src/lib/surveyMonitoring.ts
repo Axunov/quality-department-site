@@ -1,17 +1,24 @@
 import "server-only";
 
+import learningQualitySurvey from "@/data/learningQualitySurvey.json";
+import { graduateRatingItems, doctoralRatingItems } from "@/data/qualitySurveys";
+import { ratingItems, teacherSurveyQuestions, violationOptions } from "@/data/teacherSurvey";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type Row = Record<string, unknown>;
-type SurveyReport = {
+export type MonitoringItem = { label: string; value: number };
+export type MonitoringQuestion = { id: string; label: string; total: number; average: number | null; values: MonitoringItem[] };
+export type SurveyReport = {
   key: string;
   title: string;
   total: number;
   average: number | null;
-  byPeriod: { label: string; value: number }[];
-  byCategory: { label: string; value: number }[];
-  distributions: { label: string; values: { label: string; value: number }[] }[];
+  byPeriod: MonitoringItem[];
+  byCategory: MonitoringItem[];
+  distributions: { label: string; values: MonitoringItem[] }[];
+  questions: MonitoringQuestion[];
 };
+export type SurveyMonitoringPayload = { generatedAt: string; reports: SurveyReport[] };
 
 async function allRows(table: string, select = "*") {
   const client = createAdminClient();
@@ -24,19 +31,27 @@ async function allRows(table: string, select = "*") {
   }
 }
 
-function monthLabel(value: unknown) {
-  const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return "—";
-  return date.toISOString().slice(0, 7);
+function text(value: unknown) {
+  const result = String(value ?? "").trim();
+  return result && result !== "undefined" && result !== "null" ? result : "";
+}
+
+function numberValues(values: unknown[]) {
+  return values.map(value => Number(value)).filter(Number.isFinite);
 }
 
 function countValues(values: unknown[]) {
   const counts = new Map<string, number>();
   for (const value of values) {
-    const label = String(value ?? "—");
+    const label = text(value);
+    if (!label) continue;
     counts.set(label, (counts.get(label) || 0) + 1);
   }
-  return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([label, value]) => ({ label, value }));
+  return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([label, value]) => ({ label, value }));
+}
+
+function numericCounts(values: unknown[]) {
+  return countValues(numberValues(values).map(value => String(value)));
 }
 
 function average(values: number[]) {
@@ -44,27 +59,45 @@ function average(values: number[]) {
   return finite.length ? Math.round(finite.reduce((a, b) => a + b, 0) / finite.length * 100) / 100 : null;
 }
 
+function monthLabel(value: unknown) {
+  const date = new Date(String(value));
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 7);
+}
+
 function periodCounts(rows: Row[]) {
-  const counts = new Map<string, number>();
-  for (const row of rows) {
-    const label = monthLabel(row.created_at ?? row.submitted_on);
-    counts.set(label, (counts.get(label) || 0) + 1);
-  }
-  return [...counts.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([label, value]) => ({ label, value }));
+  return countValues(rows.map(row => monthLabel(row.created_at ?? row.submitted_on)));
 }
 
-function jsonValues(rows: Row[], field: string) {
-  const values: unknown[] = [];
-  for (const row of rows) {
-    const raw = row[field];
-    if (Array.isArray(raw)) values.push(...raw);
-    else if (raw && typeof raw === "object") values.push(...Object.values(raw as Record<string, unknown>));
-    else if (raw !== null && raw !== undefined) values.push(raw);
-  }
-  return countValues(values);
+function arrayValues(row: Row, field: string) {
+  const value = row[field];
+  if (Array.isArray(value)) return value;
+  if (value && typeof value === "object") return Object.values(value as Record<string, unknown>);
+  return value === null || value === undefined ? [] : [value];
 }
 
-export async function buildSurveyMonitoring(): Promise<{ generatedAt: string; reports: SurveyReport[] }> {
+function averageQuestion(id: string, label: string, values: unknown[], excludeZero = false): MonitoringQuestion {
+  const numbers = numberValues(values).filter(value => !excludeZero || value > 0);
+  return { id, label, total: numbers.length, average: average(numbers), values: numericCounts(numbers) };
+}
+
+function textQuestion(id: string, label: string, values: unknown[]): MonitoringQuestion {
+  const counted = countValues(values);
+  return { id, label, total: counted.reduce((sum, item) => sum + item.value, 0), average: null, values: counted };
+}
+
+function optionQuestion(id: string, label: string, rows: Row[], field: string, options: { ru: string }[]) {
+  const values = rows.flatMap(row => arrayValues(row, field)).map(value => {
+    const index = Number(value);
+    return Number.isInteger(index) && options[index] ? options[index].ru : text(value);
+  });
+  return textQuestion(id, label, values);
+}
+
+function camelLabel(value: string) {
+  return value.replace(/([A-Z])/g, " $1").replace(/^./, char => char.toUpperCase());
+}
+
+export async function buildSurveyMonitoring(): Promise<SurveyMonitoringPayload> {
   const [employers, quality, student, submissions, teacherAnswers, groups] = await Promise.all([
     allRows("employer_survey_responses", "created_at,locale,programmes,ratings,practice_rating,programme_relevance,recommendation_score,cooperation_readiness"),
     allRows("quality_survey_responses", "created_at,survey_type,locale,ratings,choices,answers"),
@@ -74,65 +107,46 @@ export async function buildSurveyMonitoring(): Promise<{ generatedAt: string; re
     allRows("survey_groups", "id,name"),
   ]);
 
-  const groupNames = new Map(groups.map(row => [String(row.id), String(row.name)]));
-  const studentCategories = countValues(student.map(row => groupNames.get(String(row.group_id)) || "—"));
-  const teacherCategories = countValues(submissions.map(row => groupNames.get(String(row.group_id)) || "—"));
-  const teacherRatings = teacherAnswers.flatMap(row => Array.isArray(row.ratings) ? row.ratings.map(Number) : []);
-  const employerScores = employers.map(row => Number(row.recommendation_score));
-  const qualityRatings = quality.flatMap(row => Array.isArray(row.ratings) ? row.ratings.map(Number) : []);
-  const studentAnswerValues = jsonValues(student, "answers");
-  const teacherAnswerValues = jsonValues(teacherAnswers, "ratings");
+  const groupNames = new Map(groups.map(row => [String(row.id), text(row.name)]));
+  const teacherRows = submissions;
+  const teacherRatingValues = teacherAnswers.flatMap(row => arrayValues(row, "ratings"));
+  const studentQuestions = learningQualitySurvey.questions.map(question => optionQuestion(question.id, question.prompt.ru, student, "answers", question.options));
+  const teacherQuestions = teacherSurveyQuestions.map((question, index) => averageQuestion(`teacher-${index + 1}`, question, teacherAnswers.flatMap(row => [arrayValues(row, "ratings")[index]]), true));
+  teacherQuestions.push(averageQuestion("teacher-overall", "Общая удовлетворённость качеством преподавания", submissions.map(row => row.final_satisfaction), true));
+  teacherQuestions.push(textQuestion("teacher-violations", "Ситуации, требующие внимания администрации", teacherAnswers.map(row => row.violation)));
 
-  const reports: SurveyReport[] = [
-    {
-      key: "teacher",
-      title: "Преподаватель глазами студента",
-      total: submissions.length,
-      average: average(submissions.map(row => Number(row.final_satisfaction))),
-      byPeriod: periodCounts(submissions),
-      byCategory: teacherCategories,
-      distributions: [{ label: "Оценки преподавателей", values: teacherAnswerValues }],
-    },
-    {
-      key: "students",
-      title: "Опрос студентов о качестве обучения",
-      total: student.length,
-      average: null,
-      byPeriod: periodCounts(student),
-      byCategory: studentCategories,
-      distributions: [{ label: "Ответы студентов", values: studentAnswerValues }],
-    },
-    {
-      key: "employers",
-      title: "Опрос работодателей",
-      total: employers.length,
-      average: average(employerScores),
-      byPeriod: periodCounts(employers),
-      byCategory: countValues(employers.flatMap(row => Array.isArray(row.programmes) ? row.programmes : [])),
-      distributions: [
-        { label: "Язык анкеты", values: countValues(employers.map(row => row.locale)) },
-        { label: "Готовность к сотрудничеству", values: countValues(employers.map(row => row.cooperation_readiness)) },
-      ],
-    },
-    {
-      key: "graduates",
-      title: "Опрос выпускников",
-      total: quality.filter(row => row.survey_type === "graduates").length,
-      average: average(quality.filter(row => row.survey_type === "graduates").flatMap(row => Array.isArray(row.ratings) ? row.ratings.map(Number) : [])),
-      byPeriod: periodCounts(quality.filter(row => row.survey_type === "graduates")),
-      byCategory: countValues(quality.filter(row => row.survey_type === "graduates").map(row => row.locale)),
-      distributions: [{ label: "Варианты ответов", values: jsonValues(quality.filter(row => row.survey_type === "graduates"), "choices") }],
-    },
-    {
-      key: "doctoral",
-      title: "Опрос докторантов",
-      total: quality.filter(row => row.survey_type === "doctoral").length,
-      average: average(quality.filter(row => row.survey_type === "doctoral").flatMap(row => Array.isArray(row.ratings) ? row.ratings.map(Number) : [])),
-      byPeriod: periodCounts(quality.filter(row => row.survey_type === "doctoral")),
-      byCategory: countValues(quality.filter(row => row.survey_type === "doctoral").map(row => row.locale)),
-      distributions: [{ label: "Варианты ответов", values: jsonValues(quality.filter(row => row.survey_type === "doctoral"), "choices") }],
-    },
-  ];
+  const employerQuestions = ratingItems.map((question, index) => averageQuestion(`employer-rating-${index + 1}`, question, employers.flatMap(row => [arrayValues(row, "ratings")[index]]), true));
+  employerQuestions.push(averageQuestion("employer-practice", "Оценка практической подготовки", employers.map(row => row.practice_rating), true));
+  employerQuestions.push(averageQuestion("employer-relevance", "Соответствие программы требованиям профессии", employers.map(row => row.programme_relevance), true));
+  employerQuestions.push(averageQuestion("employer-recommendation", "Готовность рекомендовать выпускников", employers.map(row => row.recommendation_score), true));
+  employerQuestions.push(textQuestion("employer-cooperation", "Готовность к сотрудничеству", employers.map(row => row.cooperation_readiness)));
 
-  return { generatedAt: new Date().toISOString(), reports };
+  const qualityQuestions = (kind: "graduates" | "doctoral") => {
+    const rows = quality.filter(row => row.survey_type === kind);
+    const labels = kind === "graduates" ? graduateRatingItems : doctoralRatingItems;
+    const questions = labels.map((label, index) => averageQuestion(`${kind}-rating-${index + 1}`, label, rows.flatMap(row => [arrayValues(row, "ratings")[index]]), true));
+    const answerKeys = [...new Set(rows.flatMap(row => Object.keys((row.answers || {}) as Record<string, unknown>)))];
+    for (const key of answerKeys) questions.push(textQuestion(`${kind}-${key}`, camelLabel(key), rows.map(row => ((row.answers || {}) as Record<string, unknown>)[key])));
+    if (rows.some(row => arrayValues(row, "choices").length)) questions.push(textQuestion(`${kind}-choices`, "Выбранные варианты", rows.flatMap(row => arrayValues(row, "choices"))));
+    return questions;
+  };
+
+  const studentCategories = countValues(student.map(row => groupNames.get(String(row.group_id))));
+  const teacherCategories = countValues(teacherRows.map(row => groupNames.get(String(row.group_id))));
+  const qualityReport = (kind: "graduates" | "doctoral", title: string): SurveyReport => {
+    const rows = quality.filter(row => row.survey_type === kind);
+    const questions = qualityQuestions(kind);
+    return { key: kind, title, total: rows.length, average: average(rows.flatMap(row => numberValues(arrayValues(row, "ratings")))), byPeriod: periodCounts(rows), byCategory: countValues(rows.map(row => row.locale)), distributions: [{ label: "Варианты ответов", values: countValues(rows.flatMap(row => arrayValues(row, "choices"))) }], questions };
+  };
+
+  return {
+    generatedAt: new Date().toISOString(),
+    reports: [
+      { key: "teacher", title: "Преподаватель глазами студента", total: submissions.length, average: average(submissions.map(row => Number(row.final_satisfaction)).filter(value => value > 0)), byPeriod: periodCounts(submissions), byCategory: teacherCategories, distributions: [{ label: "Оценки преподавателей", values: numericCounts(teacherRatingValues) }], questions: teacherQuestions },
+      { key: "students", title: "Опрос студентов о качестве обучения", total: student.length, average: null, byPeriod: periodCounts(student), byCategory: studentCategories, distributions: [], questions: studentQuestions },
+      { key: "employers", title: "Опрос работодателей", total: employers.length, average: average(employers.map(row => Number(row.recommendation_score)).filter(value => value > 0)), byPeriod: periodCounts(employers), byCategory: countValues(employers.flatMap(row => arrayValues(row, "programmes"))), distributions: [{ label: "Готовность к сотрудничеству", values: countValues(employers.map(row => row.cooperation_readiness)) }], questions: employerQuestions },
+      qualityReport("graduates", "Опрос выпускников"),
+      qualityReport("doctoral", "Опрос докторантов"),
+    ],
+  };
 }
