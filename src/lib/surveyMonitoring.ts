@@ -145,7 +145,7 @@ export async function buildSurveyMonitoring(): Promise<SurveyMonitoringPayload> 
     reports: [
       { key: "teacher", title: "Преподаватель глазами студента", total: submissions.length, average: average(submissions.map(row => Number(row.final_satisfaction)).filter(value => value > 0)), byPeriod: periodCounts(submissions), byCategory: teacherCategories, distributions: [{ label: "Оценки преподавателей", values: numericCounts(teacherRatingValues) }], questions: teacherQuestions },
       { key: "students", title: "Опрос студентов о качестве обучения", total: student.length, average: null, byPeriod: periodCounts(student), byCategory: studentCategories, distributions: [], questions: studentQuestions },
-      { key: "employers", title: "Опрос работодателей", total: employers.length, average: average(employers.map(row => Number(row.recommendation_score)).filter(value => value > 0)), byPeriod: periodCounts(employers), byCategory: countValues(employers.flatMap(row => arrayValues(row, "programmes"))), distributions: [{ label: "Готовность к сотрудничеству", values: countValues(employers.map(row => row.cooperation_readiness)) }], questions: employerQuestions },
+      { key: "employers", title: "Опрос работодателей", total: employers.length, average: average(employers.map(row => Number(row.recommendation_score)).filter(value => value > 0)), byPeriod: periodCounts(employers), byCategory: countValues(employers.map(row => row.cooperation_readiness)), distributions: [{ label: "Выбранные направления", values: countValues(employers.flatMap(row => arrayValues(row, "programmes"))) }], questions: employerQuestions },
       qualityReport("graduates", "Опрос выпускников"),
       qualityReport("doctoral", "Опрос докторантов"),
     ],
