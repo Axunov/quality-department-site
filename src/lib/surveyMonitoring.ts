@@ -19,7 +19,7 @@ async function allRows(table: string, select = "*") {
   for (let from = 0; ; from += 1000) {
     const { data, error } = await client.from(table).select(select).range(from, from + 999);
     if (error) throw error;
-    rows.push(...((data || []) as Row[]));
+    rows.push(...((data || []) as unknown as Row[]));
     if (!data || data.length < 1000) return rows;
   }
 }
