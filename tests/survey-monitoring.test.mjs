@@ -31,7 +31,6 @@ test("monitoring counts forms per question and keeps rating scales distinct", as
     const source = ts.transpileModule(fs.readFileSync(file,"utf8"),{compilerOptions:options}).outputText;
     const localRequire = name => {
       if (name === "server-only") return {};
-      if (name === "@/lib/surveyI18n") return {surveyText: (_,v)=>v};
       if (name.endsWith(".json")) return learning;
       if (name === "@/lib/supabase/admin") return {createAdminClient:()=>({from(table) {
         let data = rows[table] || [];
@@ -54,6 +53,14 @@ test("monitoring counts forms per question and keeps rating scales distinct", as
   assert.equal(employer.average,0);
   assert.equal(employer.questions.find(q=>q.id==="employer-practice").total,0);
   assert.equal(graduate.average,4);
+  assert.equal(teacher.title,"Teacher Through the Eyes of a Student");
+  assert.equal(employer.title,"Employer survey");
+  const uz = await load("src/lib/surveyMonitoring.ts").buildSurveyMonitoring("uz",true);
+  assert.equal(uz.reports[0].title,"O‘qituvchi talaba nigohida");
+  assert.equal(uz.reports[1].questions[0].values[0].label,"Ha");
+  for (const translated of [reports,uz.reports]) {
+    for (const report of translated) assert.doesNotMatch(JSON.stringify(report),/[А-Яа-яЁё]/);
+  }
   assert.doesNotMatch(JSON.stringify(graduate),/private text/);
   for (const report of reports) for (const q of report.questions) {
     assert.ok(q.total <= report.total);
