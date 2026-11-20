@@ -27,7 +27,7 @@ test("monitoring counts forms per question and keeps rating scales distinct", as
   function load(file) {
     if (cache[file]) return cache[file].exports;
     const mod = cache[file] = {exports:{}};
-    const options = {module:ts.ModuleKind.CommonJS,esModuleInterop:true};
+    const options = {module:ts.ModuleKind.CommonJS,esModuleInterop:true,target:ts.ScriptTarget.ES2022};
     const source = ts.transpileModule(fs.readFileSync(file,"utf8"),{compilerOptions:options}).outputText;
     const localRequire = name => {
       if (name === "server-only") return {};
