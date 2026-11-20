@@ -4,7 +4,7 @@ import learningQualitySurvey from "@/data/learningQualitySurvey.json";
 import { graduateRatingItems, doctoralRatingItems } from "@/data/qualitySurveys";
 import { ratingItems } from "@/data/employerSurvey";
 import { localizedTeacherSurvey, teacherSurveyQuestions } from "@/data/teacherSurvey";
-import { surveyText } from "@/lib/surveyI18n";
+import { qualityAnswerLabel, surveyText } from "@/lib/surveyI18n";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type Row = Record<string, unknown>;
@@ -107,7 +107,14 @@ export async function buildSurveyMonitoring(lang: Lang = "ru", publicView = fals
   const word = (ru: string, uz: string, en: string) => ({ ru, uz, en })[lang];
   const translate = (label: string) => surveyText(lang, label);
   const localeRows = (rows: Row[]) => countValues(rows.map(row => row.locale === "ru" ? word("Русский", "Ruscha", "Russian") : row.locale === "uz" ? word("Узбекский", "O‘zbekcha", "Uzbek") : row.locale === "en" ? word("Английский", "Inglizcha", "English") : word("Не указан", "Ko‘rsatilmagan", "Not specified")));
-  const groupNames = new Map(groups.map(row => [String(row.id), text(row.name)]));
+  const groupName = (input: unknown) => {
+    const label = text(input);
+    if (lang === "ru") return label;
+    return label.replace(/(?:дистанционное|дистанционная)/gi, word("дистанционное", "masofaviy", "distance learning"))
+      .replace(/(?:заочное|заочная)/gi, word("заочное", "sirtqi", "part-time"))
+      .replace(/(?:очное|очная)/gi, word("очное", "kunduzgi", "full-time"));
+  };
+  const groupNames = new Map(groups.map(row => [String(row.id), groupName(row.name)]));
   const bySubmission = new Map<string, Map<string, Row>>(submissions.map(row => [String(row.id), new Map()]));
   for (const row of teacherAnswers) {
     const answers = bySubmission.get(String(row.submission_id));
@@ -148,9 +155,9 @@ export async function buildSurveyMonitoring(lang: Lang = "ru", publicView = fals
     const labels = kind === "graduates" ? graduateRatingItems : doctoralRatingItems;
     const questions = labels.map((label, index) => averageQuestion(`${kind}-rating-${index + 1}`, translate(label), rows.map(row => arrayValues(row, "ratings")[index])));
     if (kind === "graduates") {
-      const add = (id: string, label: string, options: string[]) => questions.push(textQuestion(id, translate(label), rows.map(row => objectValue(row.answers, id)).filter((v): v is string => typeof v === "string" && options.includes(v)).map(translate)));
-      add("firstJobTiming", "15. Через какой период после окончания Института Вы нашли первую работу?", ["До окончания обучения", "В течение 3 месяцев", "От 3 до 6 месяцев", "Более 6 месяцев", "Пока не трудоустроился(ась)"]);
-      add("recommendation", "Рекомендуют Институт", ["Да", "Скорее да", "Скорее нет", "Нет", "Затрудняюсь ответить"]);
+      const add = (id: string, label: string, options: string[]) => questions.push(textQuestion(id, label, rows.map(row => objectValue(row.answers, id)).filter((v): v is string => typeof v === "string" && options.includes(v)).map(translate)));
+      add("firstJobTiming", qualityAnswerLabel(lang, "firstJobTiming"), ["До окончания обучения", "В течение 3 месяцев", "От 3 до 6 месяцев", "Более 6 месяцев", "Пока не трудоустроился(ась)"]);
+      add("recommendation", qualityAnswerLabel(lang, "recommendation"), ["Да", "Скорее да", "Скорее нет", "Нет", "Затрудняюсь ответить"]);
     }
     return { key: kind, title, total: rows.length, average: questions[kind === "graduates" ? 8 : 17].average, byPeriod: periodCounts(rows), byCategory: localeRows(rows), distributions: [], questions };
   };
