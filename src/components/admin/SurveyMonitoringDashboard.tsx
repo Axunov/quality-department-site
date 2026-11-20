@@ -20,8 +20,10 @@ type Copy = { [K in keyof typeof copy.ru]: string };
 
 function topItems(items: Item[]) { return items.filter(item => item.value > 0).slice(0, 6); }
 
-function DonutChart({ items, center, label }: { items: Item[]; center: string; label: string }) {
-  const visible = topItems(items);
+function DonutChart({ items, center, label, other }: { items: Item[]; center: string; label: string; other: string }) {
+  const positive = items.filter(item => item.value > 0);
+  const rest = positive.slice(5).reduce((sum, item) => sum + item.value, 0);
+  const visible = positive.length > 6 ? [...positive.slice(0, 5), { label: other, value: rest }] : positive;
   const total = visible.reduce((sum, item) => sum + item.value, 0);
   let cursor = 0;
   const stops = visible.length ? visible.map((item, index) => {
@@ -37,7 +39,7 @@ function QuestionCard({ question, responses, noData }: { question: Question; res
   return <section className="rounded-2xl border border-slate-100 bg-white p-4">
     <div className="flex items-start justify-between gap-3"><h3 className="text-sm font-bold leading-5 text-slate-800">{question.label}</h3>{question.average !== null && <b className="shrink-0 rounded-lg bg-blue-50 px-2 py-1 text-sm text-blue-800">{question.average}</b>}</div>
     <p className="mt-1 text-xs text-slate-400">{question.total} {responses}</p>
-    <div className="mt-4 space-y-2">{question.values.slice(0, 8).map((item, index) => <div key={item.label}><div className="flex justify-between gap-2 text-xs"><span className="truncate text-slate-600">{item.label}</span><b className="text-slate-800">{item.value}</b></div><div className="mt-1 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full" style={{ width: String(Math.max(3, item.value / max * 100)) + "%", backgroundColor: colors[index % colors.length] }} /></div></div>)}{!question.values.length && <p className="text-sm text-slate-400">{noData}</p>}</div>
+    <div className="mt-4 space-y-2">{question.values.map((item, index) => <div key={item.label}><div className="flex justify-between gap-2 text-xs"><span className="truncate text-slate-600">{item.label}</span><b className="text-slate-800">{item.value}</b></div><div className="mt-1 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full" style={{ width: String(Math.max(3, item.value / max * 100)) + "%", backgroundColor: colors[index % colors.length] }} /></div></div>)}{!question.values.length && <p className="text-sm text-slate-400">{noData}</p>}</div>
   </section>;
 }
 function BarChart({ items }: { items: Item[] }) {
@@ -47,7 +49,7 @@ function BarChart({ items }: { items: Item[] }) {
 }
 
 function drawWrapped(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, max: number, line: number) {
-  const words = text.split(/\\s+/);
+  const words = text.split(/\s+/);
   let current = "";
   for (const word of words) {
     const next = current ? `${current} ${word}` : word;
@@ -93,7 +95,8 @@ function drawPdfReport(report: Report, generatedAt: string, locale: string, t: C
   }
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   doc.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, 595.28, 841.89, undefined, "FAST");
-  const questionChunks = Array.from({ length: Math.ceil(report.questions.length / 4) }, (_, index) => report.questions.slice(index * 4, index * 4 + 4));
+  const filled = report.questions.filter(q => q.total > 0);
+  const questionChunks = Array.from({ length: Math.ceil(filled.length / 2) }, (_, index) => filled.slice(index * 2, index * 2 + 2));
   for (const chunk of questionChunks) {
     const qCanvas = document.createElement("canvas"); qCanvas.width = W * scale; qCanvas.height = H * scale;
     const qctx = qCanvas.getContext("2d"); if (!qctx) continue; qctx.scale(scale, scale);
@@ -101,11 +104,11 @@ function drawPdfReport(report: Report, generatedAt: string, locale: string, t: C
     const qHeader = qctx.createLinearGradient(0, 0, W, 0); qHeader.addColorStop(0, "#073b73"); qHeader.addColorStop(1, "#087d83"); qctx.fillStyle = qHeader; qctx.fillRect(0, 0, W, 130);
     qctx.fillStyle = "#fff"; qctx.font = "700 22px Arial"; qctx.fillText(t.report, 44, 48); qctx.font = "700 24px Arial"; qctx.fillText(report.title.slice(0, 52), 44, 92);
     chunk.forEach((question, index) => {
-      const cardY = 160 + index * 220; qctx.beginPath(); qctx.fillStyle = "#fff"; qctx.roundRect(44, cardY, 706, 190, 18); qctx.fill();
-      qctx.fillStyle = "#172b4d"; qctx.font = "700 16px Arial"; drawWrapped(qctx, (index + 1) + ". " + question.label, 68, cardY + 32, 620, 21);
-      qctx.fillStyle = "#687789"; qctx.font = "600 12px Arial"; qctx.fillText(question.total + " " + t.responses + (question.average === null ? "" : " · " + t.average + ": " + question.average), 68, cardY + 75);
+      const cardY = 160 + index * 400; qctx.beginPath(); qctx.fillStyle = "#fff"; qctx.roundRect(44, cardY, 706, 360, 18); qctx.fill();
+      qctx.fillStyle = "#172b4d"; qctx.font = "700 16px Arial"; drawWrapped(qctx, question.label, 68, cardY + 32, 620, 21);
+      qctx.fillStyle = "#687789"; qctx.font = "600 12px Arial"; qctx.fillText(question.total + " " + t.responses + (question.average === null ? "" : " · " + t.average + ": " + question.average), 68, cardY + 96);
       const max = Math.max(1, ...question.values.map(item => item.value));
-      question.values.slice(0, 6).forEach((item, itemIndex) => { const yy = cardY + 105 + itemIndex * 19; qctx.fillStyle = "#687789"; qctx.font = "500 11px Arial"; qctx.fillText(item.label.slice(0, 30), 68, yy); qctx.beginPath(); qctx.fillStyle = colors[itemIndex % colors.length]; qctx.roundRect(285, yy - 9, Math.max(4, 350 * item.value / max), 9, 4); qctx.fill(); qctx.fillStyle = "#172b4d"; qctx.font = "700 11px Arial"; qctx.fillText(String(item.value), 655, yy); });
+      question.values.forEach((item, itemIndex) => { const yy = cardY + 124 + itemIndex * 21; qctx.fillStyle = "#687789"; qctx.font = "500 11px Arial"; qctx.fillText(item.label.slice(0, 30), 68, yy); qctx.beginPath(); qctx.fillStyle = colors[itemIndex % colors.length]; qctx.roundRect(285, yy - 9, Math.max(4, 350 * item.value / max), 9, 4); qctx.fill(); qctx.fillStyle = "#172b4d"; qctx.font = "700 11px Arial"; qctx.fillText(String(item.value), 655, yy); });
     });
     doc.addPage(); doc.addImage(qCanvas.toDataURL("image/png"), "PNG", 0, 0, 595.28, 841.89, undefined, "FAST");
   }
@@ -115,11 +118,12 @@ function drawPdfReport(report: Report, generatedAt: string, locale: string, t: C
 export default function SurveyMonitoringDashboard({ locale }: { locale: string }) {
   const lang = locale === "uz" || locale === "en" ? locale : "ru";
   const t = copy[lang];
+  const units = { ru: { forms: "анкет", other: "Другие", note: "По каждому критерию оценки преподавателей сначала усредняются внутри анкеты. В распределении балл округляется до целого." }, uz: { forms: "anketa", other: "Boshqalar", note: "Har bir mezon bo‘yicha baholar anketa ichida o‘rtachalanadi va taqsimotda butun songa yaxlitlanadi." }, en: { forms: "forms", other: "Other", note: "Teacher ratings are averaged within each form, then rounded for the breakdown." } }[lang];
   const [payload, setPayload] = useState<Payload | null>(null);
   const [selected, setSelected] = useState("all");
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
-  const load = useCallback(async () => { setLoading(true); setFailed(false); try { const response = await fetch("/api/admin/monitoring", { cache: "no-store" }); if (!response.ok) throw new Error("load"); setPayload(await response.json()); } catch { setFailed(true); } finally { setLoading(false); } }, []);
+  const load = useCallback(async () => { setLoading(true); setFailed(false); try { const response = await fetch("/api/admin/monitoring?locale=" + lang, { cache: "no-store" }); if (!response.ok) throw new Error("load"); setPayload(await response.json()); } catch { setFailed(true); } finally { setLoading(false); } }, [lang]);
   useEffect(() => { void load(); }, [load]);
   const reports = useMemo(() => payload?.reports.filter(report => selected === "all" || report.key === selected) || [], [payload, selected]);
   const total = reports.reduce((sum, report) => sum + report.total, 0);
@@ -129,6 +133,6 @@ export default function SurveyMonitoringDashboard({ locale }: { locale: string }
     <header className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><div><p className="text-sm font-black uppercase tracking-[.18em] text-cyan-700">Quality assurance</p><h1 className="mt-3 text-4xl font-black tracking-tight text-slate-900">{t.title}</h1><p className="mt-3 max-w-3xl text-slate-500">{t.lead}</p><p className="mt-2 text-xs text-slate-400">{t.generated}: {new Date(payload.generatedAt).toLocaleString(lang)}</p></div><div className="flex flex-wrap gap-3"><select value={selected} onChange={event => setSelected(event.target.value)} className="rounded-xl border bg-white px-4 py-3 text-sm font-semibold"><option value="all">{t.all}</option>{payload.reports.map(report => <option key={report.key} value={report.key}>{report.title}</option>)}</select><button onClick={() => void load()} className="rounded-xl border border-blue-200 bg-white px-4 py-3 font-bold text-blue-800">{t.refresh}</button></div></header>
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"><section className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm font-semibold text-slate-500">{t.total}</p><strong className="mt-2 block text-4xl font-black text-blue-700">{total}</strong></section><section className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm font-semibold text-slate-500">{t.all}</p><strong className="mt-2 block text-4xl font-black text-cyan-700">{reports.length}</strong></section><section className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm font-semibold text-slate-500">{t.average}</p><strong className="mt-2 block text-4xl font-black text-emerald-700">{reports.length === 1 ? reports[0].average ?? "—" : "—"}</strong></section></div>
     {!reports.length && <div className="rounded-2xl bg-white p-10 text-center text-slate-500">{t.empty}</div>}
-    <div className="grid gap-6 xl:grid-cols-2">{reports.map(report => <article key={report.key} className="rounded-3xl bg-white p-6 shadow-sm"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start"><div><h2 className="text-2xl font-black text-slate-900">{report.title}</h2><p className="mt-2 text-sm text-slate-500">{t.total}: <b>{report.total}</b>{report.average !== null && <> · {t.average}: <b>{report.average}</b></>}</p></div><button onClick={() => drawPdfReport(report, payload.generatedAt, lang, t)} className="rounded-xl bg-blue-700 px-4 py-3 text-center text-sm font-bold text-white">{t.pdf}</button></div><div className="mt-6 rounded-2xl bg-slate-50 p-4"><DonutChart items={report.byCategory} center={String(report.total)} label={t.responses} /></div><div className="mt-6 grid gap-6 md:grid-cols-2"><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.period}</h3>{report.byPeriod.length ? <BarChart items={report.byPeriod} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.distribution}</h3>{report.distributions.length ? <BarChart items={report.distributions[0].values} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section></div><section className="mt-6"><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.questions}</h3><div className="grid gap-3 md:grid-cols-2">{report.questions.map(question => <QuestionCard key={question.id} question={question} responses={t.responseCount} noData={t.noData} />)}</div></section></article>)}</div>
+    <div className="grid gap-6 xl:grid-cols-2">{reports.map(report => <article key={report.key} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm motion-safe:transition-shadow hover:shadow-md"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start"><div><h2 className="text-2xl font-black text-slate-900">{report.title}</h2><p className="mt-2 text-sm text-slate-500">{t.total}: <b>{report.total}</b>{report.average !== null && <> · {t.average}: <b>{report.average}</b></>}</p></div><button onClick={() => drawPdfReport(report, payload.generatedAt, lang, t)} className="rounded-xl bg-blue-700 px-4 py-3 text-center text-sm font-bold text-white">{t.pdf}</button></div><div className="mt-6 rounded-2xl bg-slate-50 p-4"><DonutChart items={report.byCategory} center={String(report.total)} label={units.forms} other={units.other} /></div><div className="mt-6 grid gap-6 md:grid-cols-2"><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.period}</h3>{report.byPeriod.length ? <BarChart items={report.byPeriod} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.distribution}</h3>{report.distributions.length ? <BarChart items={report.distributions[0].values} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section></div>{report.key === "teacher" && <p className="mt-5 rounded-xl bg-cyan-50 p-4 text-sm text-cyan-950">{units.note}</p>}<section className="mt-6"><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.questions}</h3><div className="grid gap-3 md:grid-cols-2">{report.questions.filter(question => question.total > 0).map(question => <QuestionCard key={question.id} question={question} responses={units.forms} noData={t.noData} />)}</div></section></article>)}</div>
   </div>;
 }
