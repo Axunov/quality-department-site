@@ -3,7 +3,8 @@ import "server-only";
 import learningQualitySurvey from "@/data/learningQualitySurvey.json";
 import { graduateRatingItems, doctoralRatingItems } from "@/data/qualitySurveys";
 import { ratingItems } from "@/data/employerSurvey";
-import { teacherSurveyQuestions } from "@/data/teacherSurvey";
+import { localizedTeacherSurvey, teacherSurveyQuestions } from "@/data/teacherSurvey";
+import { surveyText } from "@/lib/surveyI18n";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 type Row = Record<string, unknown>;
@@ -21,11 +22,12 @@ export type SurveyReport = {
 };
 export type SurveyMonitoringPayload = { generatedAt: string; reports: SurveyReport[] };
 
-async function allRows(table: string, select = "*") {
+async function allRows(table: string, select: string, surveyId?: string) {
   const client = createAdminClient();
   const rows: Row[] = [];
   for (let from = 0; ; from += 1000) {
-    const { data, error } = await client.from(table).select(select).range(from, from + 999);
+    const query = client.from(table).select(select).order("id");
+    const { data, error } = await (surveyId ? query.eq("survey_id", surveyId) : query).range(from, from + 999);
     if (error) throw error;
     rows.push(...((data || []) as unknown as Row[]));
     if (!data || data.length < 1000) return rows;
@@ -38,7 +40,7 @@ function text(value: unknown) {
 }
 
 function numberValues(values: unknown[]) {
-  return values.map(value => Number(value)).filter(Number.isFinite);
+  return values.filter(value => typeof value === "number" || (typeof value === "string" && value.trim() !== "")).map(Number).filter(Number.isFinite);
 }
 
 function countValues(values: unknown[]) {
@@ -66,7 +68,7 @@ function monthLabel(value: unknown) {
 }
 
 function periodCounts(rows: Row[]) {
-  return countValues(rows.map(row => monthLabel(row.created_at ?? row.submitted_on)));
+  return countValues(rows.map(row => monthLabel(row.created_at ?? row.submitted_on))).sort((a, b) => a.label.localeCompare(b.label));
 }
 
 function arrayValues(row: Row, field: string) {
@@ -76,8 +78,8 @@ function arrayValues(row: Row, field: string) {
   return value === null || value === undefined ? [] : [value];
 }
 
-function averageQuestion(id: string, label: string, values: unknown[], excludeZero = false): MonitoringQuestion {
-  const numbers = numberValues(values).filter(value => !excludeZero || value > 0);
+function averageQuestion(id: string, label: string, values: unknown[], min = 1, max = 5): MonitoringQuestion {
+  const numbers = numberValues(values).filter(value => Number.isInteger(value) && value >= min && value <= max);
   return { id, label, total: numbers.length, average: average(numbers), values: numericCounts(numbers) };
 }
 
@@ -86,68 +88,80 @@ function textQuestion(id: string, label: string, values: unknown[]): MonitoringQ
   return { id, label, total: counted.reduce((sum, item) => sum + item.value, 0), average: null, values: counted };
 }
 
-function optionQuestion(id: string, label: string, rows: Row[], field: string, options: { ru: string }[]) {
-  const values = rows.flatMap(row => arrayValues(row, field)).map(value => {
-    const index = Number(value);
-    return Number.isInteger(index) && options[index] ? options[index].ru : text(value);
-  });
-  return textQuestion(id, label, values);
+function objectValue(value: unknown, key: string) {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as Row)[key] : undefined;
 }
 
-function camelLabel(value: string) {
-  return value.replace(/([A-Z])/g, " $1").replace(/^./, char => char.toUpperCase());
-}
+type Lang = keyof typeof localizedTeacherSurvey;
 
-export async function buildSurveyMonitoring(): Promise<SurveyMonitoringPayload> {
+export async function buildSurveyMonitoring(lang: Lang = "ru", publicView = false): Promise<SurveyMonitoringPayload> {
   const [employers, quality, student, submissions, teacherAnswers, groups] = await Promise.all([
-    allRows("employer_survey_responses", "created_at,locale,programmes,ratings,practice_rating,programme_relevance,recommendation_score,cooperation_readiness"),
-    allRows("quality_survey_responses", "created_at,survey_type,locale,ratings,choices,answers"),
-    allRows("student_survey_responses", "submitted_on,locale,group_id,answers"),
-    allRows("survey_submissions", "created_at,group_id,locale,final_satisfaction,final_suggestions"),
-    allRows("survey_teacher_answers", "created_at,submission_id,teacher_id,ratings,violation,comment"),
-    allRows("survey_groups", "id,name"),
+    allRows("employer_survey_responses", "created_at,locale,ratings,practice_rating,recommendation_score,programme_relevance,cooperation_readiness,hiring_readiness"),
+    allRows("quality_survey_responses", "created_at,survey_type,locale,ratings,answers"),
+    allRows("student_survey_responses", "submitted_on,locale,answers", learningQualitySurvey.id),
+    allRows("survey_submissions", "id,created_at,group_id,locale,final_satisfaction"),
+    allRows("survey_teacher_answers", "submission_id,teacher_id,ratings"),
+    publicView ? Promise.resolve([] as Row[]) : allRows("survey_groups", "id,name"),
   ]);
 
+  const word = (ru: string, uz: string, en: string) => ({ ru, uz, en })[lang];
+  const translate = (label: string) => surveyText(lang, label);
+  const localeRows = (rows: Row[]) => countValues(rows.map(row => row.locale === "ru" ? word("Русский", "Ruscha", "Russian") : row.locale === "uz" ? word("Узбекский", "O‘zbekcha", "Uzbek") : row.locale === "en" ? word("Английский", "Inglizcha", "English") : word("Не указан", "Ko‘rsatilmagan", "Not specified")));
   const groupNames = new Map(groups.map(row => [String(row.id), text(row.name)]));
-  const teacherRows = submissions;
-  const teacherRatingValues = teacherAnswers.flatMap(row => arrayValues(row, "ratings"));
-  const studentQuestions = (learningQualitySurvey.questions as Array<{ id: string; prompt: { ru: string }; options: { ru: string }[] }>).map(question => optionQuestion(question.id, question.prompt.ru, student, "answers", question.options));
-  const teacherQuestions = teacherSurveyQuestions.map((question, index) => averageQuestion(`teacher-${index + 1}`, question, teacherAnswers.flatMap(row => [arrayValues(row, "ratings")[index]]), true));
-  teacherQuestions.push(averageQuestion("teacher-overall", "Общая удовлетворённость качеством преподавания", submissions.map(row => row.final_satisfaction), true));
-  teacherQuestions.push(textQuestion("teacher-violations", "Ситуации, требующие внимания администрации", teacherAnswers.map(row => row.violation)));
+  const bySubmission = new Map<string, Map<string, Row>>(submissions.map(row => [String(row.id), new Map()]));
+  for (const row of teacherAnswers) {
+    const answers = bySubmission.get(String(row.submission_id));
+    if (answers && row.teacher_id) answers.set(String(row.teacher_id), row);
+  }
+  const teacherQuestions = localizedTeacherSurvey[lang].questions.map((label, index): MonitoringQuestion => {
+    const studentScores = [...bySubmission.values()].flatMap(answers => {
+      const ratings = numberValues([...answers.values()].map(row => arrayValues(row, "ratings")[index])).filter(n => Number.isInteger(n) && n >= 0 && n <= 5);
+      const scored = ratings.filter(n => n > 0);
+      return scored.length ? [scored.reduce((sum, n) => sum + n, 0) / scored.length] : ratings.length ? [0] : [];
+    });
+    const values = numericCounts(studentScores.map(Math.round)).map(item => ({
+      ...item,
+      label: item.label === "0" ? localizedTeacherSurvey[lang].ratingLabels[0] : item.label,
+    }));
+    return { id: `teacher-${index + 1}`, label, total: studentScores.length, average: average(studentScores.filter(n => n > 0)), values };
+  });
+  const overall = averageQuestion("teacher-overall", word("Общая удовлетворённость качеством преподавания", "O‘qitish sifatidan umumiy qoniqish", "Overall satisfaction with teaching"), submissions.map(row => row.final_satisfaction));
+  teacherQuestions.push(overall);
 
-  const employerQuestions = ratingItems.map((question, index) => averageQuestion(`employer-rating-${index + 1}`, question, employers.flatMap(row => [arrayValues(row, "ratings")[index]]), true));
-  employerQuestions.push(averageQuestion("employer-practice", "Оценка практической подготовки", employers.map(row => row.practice_rating), true));
-  employerQuestions.push(averageQuestion("employer-relevance", "Соответствие программы требованиям профессии", employers.map(row => row.programme_relevance), true));
-  employerQuestions.push(averageQuestion("employer-recommendation", "Готовность рекомендовать выпускников", employers.map(row => row.recommendation_score), true));
-  employerQuestions.push(textQuestion("employer-cooperation", "Готовность к сотрудничеству", employers.map(row => row.cooperation_readiness)));
+  const studentQuestions = learningQualitySurvey.questions.filter(q => q.question_type === "single").map(q => {
+    const labels = student.map(row => objectValue(row.answers, q.id)).map(value =>
+      typeof value === "number" && Number.isInteger(value) ? q.options?.[value]?.[lang] : undefined
+    );
+    return textQuestion(q.id, q.prompt[lang], labels);
+  });
 
-  const qualityQuestions = (kind: "graduates" | "doctoral") => {
-    const rows = quality.filter(row => row.survey_type === kind);
-    const labels = kind === "graduates" ? graduateRatingItems : doctoralRatingItems;
-    const questions = labels.map((label, index) => averageQuestion(`${kind}-rating-${index + 1}`, label, rows.flatMap(row => [arrayValues(row, "ratings")[index]]), true));
-    const answerKeys = [...new Set(rows.flatMap(row => Object.keys((row.answers || {}) as Record<string, unknown>)))];
-    for (const key of answerKeys) questions.push(textQuestion(`${kind}-${key}`, camelLabel(key), rows.map(row => ((row.answers || {}) as Record<string, unknown>)[key])));
-    if (rows.some(row => arrayValues(row, "choices").length)) questions.push(textQuestion(`${kind}-choices`, "Выбранные варианты", rows.flatMap(row => arrayValues(row, "choices"))));
-    return questions;
-  };
-
-  const studentCategories = countValues(student.map(row => groupNames.get(String(row.group_id)) || text(row.group_id)));
-  const teacherCategories = countValues(teacherRows.map(row => groupNames.get(String(row.group_id)) || text(row.group_id)));
+  const employerQuestions = ratingItems.map((q, i) => averageQuestion(`employer-rating-${i + 1}`, translate(q), employers.map(row => arrayValues(row, "ratings")[i]), 1, 10));
+  employerQuestions.push(averageQuestion("employer-practice", word("Оценка практической подготовки", "Amaliy tayyorgarlik bahosi", "Practical training score"), employers.map(row => row.practice_rating), 1, 10));
+  const recommendation = averageQuestion("employer-recommendation", word("Готовность рекомендовать выпускников", "Bitiruvchilarni tavsiya etish", "Likelihood of recommending graduates"), employers.map(row => row.recommendation_score), 0, 10);
+  employerQuestions.push(recommendation);
+  const employerChoice = (key: string, label: string, options: string[]) => employerQuestions.push(textQuestion(key, label, employers.map(row => text(row[key])).filter(value => options.includes(value)).map(translate)));
+  employerChoice("programme_relevance", word("Соответствие программы требованиям рынка труда", "Dasturning mehnat bozori talablariga mosligi", "Programme relevance to the labour market"), ["Полностью соответствует", "В основном соответствует", "Частично соответствует", "Не соответствует", "Затрудняюсь ответить"]);
+  employerChoice("cooperation_readiness", word("Готовность к сотрудничеству", "Hamkorlikka tayyorlik", "Willingness to cooperate"), ["Да", "Скорее да", "При наличии конкретных предложений", "Скорее нет", "Нет"]);
+  employerChoice("hiring_readiness", word("Готовность принять выпускников на работу", "Bitiruvchilarni ishga olishga tayyorlik", "Willingness to hire graduates"), ["Да", "Скорее да", "В зависимости от вакансий", "Скорее нет", "Нет"]);
   const qualityReport = (kind: "graduates" | "doctoral", title: string): SurveyReport => {
     const rows = quality.filter(row => row.survey_type === kind);
-    const questions = qualityQuestions(kind);
-    return { key: kind, title, total: rows.length, average: average(rows.flatMap(row => numberValues(arrayValues(row, "ratings")))), byPeriod: periodCounts(rows), byCategory: countValues(rows.map(row => row.locale)), distributions: [{ label: "Варианты ответов", values: countValues(rows.flatMap(row => arrayValues(row, "choices"))) }], questions };
+    const labels = kind === "graduates" ? graduateRatingItems : doctoralRatingItems;
+    const questions = labels.map((label, index) => averageQuestion(`${kind}-rating-${index + 1}`, translate(label), rows.map(row => arrayValues(row, "ratings")[index])));
+    if (kind === "graduates") {
+      const add = (id: string, label: string, options: string[]) => questions.push(textQuestion(id, translate(label), rows.map(row => objectValue(row.answers, id)).filter((v): v is string => typeof v === "string" && options.includes(v)).map(translate)));
+      add("firstJobTiming", "15. Через какой период после окончания Института Вы нашли первую работу?", ["До окончания обучения", "В течение 3 месяцев", "От 3 до 6 месяцев", "Более 6 месяцев", "Пока не трудоустроился(ась)"]);
+      add("recommendation", "Рекомендуют Институт", ["Да", "Скорее да", "Скорее нет", "Нет", "Затрудняюсь ответить"]);
+    }
+    return { key: kind, title, total: rows.length, average: questions[kind === "graduates" ? 8 : 17].average, byPeriod: periodCounts(rows), byCategory: localeRows(rows), distributions: [], questions };
   };
-
   return {
     generatedAt: new Date().toISOString(),
     reports: [
-      { key: "teacher", title: "Преподаватель глазами студента", total: submissions.length, average: average(submissions.map(row => Number(row.final_satisfaction)).filter(value => value > 0)), byPeriod: periodCounts(submissions), byCategory: teacherCategories, distributions: [{ label: "Оценки преподавателей", values: numericCounts(teacherRatingValues) }], questions: teacherQuestions },
-      { key: "students", title: "Опрос студентов о качестве обучения", total: student.length, average: null, byPeriod: periodCounts(student), byCategory: studentCategories.length ? studentCategories : countValues(student.map(row => row.locale)), distributions: [], questions: studentQuestions },
-      { key: "employers", title: "Опрос работодателей", total: employers.length, average: average(employers.map(row => Number(row.recommendation_score)).filter(value => value > 0)), byPeriod: periodCounts(employers), byCategory: countValues(employers.map(row => row.cooperation_readiness)), distributions: [{ label: "Выбранные направления", values: countValues(employers.flatMap(row => arrayValues(row, "programmes"))) }], questions: employerQuestions },
-      qualityReport("graduates", "Опрос выпускников"),
-      qualityReport("doctoral", "Опрос докторантов"),
+      { key: "teacher", title: word("Преподаватель глазами студента", "O‘qituvchi talaba nigohida", "Teacher Through the Eyes of a Student"), total: submissions.length, average: overall.average, byPeriod: periodCounts(submissions), byCategory: publicView ? localeRows(submissions) : countValues(submissions.map(row => groupNames.get(String(row.group_id)) || word("Группа не указана", "Guruh ko‘rsatilmagan", "Group not specified"))), distributions: [], questions: teacherQuestions },
+      { key: "students", title: learningQualitySurvey.title[lang], total: student.length, average: null, byPeriod: periodCounts(student), byCategory: localeRows(student), distributions: [], questions: studentQuestions },
+      { key: "employers", title: translate("Опрос работодателей"), total: employers.length, average: recommendation.average, byPeriod: periodCounts(employers), byCategory: localeRows(employers), distributions: [], questions: employerQuestions },
+      qualityReport("graduates", translate("Опрос выпускников")),
+      qualityReport("doctoral", translate("Опрос докторантов")),
     ],
   };
 }
