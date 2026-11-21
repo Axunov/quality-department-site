@@ -4,7 +4,12 @@ import { surveyText } from "@/lib/surveyI18n";
 import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
+import { DocumentCoverField, useDocumentCover } from "./DocumentCoverField";
+import { EditorialTranslation } from "./EditorialTranslation";
+import { DocumentTextFields } from "./DocumentTextFields";
+import { useDocumentTranslation } from "./useDocumentTranslation";
+import { getLocalizedText } from "@/utils/getLocalizedText";
 
 const labels = {
   ru: {
@@ -131,11 +136,14 @@ export default function DocumentsAdmin() {
   const currentLocale: "ru" | "uz" | "en" =
     locale === "uz" || locale === "en" ? locale : "ru";
   const t = labels[currentLocale];
+  const supabase = useMemo(() => createClient(), []);
 
   const [documents, setDocuments] = useState<any[]>([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const translation = useDocumentTranslation(currentLocale, setMessage);
+  const preview = useDocumentCover();
 
   async function loadDocuments() {
     const { data, error } = await supabase
@@ -168,6 +176,7 @@ export default function DocumentsAdmin() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading || translation.busy || preview.state === "busy") return;
     setMessage("");
     setLoading(true);
 
@@ -175,7 +184,7 @@ export default function DocumentsAdmin() {
     const form = new FormData(formElement);
 
     const file = form.get("file") as File;
-    const previewFile = form.get("preview") as File;
+    const previewFile = preview.cover;
     const titleRu = String(form.get("title_ru") || "").trim();
     const titleUz = String(form.get("title_uz") || "").trim();
     const titleEn = String(form.get("title_en") || "").trim();
@@ -213,9 +222,7 @@ export default function DocumentsAdmin() {
     let previewUrl = "";
 
     if (previewFile && previewFile.size > 0) {
-      const previewExt =
-        previewFile.name.split(".").pop()?.toLowerCase() || "jpg";
-      const previewPath = `${stamp}-preview.${previewExt}`;
+      const previewPath = `${stamp}-preview.jpg`;
 
       const { error: previewUploadError } = await supabase.storage
         .from("document-previews")
@@ -266,6 +273,7 @@ export default function DocumentsAdmin() {
 
     setMessage(t.saved);
     formElement.reset();
+    void preview.select();
     await loadDocuments();
     setLoading(false);
   }
@@ -312,15 +320,9 @@ export default function DocumentsAdmin() {
       >
         <h2 className="text-2xl font-black text-slate-900">{t.addTitle}</h2>
 
-        <div className="mt-7 grid gap-5 lg:grid-cols-3">
-          <input name="title_ru" placeholder={t.titleRu} className="rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          <input name="title_uz" placeholder={t.titleUz} className="rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          <input name="title_en" placeholder={t.titleEn} className="rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-
-          <textarea name="description_ru" placeholder={t.descriptionRu} className="min-h-28 rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          <textarea name="description_uz" placeholder={t.descriptionUz} className="min-h-28 rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          <textarea name="description_en" placeholder={t.descriptionEn} className="min-h-28 rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-        </div>
+        <fieldset disabled={loading || translation.busy} className="mt-5 min-w-0">
+        <EditorialTranslation locale={currentLocale} {...translation} />
+        <DocumentTextFields source={translation.source} />
 
         <div className="mt-5 grid gap-5 lg:grid-cols-3">
           <label className="block">
@@ -330,19 +332,17 @@ export default function DocumentsAdmin() {
 
           <label className="block">
             <span className="mb-2 block text-sm font-bold text-slate-700">{t.file}</span>
-            <input name="file" type="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
+            <input name="file" type="file" onChange={e => void preview.select(e.currentTarget.files?.[0])} required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
           </label>
 
-          <label className="block">
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.preview}</span>
-            <input name="preview" type="file" accept="image/jpeg,image/png,image/webp" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
-          </label>
+          <DocumentCoverField locale={currentLocale} {...preview} />
         </div>
 
-        <button type="submit" disabled={loading} className="mt-7 rounded-xl bg-blue-700 px-7 py-3.5 font-bold text-white transition hover:bg-blue-800 disabled:opacity-60">
+        <button type="submit" disabled={loading || translation.busy || preview.state === "busy"} className="mt-7 rounded-xl bg-blue-700 px-7 py-3.5 font-bold text-white transition hover:bg-blue-800 disabled:opacity-60">
           {loading ? t.saving : t.save}
         </button>
 
+        </fieldset>
         {message && (
           <p className="mt-5 rounded-xl bg-slate-100 p-4 text-sm text-slate-700">{message}</p>
         )}
@@ -357,7 +357,7 @@ export default function DocumentsAdmin() {
           <article key={doc.id} className="overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-sm">
             <div className="flex h-56 items-center justify-center bg-slate-100 text-6xl">
               {doc.preview_url ? (
-                <img src={doc.preview_url} alt={doc.title_ru || doc.file_name} className="h-full w-full object-contain p-3" />
+                <img src={doc.preview_url} alt={getLocalizedText(currentLocale, doc.title_ru, doc.title_uz, doc.title_en) || doc.file_name} className="h-full w-full object-contain p-3" />
               ) : (
                 <span>{getFileIcon(doc.file_name)}</span>
               )}
@@ -365,7 +365,7 @@ export default function DocumentsAdmin() {
 
             <div className="p-6">
               <p className="text-xs font-bold uppercase tracking-wide text-blue-700">{surveyText(locale, doc.category || t.defaultCategory)}</p>
-              <h3 className="mt-3 line-clamp-2 text-xl font-black text-slate-900">{doc.title_ru || doc.title_uz || doc.title_en}</h3>
+              <h3 className="mt-3 line-clamp-2 text-xl font-black text-slate-900">{getLocalizedText(currentLocale, doc.title_ru, doc.title_uz, doc.title_en)}</h3>
               <p className="mt-3 break-all text-sm text-slate-500">{doc.file_name}</p>
               <p className="mt-1 text-sm text-slate-500">{formatFileSize(doc.file_size)}</p>
 

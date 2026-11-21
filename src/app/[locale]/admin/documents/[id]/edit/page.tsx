@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Link, useRouter } from "@/i18n/routing";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
+import { DocumentCoverField, useDocumentCover } from "@/components/admin/DocumentCoverField";
+import { EditorialTranslation } from "@/components/admin/EditorialTranslation";
+import { DocumentTextFields } from "@/components/admin/DocumentTextFields";
+import { useDocumentTranslation } from "@/components/admin/useDocumentTranslation";
 
 const labels = {
   ru: {
@@ -101,11 +105,14 @@ export default function DocumentEditPage() {
   const currentLocale: "ru" | "uz" | "en" =
     locale === "uz" || locale === "en" ? locale : "ru";
   const t = labels[currentLocale];
+  const supabase = useMemo(() => createClient(), []);
 
   const [document, setDocument] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const translation = useDocumentTranslation(currentLocale, setMessage);
+  const preview = useDocumentCover();
 
   useEffect(() => {
     async function loadDocument() {
@@ -126,18 +133,19 @@ export default function DocumentEditPage() {
     }
 
     loadDocument();
-  }, [id, t.loadError]);
+  }, [id, t.loadError, supabase]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!document) return;
+    if (!document || saving || translation.busy || preview.state === "busy") return;
 
     setSaving(true);
     setMessage("");
 
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const newFile = form.get("file") as File;
-    const newPreview = form.get("preview") as File;
+    const newPreview = preview.cover;
 
     const updates: Record<string, any> = {
       title_ru: String(form.get("title_ru") || "").trim(),
@@ -173,12 +181,12 @@ export default function DocumentEditPage() {
       updates.file_url = data.publicUrl;
       updates.file_name = newFile.name;
       updates.file_type = newFile.type || ext;
+      updates.preview_url = "";
       updates.file_size = newFile.size;
     }
 
     if (newPreview && newPreview.size > 0) {
-      const ext = newPreview.name.split(".").pop()?.toLowerCase() || "jpg";
-      uploadedPreviewPath = `${stamp}-preview.${ext}`;
+      uploadedPreviewPath = `${stamp}-preview.jpg`;
 
       const { error } = await supabase.storage
         .from("document-previews")
@@ -219,13 +227,18 @@ export default function DocumentEditPage() {
       }
     }
 
-    if (uploadedPreviewPath) {
+    if (uploadedFilePath) {
       const oldPreviewPath = extractStoragePath(document.preview_url, "document-previews");
       if (oldPreviewPath) {
         await supabase.storage.from("document-previews").remove([oldPreviewPath]);
       }
     }
 
+    if (uploadedFilePath) {
+      const input = formElement.elements.namedItem("file");
+      if (input instanceof HTMLInputElement) input.value = "";
+      void preview.select();
+    }
     setMessage(t.saved);
     setSaving(false);
 
@@ -251,33 +264,9 @@ export default function DocumentEditPage() {
       <h1 className="mt-6 text-4xl font-black text-slate-900">{t.title}</h1>
 
       <form onSubmit={handleSubmit} className="mt-8 rounded-[28px] border border-slate-200 bg-white p-7 shadow-sm">
-        <div className="grid gap-5 lg:grid-cols-3">
-          <label>
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.titleRu}</span>
-            <input name="title_ru" defaultValue={document.title_ru || ""} className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.titleUz}</span>
-            <input name="title_uz" defaultValue={document.title_uz || ""} className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.titleEn}</span>
-            <input name="title_en" defaultValue={document.title_en || ""} className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          </label>
-
-          <label>
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.descriptionRu}</span>
-            <textarea name="description_ru" defaultValue={document.description_ru || ""} className="min-h-32 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.descriptionUz}</span>
-            <textarea name="description_uz" defaultValue={document.description_uz || ""} className="min-h-32 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.descriptionEn}</span>
-            <textarea name="description_en" defaultValue={document.description_en || ""} className="min-h-32 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
-          </label>
-        </div>
+        <fieldset disabled={saving || translation.busy} className="min-w-0">
+        <EditorialTranslation locale={currentLocale} {...translation} />
+        <DocumentTextFields source={translation.source} document={document} />
 
         <div className="mt-5 grid gap-5 lg:grid-cols-3">
           <label>
@@ -287,19 +276,16 @@ export default function DocumentEditPage() {
 
           <label>
             <span className="mb-2 block text-sm font-bold text-slate-700">{t.replaceFile}</span>
-            <input name="file" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
+            <input name="file" type="file" onChange={e => void preview.select(e.currentTarget.files?.[0])} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
             <a href={document.file_url} target="_blank" rel="noreferrer" className="mt-2 block break-all text-sm font-semibold text-blue-700">
               {t.currentFile}: {document.file_name}
             </a>
           </label>
 
-          <label>
-            <span className="mb-2 block text-sm font-bold text-slate-700">{t.replacePreview}</span>
-            <input name="preview" type="file" accept="image/jpeg,image/png,image/webp" className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm" />
-            {document.preview_url && (
-              <img src={document.preview_url} alt={t.currentPreview} className="mt-3 h-28 w-full rounded-xl bg-slate-100 object-contain p-2" />
-            )}
-          </label>
+          <div>
+            <DocumentCoverField locale={currentLocale} {...preview} />
+            {preview.state === "idle" && document.preview_url && <img src={document.preview_url} alt={t.currentPreview} className="mt-3 h-28 w-full rounded-xl bg-slate-100 object-contain p-2" />}
+          </div>
         </div>
 
         <label className="mt-6 flex items-center gap-3">
@@ -307,10 +293,11 @@ export default function DocumentEditPage() {
           <span className="font-bold text-slate-700">{t.published}</span>
         </label>
 
-        <button type="submit" disabled={saving} className="mt-7 rounded-xl bg-blue-700 px-7 py-3.5 font-bold text-white transition hover:bg-blue-800 disabled:opacity-60">
+        <button type="submit" disabled={saving || translation.busy || preview.state === "busy"} className="mt-7 rounded-xl bg-blue-700 px-7 py-3.5 font-bold text-white transition hover:bg-blue-800 disabled:opacity-60">
           {saving ? t.saving : t.save}
         </button>
 
+        </fieldset>
         {message && (
           <p className="mt-5 rounded-xl bg-slate-100 p-4 text-sm text-slate-700">{message}</p>
         )}

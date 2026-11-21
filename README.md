@@ -35,3 +35,9 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 <!-- Netlify redeploy: Resend appeal notifications 2026-09-30 -->
+
+### Автоперевод материалов и обложки
+
+Для кнопки «Перевести на два языка» включите **Cloud Translation API** в проекте Google Cloud и добавьте ключ с ограничением на этот API в переменную Netlify **`GOOGLE_CLOUD_TRANSLATION_API_KEY`** для Functions. После добавления запустите новый деплой. Ключ не должен иметь префикс `NEXT_PUBLIC_`. Перевод выполняется только после нажатия кнопки администратором c MFA. Редактору нужно проверить перевод перед публикацией; уже заполненные языковые поля сохраняются. Без ключа доступен ручной ввод.
+
+Обложка документа рассчитывается в браузере: для PDF используется первая страница, для DOCX/XLSX/PPTX — встроенная миниатюра, когда она есть. Если обложка обязательна для файла Office, экспортируйте его в PDF и загрузите PDF. Защищённые PDF и файлы свыше 50 МБ можно публиковать без автоматически созданной обложки, если загрузку принимает хранилище.
