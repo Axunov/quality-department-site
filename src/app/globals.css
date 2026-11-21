@@ -745,11 +745,53 @@ button:not(:disabled), summary { cursor: pointer; }
 .dark .home-modern .section-heading > a { color: #b6edf4; border-color: #486074; }
 .dark .home-modern .section-heading > a:hover { background: #183a51; }
 @media (prefers-reduced-motion: no-preference) {
-  .home-modern .hero-copy { animation: editorial-entrance .54s ease-out both; }
   .home-modern :is(.news-compact, .document-row, .bento-small) { transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
   .home-modern :is(.news-compact, .document-row, .bento-small):is(:hover, :focus-visible) { transform: translateY(-3px); box-shadow: 0 14px 28px rgb(19 64 91 / .14); }
 }
 @media (prefers-reduced-motion: reduce) {
   .home-modern :is(.news-compact, .document-row, .bento-small) { transition: none; transform: none; }
 }
-@keyframes editorial-entrance { from { opacity: .65; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* Home page motion: the static layout remains readable without animation. */
+.home-modern .home-service-icon { display: inline-flex; width: fit-content; color: #1d5aa7; }
+.home-modern [data-home-motion="appeal"] .home-service-icon { color: #147065; }
+.dark .home-modern .home-service-icon { color: #9dc9ff; }
+.dark .home-modern [data-home-motion="appeal"] .home-service-icon { color: #73dfc1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-modern .hero-campus-photo {
+    translate: 0 var(--campus-drift, 0px);
+    transform-origin: 66% 44%;
+    animation: campus-open 1.25s cubic-bezier(.2,.75,.22,1) both;
+  }
+  .home-modern .hero-copy > * { animation: home-intro .58s cubic-bezier(.2,.8,.24,1) backwards; }
+  .home-modern .hero-title { animation-delay: .08s; }
+  .home-modern .hero-description { animation-delay: .16s; }
+  .home-modern .hero-actions { animation-delay: .24s; }
+  .home-modern .hero-privacy { animation-delay: .31s; }
+  .home-modern .hero-secondary { animation-delay: .37s; }
+  .home-modern .hero-copy:focus-within > * { animation: none; }
+
+  .home-modern [data-home-motion] { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  .home-modern [data-home-motion]:is(:hover, :focus-within) {
+    transform: translateY(-3px);
+    border-color: #78b6b6;
+    box-shadow: 0 10px 24px rgb(19 64 91 / .15);
+  }
+  .home-modern .home-motion-seen { animation: home-intro .38s ease-out; }
+  .home-modern .home-motion-seen .home-icon-stroke { stroke-dasharray: 1; animation: home-draw .56s ease-out backwards; }
+  .home-modern .home-motion-seen .home-icon-bar {
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    animation: home-bar .48s cubic-bezier(.18,.75,.41,1.1) backwards;
+  }
+  .home-modern .home-motion-seen .home-icon-second { animation-delay: .1s; }
+  .home-modern .home-motion-seen .home-icon-third { animation-delay: .2s; }
+}
+@keyframes campus-open { from { scale: 1.15; } to { scale: 1.07; } }
+@keyframes home-intro { from { opacity: .55; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
+@keyframes home-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes home-bar { from { opacity: .5; scale: 1 .2; } to { opacity: 1; scale: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .home-modern .bento-small:hover { transform: none; }
+}
