@@ -7,6 +7,7 @@ import { getNews } from "@/services/news.service";
 import { getDocuments } from "@/services/documents.service";
 import { getLocalizedText } from "@/utils/getLocalizedText";
 import { surveyText } from "@/lib/surveyI18n";
+import { HomeMotion } from "@/components/home/HomeMotion";
 import { ServiceHub } from "@/components/home/ServiceHub";
 import PresidentQuote from "@/components/home/PresidentQuote";
 import OfficialPortals from "@/components/home/OfficialPortals";
@@ -22,6 +23,7 @@ export default async function HomePage({params}:{params:Promise<{locale:string}>
  const [news,documents]=await Promise.all([getNews(3),getDocuments(3)]);
  const dateLocale=l==='uz'?'uz-UZ':l==='en'?'en-GB':'ru-RU';
  return <main className="public-main home-modern">
+  <HomeMotion/>
   <section className="home-hero">
    <Image src="/images/institute.webp" alt="" fill priority sizes="100vw" quality={85} className="hero-campus-photo"/>
    <div className="hero-campus-shade" aria-hidden="true"/>
