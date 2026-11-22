@@ -4,6 +4,8 @@ import { surveyText } from "@/lib/surveyI18n";
 
 
 import Image from "next/image";
+import { portalLocale } from "@/data/portal";
+import { catalogCopy } from "@/data/surveyCatalog";
 import OfficialPortals from "@/components/home/OfficialPortals";
 import { Link, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
@@ -48,6 +50,8 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold">{t("quickLinks")}</h3>
             <div className="mt-5 grid gap-3 text-blue-100">
+              <Link href="/surveys">{catalogCopy[portalLocale(currentLocale)].catalog}</Link>
+              <Link href="/monitoring">{catalogCopy[portalLocale(currentLocale)].monitoring}</Link>
               <Link href="/about">{t("about")}</Link>
               <Link href="/employees">{t("employees")}</Link>
               <Link href="/news">{t("news")}</Link>

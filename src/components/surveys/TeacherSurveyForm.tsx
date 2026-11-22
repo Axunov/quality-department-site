@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { matchesSurveyGroup, studyModes, studyMode, type StudyMode } from "@/lib/surveyGroupSearch";
 import { surveyJourney } from "@/data/surveyJourney";
 import { useRouter } from "@/i18n/routing";
 import { localizedTeacherSurvey } from "@/data/teacherSurvey";
@@ -110,6 +111,13 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
   const started = useRef(false);
 
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const groupCopy = {
+    ru: { query:"Поиск группы по номеру или названию", mode:"Форма обучения", all:"Все формы", full:"Очная", part:"Заочная", distance:"Дистанционная", other:"Не указана", none:"Нет групп по выбранным условиям. Измените поиск или форму обучения.", found:"Групп найдено" },
+    uz: { query:"Guruh raqami yoki nomi bo‘yicha qidirish", mode:"Ta’lim shakli", all:"Barcha shakllar", full:"Kunduzgi", part:"Sirtqi", distance:"Masofaviy", other:"Ko‘rsatilmagan", none:"Guruh topilmadi. Qidiruvni yoki ta’lim shaklini o‘zgartiring.", found:"Topilgan guruhlar" },
+    en: { query:"Find a group by number or name", mode:"Study mode", all:"All modes", full:"Full-time", part:"Part-time", distance:"Distance learning", other:"Unspecified", none:"No groups match. Change the search or study mode.", found:"Groups found" },
+  }[lang];
+  const [searchGroup, setSearchGroup] = useState("");
+  const [mode, setMode] = useState<StudyMode | "all">("all");
   const [groups,setGroups]=useState<Group[]>([]),[groupId,setGroupId]=useState("");
   const [answers, setAnswers] = useState<TeacherAnswer[]>([]);
   const [satisfaction, setSatisfaction] = useState(0);
@@ -117,6 +125,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
   const [busy, setBusy] = useState(true);
   const [message, setMessage] = useState("");
   const [done, setDone] = useState(false);
+  const visibleGroups = groups.filter(g => (mode === "all" || studyMode(g.name) === mode) && matchesSurveyGroup(g.name, searchGroup));
 
   useEffect(() => {
     if (started.current) return;
@@ -247,7 +256,19 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
           <p className="mt-4 max-w-3xl leading-7 text-blue-50">{t.intro}</p>
         </header>
 
-        {teachers.length===0&&<section className="rounded-[28px] border bg-white p-6 shadow-sm sm:p-8"><label className="block font-black">{t.group}<select value={groupId} onChange={e=>setGroupId(e.target.value)} className="mt-3 w-full rounded-xl border bg-white p-4"><option value="">—</option>{groups.map(group=><option key={group.id} value={group.id}>{group.name}</option>)}</select></label><button disabled={!groupId||busy} onClick={()=>void loadSurvey().then(() => requestAnimationFrame(() => stepHeading.current?.focus())).catch(() => { setMessage(t.error); setBusy(false); })} className="mt-4 rounded-xl bg-blue-700 px-6 py-3 font-black text-white disabled:opacity-50">{t.open}</button></section>}
+        {teachers.length === 0 && <section className="campus-card">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="min-w-0 text-sm font-bold">{groupCopy.query}<input type="search" disabled={busy} maxLength={80} className="mt-2 w-full rounded-xl border border-slate-300 bg-white p-3" value={searchGroup} onChange={event => { setSearchGroup(event.target.value); setGroupId(""); setMessage(""); }} /></label>
+            <label className="min-w-0 text-sm font-bold">{groupCopy.mode}<select className="mt-2 w-full rounded-xl border border-slate-300 bg-white p-3" value={mode} disabled={busy} onChange={event => { setMode(event.target.value as StudyMode | "all"); setGroupId(""); setMessage(""); }}>
+              <option value="all">{groupCopy.all}</option>{studyModes.map(value => <option key={value} value={value}>{groupCopy[value]}</option>)}
+            </select></label>
+          </div>
+          {!busy && groups.length > 0 && <p className="mt-3 text-sm text-slate-600" role="status">{visibleGroups.length ? `${groupCopy.found}: ${visibleGroups.length}` : groupCopy.none}</p>}
+          <label className="mt-4 block text-sm font-black">{t.group}<select value={groupId} disabled={busy || !visibleGroups.length} onChange={e => { setGroupId(e.target.value); setMessage(""); }} className="mt-2 w-full rounded-xl border border-slate-300 bg-white p-3">
+            <option value="">—</option>{visibleGroups.map(group => <option key={group.id} value={group.id}>{group.name}</option>)}
+          </select></label>
+          <button type="button" disabled={!groupId || busy} onClick={() => void loadSurvey().then(() => requestAnimationFrame(() => stepHeading.current?.focus())).catch(() => { setMessage(t.error); setBusy(false); })} className="mt-4 w-fit rounded-xl bg-blue-700 px-6 py-3 font-black text-white disabled:opacity-50">{t.open}</button>
+        </section>}
 
         {busy && teachers.length === 0 && (
           <section className="rounded-[28px] border border-slate-200 bg-white p-10 text-center shadow-sm">

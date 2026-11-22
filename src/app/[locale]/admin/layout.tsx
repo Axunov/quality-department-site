@@ -110,6 +110,20 @@ export default function AdminLayout({
     { href: "/admin/tools",  label: t.tools,  icon: Wrench,},
   ];
 
+  const grouped = {
+    ru: ["Обзор и обращения", "Публикации", "Опросы и мониторинг", "Аккредитация и настройки"],
+    uz: ["Umumiy ko‘rinish va murojaatlar", "Nashrlar", "So‘rovlar va monitoring", "Akkreditatsiya va sozlamalar"],
+    en: ["Overview and appeals", "Publishing", "Surveys and monitoring", "Accreditation and settings"],
+  }[currentLocale];
+  const groups = [
+    menuItems.filter(item => item.href === "/admin" || item.href === "/admin/tools/appeals"),
+    menuItems.filter(item => ["/admin/news", "/admin/documents", "/admin/employees"].includes(item.href)),
+    menuItems.filter(item => item.href.startsWith("/admin/surveys/") || ["/admin/monitoring", "/admin/hemis-quiz"].includes(item.href)),
+    menuItems.filter(item => ["/admin/accreditation", "/admin/security", "/admin/tools"].includes(item.href)),
+  ];
+  const currentItem = menuItems.filter(item => pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href + "/")))
+    .sort((a, b) => b.href.length - a.href.length)[0];
+
   if (isLoginPage) {
     return <>{children}</>;
   }
@@ -126,11 +140,10 @@ export default function AdminLayout({
           </div>
 
           <nav id="admin-navigation" className={`${navigationOpen ? "grid" : "hidden"} mt-5 gap-1 md:block md:space-y-1`}>
-            {menuItems.map((item) => {
-              const active =
-                item.href === "/admin"
-                  ? pathname === "/admin"
-                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            {groups.map((items, index) => <div key={grouped[index]} className="mb-4" role="group" aria-label={grouped[index]}>
+              <p className="mb-1 px-3 text-xs font-bold text-slate-500">{grouped[index]}</p>
+              {items.map((item) => {
+              const active = currentItem?.href === item.href;
               const Icon = item.icon;
 
               return (
@@ -151,6 +164,7 @@ export default function AdminLayout({
                 </Link>
               );
             })}
+            </div>)}
 
             <Link
               href="/"
@@ -162,7 +176,7 @@ export default function AdminLayout({
           </nav>
       </>}>
 
-        <section><div className="admin-topbar"><p className="text-sm font-semibold text-slate-600">{menuItems.filter(x=>x.href==='/admin'?pathname===x.href:pathname===x.href||pathname.startsWith(`${x.href}/`)).sort((a,b)=>b.href.length-a.href.length)[0]?.label || t.panel}</p><LanguageSwitcher/></div><div className="p-4 sm:p-6 lg:p-8">{children}</div></section>
+        <section><div className="admin-topbar"><p className="text-sm font-semibold text-slate-600">{currentItem?.label || t.panel}</p><LanguageSwitcher/></div><div className="p-4 sm:p-6 lg:p-8">{children}</div></section>
       </DashboardLayout>
     </main>
   );
