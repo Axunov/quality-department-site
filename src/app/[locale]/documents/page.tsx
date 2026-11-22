@@ -69,6 +69,7 @@ export default async function DocumentsPage({ params, searchParams }: {
         const size = bytes >= 1024 * 1024 ? (bytes / (1024 * 1024)).toFixed(1) + " MB" : bytes >= 1024 ? Math.round(bytes / 1024) + " KB" : bytes ? bytes + " B" : "";
         const date = dateOf(d);
         return <article className="campus-card" key={d.id}>
+          {preview && <figure className="mb-4 flex h-64 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-2 sm:h-72"><img src={preview} alt={t.cover + ": " + title} loading="lazy" className="h-full w-full object-contain" /></figure>}
           <div className="flex items-start gap-3"><FileText size={23} aria-hidden="true" className="shrink-0 text-blue-700"/><h2 className="font-bold">{title}</h2></div>
           <p className="mt-2 text-sm text-slate-600">{[d.category ? surveyText(l, d.category) : "", extension(d), size].filter(Boolean).join(" · ")}</p>
           {date && <p className="mt-1 text-sm text-slate-600">{t.added}: {dateFormat.format(date)}</p>}
@@ -76,7 +77,6 @@ export default async function DocumentsPage({ params, searchParams }: {
           <div className="mt-auto flex flex-wrap gap-3 pt-4">
             {file && <a href={file} target="_blank" rel="noopener noreferrer" className="campus-filter font-bold">{t.open}</a>}
             {file && <a href={file} download={d.file_name || true} className="campus-filter font-bold">{t.download}<span className="sr-only">: {title}</span></a>}
-            {preview && <details className="w-full rounded-xl border border-slate-200 p-3"><summary className="cursor-pointer text-sm font-semibold">{t.cover}</summary><img src={preview} alt={t.cover + ": " + title} loading="lazy" className="mt-3 max-h-80 w-full object-contain" /></details>}
           </div>
         </article>;
       })}

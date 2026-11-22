@@ -39,10 +39,11 @@ async function mutate(request: NextRequest, mode: "create" | "update" | "delete"
     }
     if (![fields.title_ru, fields.title_uz, fields.title_en].some(Boolean)) return NextResponse.json({ error: "titleRequired" }, { status: 400 });
     if (typeof body.category !== "string" || body.category.length > 100) return NextResponse.json({ error: "size" }, { status: 400 });
-    const values = { ...fields, category: body.category.trim() || "Новости", media_items: media, image_url: mediaCover(media), gallery_urls: media.filter(m => m.type === "image").map(m => m.url) };
+    if (body.published !== undefined && typeof body.published !== "boolean") return NextResponse.json({ error:"format" }, { status:400 });
+    const values = { ...(typeof body.published === "boolean" ? {published:body.published} : {}), ...fields, category: body.category.trim() || "Новости", media_items: media, image_url: mediaCover(media), gallery_urls: media.filter(m => m.type === "image").map(m => m.url) };
     const slug = (fields.title_en || fields.title_uz || "news").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0,80) || "news";
     const result = mode === "create"
-      ? await admin.from("news").insert({ ...values, slug: `${slug}-${crypto.randomUUID().slice(0,8)}`, published: true, author: "Admin" }).select("id,slug").single()
+      ? await admin.from("news").insert({ ...values, slug: `${slug}-${crypto.randomUUID().slice(0,8)}`, published: typeof body.published === "boolean" ? body.published : true, author: "Admin" }).select("id,slug").single()
       : await admin.from("news").update(values).eq("id", body.id).select("id,slug").single();
     if (result.error) return NextResponse.json({ error: "saveError" }, { status: 503 });
     refresh(result.data.slug);

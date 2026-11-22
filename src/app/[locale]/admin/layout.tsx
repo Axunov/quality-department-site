@@ -17,6 +17,7 @@ const labels = {
     tools: "Инструменты",
     dashboard: "Обзор",
     news: "Новости",
+    institute: "Контингент и ППС",
     documents: "Документы",
     employees: "Сотрудники",
     surveys: "Опрос студентов",
@@ -36,6 +37,7 @@ const labels = {
     tools: "Vositalar",
     dashboard: "Umumiy ko‘rinish",
     news: "Yangiliklar",
+    institute: "Kontingent va o‘qituvchilar",
     documents: "Hujjatlar",
     employees: "Xodimlar",
     surveys: "Talabalar so‘rovi",
@@ -55,6 +57,7 @@ const labels = {
     tools: "Tools",
     dashboard: "Dashboard",
     news: "News",
+    institute: "Enrolment and teaching staff",
     documents: "Documents",
     employees: "Employees",
     surveys: "Student survey",
@@ -94,6 +97,7 @@ export default function AdminLayout({
 
   const menuItems = [
     { href: "/admin", label: t.dashboard, icon: LayoutDashboard },
+    { href: "/admin/institute-analytics", label: t.institute, icon: BarChart3 },
     { href: "/admin/news", label: t.news, icon: Newspaper },
     { href: "/admin/documents", label: t.documents, icon: FileText },
     { href: "/admin/employees", label: t.employees, icon: Users },
@@ -118,7 +122,7 @@ export default function AdminLayout({
   const groups = [
     menuItems.filter(item => item.href === "/admin" || item.href === "/admin/tools/appeals"),
     menuItems.filter(item => ["/admin/news", "/admin/documents", "/admin/employees"].includes(item.href)),
-    menuItems.filter(item => item.href.startsWith("/admin/surveys/") || ["/admin/monitoring", "/admin/hemis-quiz"].includes(item.href)),
+    menuItems.filter(item => item.href.startsWith("/admin/surveys/") || ["/admin/monitoring", "/admin/hemis-quiz", "/admin/institute-analytics"].includes(item.href)),
     menuItems.filter(item => ["/admin/accreditation", "/admin/security", "/admin/tools"].includes(item.href)),
   ];
   const currentItem = menuItems.filter(item => pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href + "/")))
