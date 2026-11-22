@@ -9,7 +9,7 @@ test("monitoring counts forms per question and keeps rating scales distinct", as
   const learning = JSON.parse(fs.readFileSync("src/data/learningQualitySurvey.json", "utf8"));
   const [q1,q2] = learning.questions;
   const rows = {
-    survey_submissions: [{id:"a",final_satisfaction:5},{id:"b",final_satisfaction:4}],
+    survey_submissions: [{id:"a",final_satisfaction:5,created_at:"2026-10-31T20:31:00Z"},{id:"b",final_satisfaction:4}],
     survey_teacher_answers: [
       {submission_id:"a",teacher_id:"t1",ratings:[5,0]},
       {submission_id:"a",teacher_id:"t2",ratings:[3,0]},
@@ -44,6 +44,8 @@ test("monitoring counts forms per question and keeps rating scales distinct", as
   const {reports} = await load("src/lib/surveyMonitoring.ts").buildSurveyMonitoring("en",true);
   const [teacher,student,employer,graduate] = reports;
   assert.equal(teacher.total,2);
+  assert.equal(teacher.teacherEvaluations,3);
+  assert.deepEqual(teacher.byPeriod,[{label:"2026-11",value:1}]);
   assert.deepEqual(teacher.questions[0].values,[{label:"4",value:2}]);
   assert.equal(teacher.questions[1].total,2);
   assert.equal(teacher.questions[1].average,5);

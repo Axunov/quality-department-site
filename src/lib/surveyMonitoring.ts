@@ -15,6 +15,7 @@ export type SurveyReport = {
   title: string;
   total: number;
   average: number | null;
+  teacherEvaluations?: number;
   byPeriod: MonitoringItem[];
   byCategory: MonitoringItem[];
   distributions: { label: string; values: MonitoringItem[] }[];
@@ -64,7 +65,7 @@ function average(values: number[]) {
 
 function monthLabel(value: unknown) {
   const date = new Date(String(value));
-  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 7);
+  return Number.isNaN(date.getTime()) ? "" : new Date(date.getTime() + 5 * 60 * 60 * 1000).toISOString().slice(0, 7);
 }
 
 function periodCounts(rows: Row[]) {
@@ -164,7 +165,7 @@ export async function buildSurveyMonitoring(lang: Lang = "ru", publicView = fals
   return {
     generatedAt: new Date().toISOString(),
     reports: [
-      { key: "teacher", title: word("Преподаватель глазами студента", "O‘qituvchi talaba nigohida", "Teacher Through the Eyes of a Student"), total: submissions.length, average: overall.average, byPeriod: periodCounts(submissions), byCategory: publicView ? localeRows(submissions) : countValues(submissions.map(row => groupNames.get(String(row.group_id)) || word("Группа не указана", "Guruh ko‘rsatilmagan", "Group not specified"))), distributions: [], questions: teacherQuestions },
+      { key: "teacher", title: word("Преподаватель глазами студента", "O‘qituvchi talaba nigohida", "Teacher Through the Eyes of a Student"), total: submissions.length, teacherEvaluations: [...bySubmission.values()].reduce((sum, answers) => sum + answers.size, 0), average: overall.average, byPeriod: periodCounts(submissions), byCategory: publicView ? localeRows(submissions) : countValues(submissions.map(row => groupNames.get(String(row.group_id)) || word("Группа не указана", "Guruh ko‘rsatilmagan", "Group not specified"))), distributions: [], questions: teacherQuestions },
       { key: "students", title: learningQualitySurvey.title[lang], total: student.length, average: null, byPeriod: periodCounts(student), byCategory: localeRows(student), distributions: [], questions: studentQuestions },
       { key: "employers", title: translate("Опрос работодателей"), total: employers.length, average: recommendation.average, byPeriod: periodCounts(employers), byCategory: localeRows(employers), distributions: [], questions: employerQuestions },
       qualityReport("graduates", translate("Опрос выпускников")),

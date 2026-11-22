@@ -10,6 +10,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import AccessibilityToggle from "./AccessibilityToggle";
 import ThemeToggle from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
+import { catalogCopy } from "@/data/surveyCatalog";
 import QuickSearch from "@/components/search/QuickSearch";
 import { portalLocale, portalUI } from "@/data/portal";
 import { useState } from "react";
@@ -32,10 +33,8 @@ export function Header() {
   const account = portalUI[portalLocale(locale)];
   const portalItems = [
     { href: "/self-assessment", label: portal.self },
-    { href: "/monitoring", label: portal.monitoring },
     { href: "/analytics", label: portal.analytics },
     { href: "/open-data", label: portal.open },
-    { href: "/appeals", label: portal.appeals },
     { href: "/faq", label: portal.faq },
     { href: "/surveys/teacher", label: portal.survey },
     { href: "/surveys/employers", label: portal.employerSurvey },
@@ -45,6 +44,9 @@ export function Header() {
   ];
 
   const navItems = [
+  { href: "/surveys", label: catalogCopy[currentLocale].title },
+  { href: "/appeals", label: portal.appeals },
+  { href: "/monitoring", label: portal.monitoring },
   { href: "/", label: t("home") },
   { href: "/about", label: t("about") },
   { href: "/employees", label: t("employees") },
@@ -99,8 +101,8 @@ export function Header() {
         </div>
 
         <nav className="hidden items-center justify-between gap-1 border-t border-slate-100 py-2 text-xs font-semibold lg:flex">
-          {navItems.filter(item => ["/", "/news", "/documents", "/accreditation"].includes(item.href)).map((item) => {
-            const active = pathname === item.href;
+          {navItems.filter(item => ["/surveys", "/appeals", "/monitoring", "/accreditation"].includes(item.href)).map((item) => {
+            const active = pathname === item.href || (item.href === "/surveys" && pathname.startsWith("/surveys/"));
                        
 
             return (
@@ -122,7 +124,7 @@ export function Header() {
           <details className="group relative" name="main-menu">
             <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-slate-700 hover:bg-blue-50">{account.about} <span aria-hidden="true">⌄</span></summary>
             <div className="header-dropdown absolute right-0 top-full grid min-w-48 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
-              {navItems.filter(item => ["/about", "/employees", "/contacts"].includes(item.href)).map(item => <Link key={item.href} href={item.href} onClick={event => event.currentTarget.closest("details")?.removeAttribute("open")} className="rounded-xl px-4 py-3 hover:bg-blue-50">{item.label}</Link>)}
+              {navItems.filter(item => ["/", "/about", "/news", "/documents", "/employees", "/contacts"].includes(item.href)).map(item => <Link key={item.href} href={item.href} onClick={event => event.currentTarget.closest("details")?.removeAttribute("open")} className="rounded-xl px-4 py-3 hover:bg-blue-50">{item.label}</Link>)}
             </div>
           </details>
           <details className="group relative" name="main-menu">

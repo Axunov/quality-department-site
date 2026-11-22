@@ -29,9 +29,9 @@ export default async function HomePage({params}:{params:Promise<{locale:string}>
    <div className="hero-campus-shade" aria-hidden="true"/>
    <div className="container-main hero-campus-content">
     <div className="hero-copy"><p className="hero-eyebrow">{t.name}</p><h1 className="hero-title">{t.title}</h1><p className="hero-description">{t.text}</p>
-     <div className="hero-actions"><Link href="/surveys/teacher" className="hero-action-primary">{t.survey}<ArrowUpRight size={18}/></Link><Link href="/appeals" className="hero-action">{t.appeal}</Link><Link href="/accreditation" className="hero-action hero-action-quiet">{t.accreditation}<ArrowUpRight size={16}/></Link></div>
+     <div className="hero-actions"><Link href="/surveys" className="hero-action-primary">{t.survey}<ArrowUpRight size={18}/></Link><Link href="/appeals" className="hero-action">{t.appeal}</Link><Link href="/portal" className="hero-action hero-action-quiet">{portalUI[l].account}<ArrowUpRight size={16}/></Link></div>
      <p className="hero-privacy"><ShieldCheck size={18} aria-hidden="true"/><span>{t.privacy}</span></p>
-     <div className="hero-secondary"><a href="#services">{l==='uz'?'Barcha xizmatlar':l==='en'?'Explore services':'Все сервисы'}<ArrowDown size={15}/></a><Link href="/portal">{portalUI[l].account}<ArrowUpRight size={15}/></Link></div>
+     <div className="hero-secondary"><a href="#services">{l==='uz'?'Barcha xizmatlar':l==='en'?'Explore services':'Все сервисы'}<ArrowDown size={15}/></a><Link href="/monitoring">{portalUI[l].monitoring}<ArrowUpRight size={15}/></Link></div>
     </div>
     <p className="hero-campus-caption"><span>{l==='uz'?'Bizning institut':l==='en'?'Our institute':'Наш институт'}</span>{l==='uz'?'SBUMIPTK · Toshkent':l==='en'?'SBUMIPTK · Tashkent':'СБУМИПТК · Ташкент'}</p>
    </div>

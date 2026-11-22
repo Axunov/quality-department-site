@@ -113,7 +113,9 @@ test('service cards, accreditation tabs and indicator dialogs stay accessible an
     language=locale;
     const {ServiceHub}=load('src/components/home/ServiceHub.tsx');
     const services=renderToStaticMarkup(React.createElement(ServiceHub,{locale}));
-    for(const kind of ['teacher','employers','graduates','doctoral']) assert.ok(services.includes(`/surveys/${kind}`));
+    for(const audience of ['students','employers','graduates','doctoral']) assert.ok(services.includes(`/surveys?audience=${audience}`));
+    const {fixedSurveys}=load('src/data/surveyCatalog.ts');
+    for(const kind of ['teacher','employers','graduates','doctoral','learning-quality']) assert.ok(fixedSurveys(locale).some(survey => survey.href === `/surveys/${kind}`));
     assert.ok(services.includes('/appeals')); assert.ok(services.includes('/accreditation?type=special'));
     for(const type of ['complex','special']) {
       const tabs=render('src/components/accreditation/AccreditationOverview.tsx',{locale,initialType:type});

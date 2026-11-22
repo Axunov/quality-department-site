@@ -15,6 +15,7 @@ const pick = (l: SearchLocale, ru?: string | null, uz?: string | null, en?: stri
 const clean = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 const normalize = (value: string) => value.normalize("NFKC").toLowerCase().replace(/[’‘ʻʼ`´]/g, "'").replace(/ё/g, "е").trim();
 const serviceLinks = [
+  ["/surveys", "Опросы и анкеты", "So‘rovlar va anketalar", "Surveys and questionnaires"],
   ["/surveys/teacher", "Преподаватель глазами студента", "O‘qituvchi talaba nigohida", "Teacher Through the Eyes of a Student"],
   ["/surveys/employers", "Опрос работодателей", "Ish beruvchilar so‘rovi", "Employer survey"],
   ["/surveys/graduates", "Опрос выпускников", "Bitiruvchilar so‘rovi", "Graduate survey"],
