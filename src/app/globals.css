@@ -840,3 +840,18 @@ footer .official-portals { color: var(--campus-ink); }
 .campus-filter[aria-pressed="true"] { background: #154c85; color: #fff; border-color: #154c85; }
 .campus-filter:hover, .campus-filter:focus-visible { border-color: #4286c9; }
 .dark .campus-filter[aria-pressed="true"] { background: #205f9e; }
+
+.indicator-description { overflow-wrap: anywhere; }
+@media (max-width: 1099px) {
+  .indicator-row { grid-template-columns: minmax(40px, auto) minmax(0, 1fr) auto; align-items: start; }
+  .indicator-row .indicator-code { grid-column: 1; grid-row: 1; }
+  .indicator-row .indicator-description { grid-column: 2; grid-row: 1; }
+  .indicator-row .indicator-row-status { grid-column: 2; grid-row: 2; justify-self: start; }
+  .indicator-row .indicator-deadline { grid-column: 2; grid-row: 3; }
+  .indicator-row .indicator-progress { grid-column: 3; grid-row: 1; }
+  .indicator-row > svg { display: none; }
+}
+@media (max-width: 639px) {
+  .workspace-content main > div { padding-inline: 12px; }
+  .indicator-drawer { width: 100vw; max-width: 100vw; }
+}
