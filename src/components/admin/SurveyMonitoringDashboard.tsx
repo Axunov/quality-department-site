@@ -1,7 +1,6 @@
 "use client";
 
 import { monitoringFormat } from "@/lib/monitoringFormat";
-import { jsPDF } from "jspdf";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Item = { label: string; value: number };
@@ -50,78 +49,6 @@ function BarChart({ items }: { items: Item[] }) {
   return <div className="space-y-3">{visible.map((item, index) => <div key={item.label}><div className="mb-1 flex justify-between gap-3 text-sm"><span className="truncate text-slate-700">{item.label}</span><b className="text-slate-900">{item.value}</b></div><div className="h-2.5 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full" style={{ width: `${Math.max(2, item.value / max * 100)}%`, backgroundColor: colors[index % colors.length] }} /></div></div>)}</div>;
 }
 
-function drawWrapped(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, max: number, line: number) {
-  const words = text.split(/\s+/);
-  let current = "";
-  for (const word of words) {
-    const next = current ? `${current} ${word}` : word;
-    if (ctx.measureText(next).width > max && current) { ctx.fillText(current, x, y); y += line; current = word; } else current = next;
-  }
-  if (current) { ctx.fillText(current, x, y); y += line; }
-  return y;
-}
-
-function drawPdfReport(report: Report, generatedAt: string, locale: string, t: Copy, units: { forms: string; other: string; note: string }) {
-  const fmt = monitoringFormat(locale);
-  const W = 794, H = 1123, scale = 2;
-  const canvas = document.createElement("canvas"); canvas.width = W * scale; canvas.height = H * scale;
-  const ctx = canvas.getContext("2d"); if (!ctx) return;
-  ctx.scale(scale, scale);
-  ctx.fillStyle = "#f4f8fb"; ctx.fillRect(0, 0, W, H);
-  const header = ctx.createLinearGradient(0, 0, W, 0); header.addColorStop(0, "#073b73"); header.addColorStop(1, "#087d83");
-  ctx.fillStyle = header; ctx.fillRect(0, 0, W, 190);
-  ctx.fillStyle = "#ffffff"; ctx.font = "700 20px Arial"; ctx.fillText(t.report, 44, 52);
-  ctx.font = "700 30px Arial"; let y = drawWrapped(ctx, report.title, 44, 96, 650, 38);
-  ctx.font = "400 14px Arial"; ctx.fillStyle = "rgba(255,255,255,.78)"; ctx.fillText(`${t.generated}: ${fmt.date(generatedAt)}`, 44, y + 12);
-  ctx.fillStyle = "#ffffff"; ctx.font = "700 13px Arial"; ctx.textAlign = "right"; ctx.fillText(t.department, 750, 52, 420); ctx.textAlign = "left";
-  y = 228;
-  const cards = [[t.total, String(report.total), "#0b4f8a"]];
-  if (report.average !== null) cards.push([t.average, fmt.number(report.average), "#2f9e62"]);
-  cards.forEach((card, index) => { const x = 44 + index * 220; ctx.beginPath(); ctx.fillStyle = "#ffffff"; ctx.roundRect(x, y, 196, 82, 16); ctx.fill(); ctx.fillStyle = "#687789"; ctx.font = "600 13px Arial"; ctx.fillText(card[0], x + 18, y + 27); ctx.fillStyle = card[2]; ctx.font = "700 31px Arial"; ctx.fillText(card[1], x + 18, y + 65); });
-  y += 118;
-  ctx.beginPath(); ctx.fillStyle = "#ffffff"; ctx.roundRect(44, y, 706, 310, 18); ctx.fill();
-  ctx.fillStyle = "#172b4d"; ctx.font = "700 20px Arial"; ctx.fillText(report.key === "teacher" ? t.groups : t.languages, 70, y + 38);
-  const categories = report.byCategory.filter(item => item.value > 0);
-  const items = categories.length > 6 ? [...categories.slice(0, 5), { label: units.other, value: categories.slice(5).reduce((sum, item) => sum + item.value, 0) }] : categories;
-  const total = Math.max(1, items.reduce((sum, item) => sum + item.value, 0)); let cursor = 0;
-  ctx.lineWidth = 28; ctx.lineCap = "butt";
-  items.forEach((item, index) => { const start = -Math.PI / 2 + cursor / total * Math.PI * 2; cursor += item.value; const end = -Math.PI / 2 + cursor / total * Math.PI * 2; ctx.strokeStyle = colors[index % colors.length]; ctx.beginPath(); ctx.arc(210, y + 170, 92, start, end); ctx.stroke(); });
-  ctx.fillStyle = "#172b4d"; ctx.font = "700 28px Arial"; ctx.textAlign = "center"; ctx.fillText(String(report.total), 210, y + 178); ctx.font = "600 12px Arial"; ctx.fillStyle = "#687789"; ctx.fillText(units.forms, 210, y + 199); ctx.textAlign = "left";
-  items.forEach((item, index) => { const lx = 365, ly = y + 82 + index * 34; ctx.fillStyle = colors[index % colors.length]; ctx.fillRect(lx, ly - 11, 12, 12); ctx.fillStyle = "#394b61"; ctx.font = "500 14px Arial"; ctx.fillText(item.label, lx + 22, ly, 245); ctx.font = "700 14px Arial"; ctx.fillText(`${item.value} (${fmt.percent(item.value / total)})`, 665, ly); });
-  y += 344;
-  const sections = [[t.period, report.byPeriod], ...report.distributions.map(item => [item.label, item.values])];
-  for (const section of sections) {
-    if (!section[1].length) continue;
-    ctx.beginPath(); ctx.fillStyle = "#ffffff"; ctx.roundRect(44, y, 706, 190, 18); ctx.fill();
-    ctx.fillStyle = "#172b4d"; ctx.font = "700 18px Arial"; ctx.fillText(String(section[0]), 70, y + 34);
-    const values = topItems(section[1] as Item[]), max = Math.max(1, ...values.map(item => item.value));
-    values.forEach((item, index) => { const yy = y + 65 + index * 20; ctx.fillStyle = "#687789"; ctx.font = "500 11px Arial"; ctx.fillText(fmt.month(item.label), 70, yy, 140); ctx.beginPath(); ctx.fillStyle = colors[index % colors.length]; ctx.roundRect(220, yy - 10, Math.max(4, 430 * item.value / max), 10, 5); ctx.fill(); ctx.fillStyle = "#172b4d"; ctx.font = "700 11px Arial"; ctx.fillText(String(item.value), 665, yy); });
-    y += 208;
-    if (y > 1020) break;
-  }
-  const doc = new jsPDF({ unit: "pt", format: "a4" });
-  doc.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, 595.28, 841.89, undefined, "FAST");
-  const filled = report.questions.filter(q => q.total > 0);
-  const questionChunks = Array.from({ length: Math.ceil(filled.length / 2) }, (_, index) => filled.slice(index * 2, index * 2 + 2));
-  for (const chunk of questionChunks) {
-    const qCanvas = document.createElement("canvas"); qCanvas.width = W * scale; qCanvas.height = H * scale;
-    const qctx = qCanvas.getContext("2d"); if (!qctx) continue; qctx.scale(scale, scale);
-    qctx.fillStyle = "#f4f8fb"; qctx.fillRect(0, 0, W, H);
-    const qHeader = qctx.createLinearGradient(0, 0, W, 0); qHeader.addColorStop(0, "#073b73"); qHeader.addColorStop(1, "#087d83"); qctx.fillStyle = qHeader; qctx.fillRect(0, 0, W, 130);
-    qctx.fillStyle = "#fff"; qctx.font = "700 22px Arial"; qctx.fillText(t.report, 44, 48); qctx.font = "700 24px Arial"; drawWrapped(qctx, report.title, 44, 85, 705, 24);
-    if (report.key === "teacher") { qctx.font = "500 12px Arial"; qctx.fillStyle = "#394b61"; drawWrapped(qctx, units.note, 46, 154, 700, 15); }
-    chunk.forEach((question, index) => {
-      const cardY = 190 + index * 400; qctx.beginPath(); qctx.fillStyle = "#fff"; qctx.roundRect(44, cardY, 706, 360, 18); qctx.fill();
-      qctx.fillStyle = "#172b4d"; qctx.font = "700 16px Arial"; drawWrapped(qctx, question.label, 68, cardY + 32, 620, 21);
-      qctx.fillStyle = "#687789"; qctx.font = "600 12px Arial"; qctx.fillText(units.forms + ": " + fmt.number(question.total) + (question.average === null ? "" : " · " + t.average + ": " + fmt.number(question.average)), 68, cardY + 96);
-      const max = Math.max(1, ...question.values.map(item => item.value));
-      question.values.forEach((item, itemIndex) => { const yy = cardY + 124 + itemIndex * 21; qctx.fillStyle = "#687789"; qctx.font = "500 11px Arial"; qctx.fillText(item.label, 68, yy, 200); qctx.beginPath(); qctx.fillStyle = colors[itemIndex % colors.length]; qctx.roundRect(285, yy - 9, Math.max(4, 350 * item.value / max), 9, 4); qctx.fill(); qctx.fillStyle = "#172b4d"; qctx.font = "700 11px Arial"; qctx.fillText(String(item.value), 655, yy); });
-    });
-    doc.addPage(); doc.addImage(qCanvas.toDataURL("image/png"), "PNG", 0, 0, 595.28, 841.89, undefined, "FAST");
-  }
-  doc.save(`monitoring-${report.key}-${locale}.pdf`);
-}
-
 export default function SurveyMonitoringDashboard({ locale }: { locale: string }) {
   const lang = locale === "uz" || locale === "en" ? locale : "ru";
   const t = copy[lang];
@@ -131,6 +58,19 @@ export default function SurveyMonitoringDashboard({ locale }: { locale: string }
   const [selected, setSelected] = useState("all");
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [pdfError,setPdfError]=useState(false);
+  const [printing,setPrinting]=useState(false);
+  async function download(report:Report,generatedAt:string){
+    if(printing)return;
+    setPrinting(true);setPdfError(false);
+    try{
+      const [{jsPDF},{layOutReport},response]=await Promise.all([import("jspdf"),import("@/lib/monitoringPdf"),fetch("/DejaVuSans.ttf")]);
+      if(!response.ok)throw new Error();
+      const bytes=new Uint8Array(await response.arrayBuffer());
+      let binary="";for(let i=0;i<bytes.length;i+=0x4000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x4000));
+      layOutReport(new jsPDF({unit:"mm",format:"a4"}),btoa(binary),report,generatedAt,lang).save(`monitoring-${report.key}-${lang}.pdf`);
+    } catch{setPdfError(true);} finally{setPrinting(false);}
+  }
   const load = useCallback(async () => { setLoading(true); setFailed(false); try { const response = await fetch("/api/admin/monitoring/" + lang, { cache: "no-store" }); if (!response.ok) throw new Error("load"); setPayload(await response.json()); } catch { setFailed(true); } finally { setLoading(false); } }, [lang]);
   useEffect(() => { void load(); }, [load]);
   const reports = useMemo(() => payload?.reports.filter(report => selected === "all" || report.key === selected) || [], [payload, selected]);
@@ -140,7 +80,8 @@ export default function SurveyMonitoringDashboard({ locale }: { locale: string }
   return <div className="space-y-6">
     <header className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><div><p className="text-sm font-black uppercase tracking-[.18em] text-cyan-700">{t.eyebrow}</p><h1 className="mt-3 text-4xl font-black tracking-tight text-slate-900">{t.title}</h1><p className="mt-3 max-w-3xl text-slate-500">{t.lead}</p><p className="mt-2 text-xs text-slate-400">{t.generated}: {fmt.date(payload.generatedAt)}</p></div><div className="flex flex-wrap gap-3"><select aria-label={t.filter} value={selected} onChange={event => setSelected(event.target.value)} className="rounded-xl border bg-white px-4 py-3 text-sm font-semibold"><option value="all">{t.all}</option>{payload.reports.map(report => <option key={report.key} value={report.key}>{report.title}</option>)}</select><button onClick={() => void load()} className="rounded-xl border border-blue-200 bg-white px-4 py-3 font-bold text-blue-800">{t.refresh}</button></div></header>
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"><section className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm font-semibold text-slate-500">{t.total}</p><strong className="mt-2 block text-4xl font-black text-blue-700">{total}</strong></section><section className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm font-semibold text-slate-500">{t.all}</p><strong className="mt-2 block text-4xl font-black text-cyan-700">{reports.length}</strong></section><section className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm font-semibold text-slate-500">{t.average}</p><strong className="mt-2 block text-4xl font-black text-emerald-700">{reports.length === 1 && reports[0].average !== null ? fmt.number(reports[0].average) : "—"}</strong></section></div>
+    {pdfError&&<p role="alert" className="rounded-xl bg-red-50 p-4">{t.error}</p>}
     {!reports.length && <div className="rounded-2xl bg-white p-10 text-center text-slate-500">{t.empty}</div>}
-    <div className="grid gap-6 xl:grid-cols-2">{reports.map(report => <article key={report.key} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm motion-safe:transition-shadow hover:shadow-md"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start"><div><h2 className="text-2xl font-black text-slate-900">{report.title}</h2><p className="mt-2 text-sm text-slate-500">{t.total}: <b>{report.total}</b>{report.average !== null && <> · {t.average}: <b>{fmt.number(report.average)}</b></>}</p></div><button onClick={() => drawPdfReport(report, payload.generatedAt, lang, t, units)} className="rounded-xl bg-blue-700 px-4 py-3 text-center text-sm font-bold text-white">{t.pdf}</button></div><div className="mt-6 rounded-2xl bg-slate-50 p-4"><h3 className="mb-4 text-sm font-bold text-blue-900">{report.key === "teacher" ? t.groups : t.languages}</h3><DonutChart items={report.byCategory} center={String(report.total)} label={units.forms} other={units.other} locale={lang} /></div><div className="mt-6 grid gap-6 md:grid-cols-2"><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.period}</h3>{report.byPeriod.length ? <BarChart items={report.byPeriod.map(item => ({ ...item, label: fmt.month(item.label) }))} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.distribution}</h3>{report.distributions.length ? <BarChart items={report.distributions[0].values} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section></div>{report.key === "teacher" && <p className="mt-5 rounded-xl bg-cyan-50 p-4 text-sm text-cyan-950">{units.note}</p>}<section className="mt-6"><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.questions}</h3><div className="grid gap-3 md:grid-cols-2">{report.questions.filter(question => question.total > 0).map(question => <QuestionCard key={question.id} question={question} responses={units.forms} noData={t.noData} locale={lang} />)}</div></section></article>)}</div>
+    <div className="grid gap-6 xl:grid-cols-2">{reports.map(report => <article key={report.key} className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm motion-safe:transition-shadow hover:shadow-md"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start"><div><h2 className="text-2xl font-black text-slate-900">{report.title}</h2><p className="mt-2 text-sm text-slate-500">{t.total}: <b>{report.total}</b>{report.average !== null && <> · {t.average}: <b>{fmt.number(report.average)}</b></>}</p></div><button disabled={printing} onClick={() => void download(report,payload.generatedAt)} className="rounded-xl bg-blue-700 px-4 py-3 text-center text-sm font-bold text-white">{t.pdf}</button></div><div className="mt-6 rounded-2xl bg-slate-50 p-4"><h3 className="mb-4 text-sm font-bold text-blue-900">{report.key === "teacher" ? t.groups : t.languages}</h3><DonutChart items={report.byCategory} center={String(report.total)} label={units.forms} other={units.other} locale={lang} /></div><div className="mt-6 grid gap-6 md:grid-cols-2"><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.period}</h3>{report.byPeriod.length ? <BarChart items={report.byPeriod.map(item => ({ ...item, label: fmt.month(item.label) }))} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section><section><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.distribution}</h3>{report.distributions.length ? <BarChart items={report.distributions[0].values} /> : <p className="text-sm text-slate-400">{t.empty}</p>}</section></div>{report.key === "teacher" && <p className="mt-5 rounded-xl bg-cyan-50 p-4 text-sm text-cyan-950">{units.note}</p>}<section className="mt-6"><h3 className="mb-3 text-sm font-black uppercase tracking-wide text-slate-500">{t.questions}</h3><div className="grid gap-3 md:grid-cols-2">{report.questions.filter(question => question.total > 0).map(question => <QuestionCard key={question.id} question={question} responses={units.forms} noData={t.noData} locale={lang} />)}</div></section></article>)}</div>
   </div>;
 }

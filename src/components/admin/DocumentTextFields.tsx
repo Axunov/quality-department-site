@@ -1,3 +1,4 @@
+import EditorialPreview from "./EditorialPreview";
 import { editorialLanguages, type EditorialLanguage } from "./EditorialTranslation";
 
 const fields = {
@@ -15,5 +16,6 @@ export function DocumentTextFields({ source, document }: { source: EditorialLang
         <label className="grid gap-2 text-sm font-semibold">{fields[lang][2]}<textarea name={`description_${lang}`} defaultValue={document?.[`description_${lang}`] || ""} className="min-h-28 rounded-lg border border-slate-300 bg-transparent p-3" /></label>
       </div>
     </details>)}
+    <EditorialPreview locale={source} field="description" />
   </div>;
 }

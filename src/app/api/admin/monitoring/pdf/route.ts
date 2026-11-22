@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { layOutReport } from "@/lib/monitoringPdf";
 import { jsPDF } from "jspdf";
 import { requireAdminMfa } from "@/lib/adminSecurity";
 import { buildSurveyMonitoring } from "@/lib/surveyMonitoring";
@@ -10,33 +13,13 @@ export async function GET(request: NextRequest) {
   if (!await requireAdminMfa()) return NextResponse.json({ error: "MFA required" }, { status: 403 });
   const key = request.nextUrl.searchParams.get("kind");
   try {
-    const { reports, generatedAt } = await buildSurveyMonitoring();
+    const lang=request.nextUrl.searchParams.get("locale");
+    const { reports, generatedAt } = await buildSurveyMonitoring(lang==="uz"||lang==="en"?lang:"ru");
     const report = reports.find(item => item.key === key);
     if (!report) return NextResponse.json({ error: "Unknown survey" }, { status: 404 });
 
-    const doc = new jsPDF({ unit: "mm", format: "a4" });
-    let y = 18;
-    const line = (text: string, size = 11, bold = false) => {
-      doc.setFont("helvetica", bold ? "bold" : "normal");
-      doc.setFontSize(size);
-      const wrapped = doc.splitTextToSize(text, 178) as string[];
-      doc.text(wrapped, 16, y);
-      y += wrapped.length * (size >= 16 ? 8 : 6) + 2;
-      if (y > 275) { doc.addPage(); y = 18; }
-    };
-    line("Education Quality Monitoring Report", 18, true);
-    line(report.title, 15, true);
-    line(`Generated: ${new Date(generatedAt).toLocaleString("en-GB")}`, 9);
-    line(`Total responses: ${report.total}`, 12, true);
-    line(`Average score: ${report.average ?? "not available"}`, 12, true);
-    line("Responses by period", 13, true);
-    for (const item of report.byPeriod) line(`${item.label}: ${item.value}`);
-    line("Main categories", 13, true);
-    for (const item of report.byCategory.slice(0, 30)) line(`${item.label}: ${item.value}`);
-    for (const distribution of report.distributions) {
-      line(distribution.label, 13, true);
-      for (const item of distribution.values.slice(0, 40)) line(`${item.label}: ${item.value}`);
-    }
+    const font=await readFile(join(process.cwd(),"public","DejaVuSans.ttf"));
+    const doc=layOutReport(new jsPDF({unit:"mm",format:"a4"}),font.toString("base64"),report,generatedAt,lang||"ru");
     const output = doc.output("arraybuffer");
     return new NextResponse(Buffer.from(output), {
       headers: {

@@ -1,0 +1,9 @@
+export const modes = ["full","part","remote","other"] as const;
+export type Mode = typeof modes[number];
+export const ageBands = ["under20","20to24","25to29","30to39","40to49","50to59","60plus","unknown"] as const;
+export type AgeBand = typeof ageBands[number];
+export type Counts = Record<Mode, number>;
+export type Programme = { code:string; level:"bachelor"|"master"|"other"; counts:Counts };
+export type Students = { kind:"students"; year:string; asOf:string; total:number; excluded:number; gender:{ male:number; female:number; unknown:number }; modes:Counts; programmes:Programme[]; age:Record<AgeBand,Counts> };
+export type Staff = { kind:"staff"; asOf:string; total:number; positions:number; doctoral:number; candidates:number; otherDegree:number; unknownDegree:number; averageAge:number|null; knownAge:number; age:Record<AgeBand,number>; departments:{key:string;label:string;total:number;doctoral:number;candidates:number;otherDegree:number}[] };
+export type Snapshot = Students | Staff;

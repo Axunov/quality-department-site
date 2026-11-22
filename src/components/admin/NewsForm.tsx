@@ -9,6 +9,7 @@ import { newsMediaCopy } from "@/lib/newsMediaCopy";
 import type { NewsItem } from "@/services/news.service";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 import { EditorialTranslation, editorialCopy, editorialLanguage, editorialLanguages, getEditorialTranslations, hasEditorialContent, translationError, type EditorialLanguage } from "./EditorialTranslation";
+import EditorialPreview, { publicationCopy } from "./EditorialPreview";
 import NewsMediaEditor from "@/components/admin/NewsMediaEditor";
 
 export default function NewsForm({ item }: { item?: NewsItem }) {
@@ -23,6 +24,7 @@ export default function NewsForm({ item }: { item?: NewsItem }) {
   const [editorKey, setEditorKey] = useState(0);
   const language = editorialLanguage(locale);
   const labels = editorialCopy[language];
+  const publication = publicationCopy[language];
   const [source, setSource] = useState(language);
   const [translating, setTranslating] = useState(false);
   const [expanded, setExpanded] = useState(Boolean(item));
@@ -68,7 +70,7 @@ export default function NewsForm({ item }: { item?: NewsItem }) {
     if (![fields.title_ru, fields.title_uz, fields.title_en].some(title => title.trim())) { setMessage(t.titleRequired); return; }
     setSaving(true); setMessage("");
     try {
-      const response = await fetch("/api/admin/news", { method: item ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...fields, ...(item ? { id: item.id } : {}), media_items: media }) });
+      const response = await fetch("/api/admin/news", { method: item ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...fields, published: form.get("published") === "yes", ...(item ? { id: item.id } : {}), media_items: media }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error === "session" ? t.session : result.error === "titleRequired" ? t.titleRequired : t.saveError);
       setMessage(t.saved);
@@ -89,7 +91,9 @@ export default function NewsForm({ item }: { item?: NewsItem }) {
       </details>)}
       <label className="block font-semibold">{tr("Категория")}<input name="category" defaultValue={item?.category || ""} maxLength={100} className="mt-2 w-full rounded-lg border p-3" /></label>
       <NewsMediaEditor items={media} setItems={setMedia} locale={locale} disabled={saving} onBusy={setUploading} />
-      <button disabled={saving || uploading} className="rounded-xl bg-blue-700 px-8 py-3 font-semibold text-white disabled:opacity-50">{saving ? t.saving : item ? t.save : t.publish}</button>
+      <EditorialPreview key={editorKey} locale={language} field="text" />
+      <label className="block text-sm font-semibold">{publication.status}<select name="published" className="ml-2 rounded-xl border bg-white p-3" defaultValue={item?.published ? "yes" : "no"}><option value="no">{publication.draft}</option><option value="yes">{publication.published}</option></select></label>
+      <button disabled={saving || uploading} className="rounded-xl bg-blue-700 px-8 py-3 font-semibold text-white disabled:opacity-50">{saving ? t.saving : publication.save}</button>
     </fieldset>
     {message && <p role="status" className="mt-4 rounded-lg bg-slate-100 p-4 text-sm font-medium">{message}</p>}
   </form>;
