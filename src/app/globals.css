@@ -795,3 +795,33 @@ button:not(:disabled), summary { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .home-modern .bento-small:hover { transform: none; }
 }
+
+/* Shared surfaces for the campus portal and working areas. */
+:root {
+  --campus-surface: #fff;
+  --campus-ink: #142b44;
+  --campus-line: #dce6ef;
+  --campus-hero: linear-gradient(130deg, #e8f2ff, #e7f7f4);
+  --campus-shadow: 0 12px 34px rgb(18 54 88 / .07);
+  --campus-radius: 22px;
+}
+.dark {
+  --campus-surface: #10243a;
+  --campus-ink: #e4edf7;
+  --campus-line: #29405a;
+  --campus-hero: linear-gradient(130deg, #152e4a, #113a41);
+  --campus-shadow: 0 12px 34px rgb(0 0 0 / .18);
+}
+.campus-banner { padding: clamp(1.5rem, 5vw, 4rem); border-radius: var(--campus-radius); color: var(--campus-ink); background: var(--campus-hero); border: 1px solid var(--campus-line); }
+.campus-card { display: flex; flex-direction: column; min-width: 0; padding: 1.4rem; border: 1px solid var(--campus-line); border-radius: var(--campus-radius); color: var(--campus-ink); background: var(--campus-surface); box-shadow: var(--campus-shadow); overflow-wrap: anywhere; transition: border-color .2s, box-shadow .2s; }
+a.campus-card:hover, a.campus-card:focus-visible { border-color: #3a80ce; box-shadow: 0 12px 30px rgb(40 91 150 / .16); }
+.quick-search { position: fixed; inset: 0; margin: auto; width: min(38rem, calc(100% - 1.5rem)); max-height: 85dvh; overflow: auto; color: var(--campus-ink); background: var(--campus-surface); border: 1px solid var(--campus-line); border-radius: var(--campus-radius); box-shadow: 0 24px 70px rgb(9 25 42 / .28); }
+.quick-search::backdrop { background: rgb(9 25 42 / .64); }
+.dark .quick-search a:hover, .dark .quick-search a:focus-visible, .dark .header-dropdown a:hover { background: #1e3853; }
+.header-dropdown { max-height: min(65dvh, 33rem); overflow-y: auto; }
+footer .official-portals { color: var(--campus-ink); }
+.survey-actions { position: relative; }
+@media (max-width: 639px) {
+  .survey-actions { position: sticky; z-index: 15; bottom: 0; padding: .75rem .25rem max(.75rem, env(safe-area-inset-bottom)); background: var(--campus-surface); box-shadow: 0 -8px 20px rgb(30 60 80 / .10); border-radius: 12px 12px 0 0; }
+}
+@media (prefers-reduced-motion: reduce) { .campus-card { transition: none; } }

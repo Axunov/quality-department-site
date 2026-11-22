@@ -10,7 +10,7 @@ import { surveyText } from "@/lib/surveyI18n";
 import { HomeMotion } from "@/components/home/HomeMotion";
 import { ServiceHub } from "@/components/home/ServiceHub";
 import PresidentQuote from "@/components/home/PresidentQuote";
-import OfficialPortals from "@/components/home/OfficialPortals";
+import { portalUI } from "@/data/portal";
 
 export const revalidate = 300;
 const copy = {
@@ -31,7 +31,7 @@ export default async function HomePage({params}:{params:Promise<{locale:string}>
     <div className="hero-copy"><p className="hero-eyebrow">{t.name}</p><h1 className="hero-title">{t.title}</h1><p className="hero-description">{t.text}</p>
      <div className="hero-actions"><Link href="/surveys/teacher" className="hero-action-primary">{t.survey}<ArrowUpRight size={18}/></Link><Link href="/appeals" className="hero-action">{t.appeal}</Link><Link href="/accreditation" className="hero-action hero-action-quiet">{t.accreditation}<ArrowUpRight size={16}/></Link></div>
      <p className="hero-privacy"><ShieldCheck size={18} aria-hidden="true"/><span>{t.privacy}</span></p>
-     <div className="hero-secondary"><a href="#services">{l==='uz'?'Barcha xizmatlar':l==='en'?'Explore services':'Все сервисы'}<ArrowDown size={15}/></a><Link href="/about">{t.about}<ArrowUpRight size={15}/></Link></div>
+     <div className="hero-secondary"><a href="#services">{l==='uz'?'Barcha xizmatlar':l==='en'?'Explore services':'Все сервисы'}<ArrowDown size={15}/></a><Link href="/portal">{portalUI[l].account}<ArrowUpRight size={15}/></Link></div>
     </div>
     <p className="hero-campus-caption"><span>{l==='uz'?'Bizning institut':l==='en'?'Our institute':'Наш институт'}</span>{l==='uz'?'SBUMIPTK · Toshkent':l==='en'?'SBUMIPTK · Tashkent':'СБУМИПТК · Ташкент'}</p>
    </div>
@@ -42,6 +42,5 @@ export default async function HomePage({params}:{params:Promise<{locale:string}>
   </section>
   <section className="container-main pb-14" aria-labelledby="home-documents"><div className="section-heading"><div><p className="section-eyebrow">{t.resources}</p><h2 id="home-documents" className="mt-2 text-3xl font-bold tracking-tight">{t.documents}</h2></div><Link href="/documents" className="text-sm font-semibold text-blue-700">{t.allDocuments} →</Link></div><div className="mt-6 grid gap-3">{documents.map(d=><a key={d.id} href={d.file_url||"/documents"} target="_blank" rel="noreferrer" className="document-row"><span className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-bold text-blue-700">{surveyText(l,d.category||t.documents)}</span><span className="min-w-0 flex-1 font-semibold">{getLocalizedText(l,d.title_ru||"",d.title_uz||"",d.title_en||"")}</span><ArrowUpRight size={20} className="shrink-0 text-slate-500"/></a>)}{!documents.length&&<p className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500">{t.emptyDocuments}</p>}</div></section>
   <PresidentQuote locale={l}/>
-  <OfficialPortals locale={l}/>
  </main>;
 }

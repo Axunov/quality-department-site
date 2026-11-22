@@ -1,5 +1,18 @@
 "use client";
-import { Link, usePathname } from "@/i18n/routing";
+import { usePathname } from "@/i18n/routing";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import WorkspaceSidebar from "@/components/dashboard/WorkspaceSidebar";
 import { LayoutDashboard, ListChecks, FileText, Users } from "lucide-react";
 const copy={ru:{title:"Рабочее пространство",home:"Мои индикаторы",complex:"Комплексная",special:"Специализированная",documents:"Документы",groups:"Рабочие группы",overview:"Обзор аккредитации"},uz:{title:"Ish maydoni",home:"Mening indikatorlarim",complex:"Kompleks",special:"Maxsus",documents:"Hujjatlar",groups:"Ishchi guruhlar",overview:"Akkreditatsiya sharhi"},en:{title:"Workspace",home:"My indicators",complex:"Institutional",special:"Programme",documents:"Documents",groups:"Working groups",overview:"Accreditation overview"}};
-export default function WorkspaceNavigation({locale,children}:{locale:string;children:React.ReactNode}){const path=usePathname(),t=copy[locale==='uz'||locale==='en'?locale:'ru'];return <div className="workspace-shell"><aside className="workspace-sidebar"><p className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-500">{t.title}</p><nav aria-label={t.title}>{([[t.home,'/accreditation/cabinet',LayoutDashboard],[t.complex,'/accreditation/complex',ListChecks],[t.special,'/accreditation/special',ListChecks],[t.documents,'/accreditation/complex/documents',FileText],[t.groups,'/accreditation/complex/working-groups',Users]] as const).map(([label,href,Icon])=><Link key={href} href={href} className={`workspace-nav-link ${path===href?'is-active':''}`} aria-current={path===href?'page':undefined}><Icon size={17}/>{label}</Link>)}<Link href="/accreditation" className="workspace-nav-link mt-4">← {t.overview}</Link></nav></aside><div className="workspace-content">{children}</div></div>}
+export default function WorkspaceNavigation({ locale, children }: { locale: string; children: React.ReactNode }) {
+  const path = usePathname();
+  const l = locale === "uz" || locale === "en" ? locale : "ru";
+  const t = copy[l];
+  const director = { ru: "Кабинет директора", uz: "Direktor kabineti", en: "Director dashboard" };
+  return <DashboardLayout sidebar={<WorkspaceSidebar locale={l} title={t.title} items={[
+    path === "/accreditation/director" ? [director[l], "/accreditation/director", LayoutDashboard] : [t.home, "/accreditation/cabinet", LayoutDashboard],
+    [t.complex, "/accreditation/complex", ListChecks], [t.special, "/accreditation/special", ListChecks],
+    [t.documents, "/accreditation/complex/documents", FileText], [t.groups, "/accreditation/complex/working-groups", Users],
+    [t.overview, "/accreditation", LayoutDashboard],
+  ]}/>}>{children}</DashboardLayout>;
+}
