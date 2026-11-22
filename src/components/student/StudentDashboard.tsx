@@ -112,6 +112,12 @@ export default function StudentDashboard({ locale }: { locale: string }) {
     );
   }
 
+  const actionable = genericSurveys.filter(survey => survey.status !== "completed" && (!survey.ends_at || Date.parse(survey.ends_at) >= Date.now())).length;
+  const stats = {
+    ru: ["Доступные назначенные опросы", "Непрочитанные уведомления"],
+    uz: ["Mavjud tayinlangan so‘rovlar", "O‘qilmagan bildirishnomalar"],
+    en: ["Available assigned surveys", "Unread notifications"],
+  }[lang];
   const status = profile.teacher_survey_completed
     ? t.completed
     : profile.teacher_survey_available
@@ -141,6 +147,11 @@ export default function StudentDashboard({ locale }: { locale: string }) {
         </button>
       </div>
 
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        <a href="#student-surveys" className="campus-card"><strong className="text-3xl font-black">{actionable}</strong><span className="mt-2 text-sm">{stats[0]}</span></a>
+        <button type="button" className="campus-card items-start text-left" onClick={() => router.push("/student/notifications")}><strong className="text-3xl font-black">{unread}</strong><span className="mt-2 text-sm">{stats[1]}</span></button>
+      </div>
+
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
         <button onClick={()=>router.push("/student/appeals")} className="rounded-2xl bg-blue-700 p-5 text-left font-black text-white shadow-sm"><span className="block text-2xl">✉️</span><span className="mt-2 block">{t.writeAppeal}</span></button>
         <button onClick={()=>router.push("/student/appeals")} className="rounded-2xl border border-slate-200 bg-white p-5 text-left font-black text-slate-900 shadow-sm"><span className="block text-2xl">📋</span><span className="mt-2 block">{t.myAppeals}</span></button>
@@ -151,7 +162,7 @@ export default function StudentDashboard({ locale }: { locale: string }) {
         {t.privacy}
       </p>
 
-      <section className="mt-9">
+      <section id="student-surveys" className="mt-9 scroll-mt-32">
         <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">{t.surveys}</h2>
         <article className="mt-5 overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
           <div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">

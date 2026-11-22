@@ -9,7 +9,9 @@ import { Link, usePathname } from "@/i18n/routing";
 import LanguageSwitcher from "./LanguageSwitcher";
 import AccessibilityToggle from "./AccessibilityToggle";
 import ThemeToggle from "./ThemeToggle";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import QuickSearch from "@/components/search/QuickSearch";
+import { portalLocale, portalUI } from "@/data/portal";
 import { useState } from "react";
 
 export function Header() {
@@ -27,6 +29,7 @@ export function Header() {
   } as const;
   const currentLocale = locale === "uz" || locale === "en" ? locale : "ru";
   const portal = portalLabels[currentLocale];
+  const account = portalUI[portalLocale(locale)];
   const portalItems = [
     { href: "/self-assessment", label: portal.self },
     { href: "/monitoring", label: portal.monitoring },
@@ -76,13 +79,13 @@ export function Header() {
           </Link>
 
           <div className="hidden shrink-0 items-center gap-2 lg:flex">
-            <Link href="/search" className="header-control" aria-label={t("search")}><Search size={19}/></Link>
             <ThemeToggle/><AccessibilityToggle compact label={t("accessibility")}/><LanguageSwitcher/>
-            <Link href="/accreditation/login" className="rounded-xl bg-[#123b60] px-4 py-2.5 text-sm font-semibold text-white">{currentLocale === 'ru' ? 'Войти' : currentLocale === 'uz' ? 'Kirish' : 'Sign in'}</Link>
+            <Link href="/portal" className="rounded-xl bg-[#123b60] px-4 py-2.5 text-sm font-semibold text-white">{account.account}</Link>
           </div>
 
-          <div className="flex items-center gap-2 lg:hidden">
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+          <QuickSearch locale={locale} />
+          <div className="lg:hidden"><ThemeToggle /></div>
           <button
             type="button"
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-[#0b3b78] lg:hidden"
@@ -96,7 +99,7 @@ export function Header() {
         </div>
 
         <nav className="hidden items-center justify-between gap-1 border-t border-slate-100 py-2 text-xs font-semibold lg:flex">
-          {navItems.map((item) => {
+          {navItems.filter(item => ["/", "/news", "/documents", "/accreditation"].includes(item.href)).map((item) => {
             const active = pathname === item.href;
                        
 
@@ -105,6 +108,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 locale={locale}
+                aria-current={active ? "page" : undefined}
                 className={`rounded-lg px-3 py-2 transition ${
                   active
                     ? "bg-[#0b3b78] text-white"
@@ -115,12 +119,18 @@ export function Header() {
               </Link>
             );
           })}
-          <details className="group relative">
+          <details className="group relative" name="main-menu">
+            <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-slate-700 hover:bg-blue-50">{account.about} <span aria-hidden="true">⌄</span></summary>
+            <div className="header-dropdown absolute right-0 top-full grid min-w-48 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+              {navItems.filter(item => ["/about", "/employees", "/contacts"].includes(item.href)).map(item => <Link key={item.href} href={item.href} onClick={event => event.currentTarget.closest("details")?.removeAttribute("open")} className="rounded-xl px-4 py-3 hover:bg-blue-50">{item.label}</Link>)}
+            </div>
+          </details>
+          <details className="group relative" name="main-menu">
             <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
               {portal.quality} <span aria-hidden="true" className="ml-1">⌄</span>
             </summary>
-            <div className="absolute right-0 top-[calc(100%+.6rem)] z-50 grid min-w-64 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
-              {portalItems.map((item) => <Link key={item.href} href={item.href} className="rounded-xl px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-700">{item.label}</Link>)}
+            <div className="header-dropdown absolute right-0 top-full z-50 grid min-w-64 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
+              {portalItems.map((item) => <Link key={item.href} href={item.href} onClick={event => event.currentTarget.closest("details")?.removeAttribute("open")} className="rounded-xl px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-700">{item.label}</Link>)}
             </div>
           </details>
         </nav>
@@ -129,9 +139,7 @@ export function Header() {
           <div className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-slate-100 py-4 lg:hidden">
             <div className="mb-4 flex items-center justify-between gap-3">
               <LanguageSwitcher />
-              <Link href="/search" onClick={() => setMenuOpen(false)} className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700" aria-label={t("search")}>
-                <Search aria-hidden="true" size={18} />
-              </Link>
+              <Link href="/portal" onClick={() => setMenuOpen(false)} className="rounded-xl bg-[#123b60] px-4 py-2.5 font-semibold text-white">{account.account}</Link>
             </div>
             <nav className="grid gap-1 text-sm font-semibold">
               {navItems.map((item) => (
@@ -150,7 +158,7 @@ export function Header() {
                 <Link key={item.href} href={item.href} locale={locale} onClick={() => setMenuOpen(false)} className="rounded-xl px-4 py-3 text-slate-700 hover:bg-blue-50">{item.label}</Link>
               ))}
             </nav>
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3"><Link href="/accreditation/login" onClick={() => setMenuOpen(false)} className="rounded-xl bg-[#123b60] px-4 py-3 font-semibold text-white">{currentLocale === 'ru' ? 'Войти' : currentLocale === 'uz' ? 'Kirish' : 'Sign in'}</Link>
+            <div className="mt-3 border-t border-slate-100 pt-3">
               <AccessibilityToggle label={t("accessibility")} />
             </div>
           </div>

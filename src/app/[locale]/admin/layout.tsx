@@ -7,6 +7,7 @@ import { useLocale } from "next-intl";
 import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import { LayoutDashboard, Newspaper, FileText, Users, ClipboardList, Building2, GraduationCap, FlaskConical, Mail, ListChecks, Landmark, ShieldCheck, Wrench, BarChart3, Menu, X } from "lucide-react";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 
 const labels = {
@@ -115,8 +116,7 @@ export default function AdminLayout({
 
   return (
     <main className="admin-shell min-h-screen bg-slate-50">
-      <div className="flex flex-col md:flex-row">
-        <aside className="admin-sidebar w-full border-b border-slate-200 bg-white p-4 text-slate-900 md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:self-start md:overflow-y-auto md:border-r md:border-b-0">
+      <DashboardLayout admin sidebar={<>
           <div className="flex items-start justify-between gap-3">
             <div>
             <h1 className="text-lg font-bold">{t.panel}</h1>
@@ -160,10 +160,10 @@ export default function AdminLayout({
             </Link>
             <AdminLogoutButton />
           </nav>
-        </aside>
+      </>}>
 
-        <section className="admin-content min-w-0 flex-1"><div className="admin-topbar"><p className="text-sm font-semibold text-slate-600">{menuItems.filter(x=>x.href==='/admin'?pathname===x.href:pathname===x.href||pathname.startsWith(`${x.href}/`)).sort((a,b)=>b.href.length-a.href.length)[0]?.label || t.panel}</p><LanguageSwitcher/></div><div className="p-4 sm:p-6 lg:p-8">{children}</div></section>
-      </div>
+        <section><div className="admin-topbar"><p className="text-sm font-semibold text-slate-600">{menuItems.filter(x=>x.href==='/admin'?pathname===x.href:pathname===x.href||pathname.startsWith(`${x.href}/`)).sort((a,b)=>b.href.length-a.href.length)[0]?.label || t.panel}</p><LanguageSwitcher/></div><div className="p-4 sm:p-6 lg:p-8">{children}</div></section>
+      </DashboardLayout>
     </main>
   );
 }

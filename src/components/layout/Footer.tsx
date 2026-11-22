@@ -4,17 +4,20 @@ import { surveyText } from "@/lib/surveyI18n";
 
 
 import Image from "next/image";
-import { Link } from "@/i18n/routing";
+import OfficialPortals from "@/components/home/OfficialPortals";
+import { Link, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export function Footer() {
   const currentLocale = useLocale();
+  const home = usePathname() === "/";
   const tr = (text: string) => surveyText(currentLocale, text);
 
   const t = useTranslations("Footer");
   const header = useTranslations("Header");
   return (
     <footer className="mt-0 bg-[#102a43] text-white">
+      {home && <OfficialPortals locale={currentLocale} />}
       <div className="container-main py-10">
         <div className="grid gap-10 lg:grid-cols-4">
           <div className="lg:col-span-2">
@@ -57,8 +60,8 @@ export function Footer() {
             <h3 className="text-lg font-bold">{t("contacts")}</h3>
             <div className="mt-5 space-y-3 text-blue-100">
               <p>📍 {header("address")}</p>
-              <p>☎ +998 90 322-26-29</p>
-              <p>✉ quality@sbumiptk.uz</p>
+              <p><a href="tel:+998903222629">☎ +998 90 322-26-29</a></p>
+              <p><a href="mailto:quality@sbumiptk.uz">✉ quality@sbumiptk.uz</a></p>
             </div>
           </div>
         </div>

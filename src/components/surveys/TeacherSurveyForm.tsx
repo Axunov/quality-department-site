@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { surveyJourney } from "@/data/surveyJourney";
 import { useRouter } from "@/i18n/routing";
 import { localizedTeacherSurvey } from "@/data/teacherSurvey";
 
@@ -101,6 +102,9 @@ const content = {
 export default function TeacherSurveyForm({ locale }: { locale: string }) {
   const lang = locale === "uz" || locale === "en" ? locale : "ru";
   const t = content[lang];
+  const ui = surveyJourney[lang];
+  const stepHeading = useRef<HTMLHeadingElement>(null);
+  const [step, setStep] = useState(0);
   const surveyText = localizedTeacherSurvey[lang];
   const router = useRouter();
   const started = useRef(false);
@@ -130,7 +134,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
       }
       const result=(await response.json()) as {groups?:Group[]};setGroups(result.groups||[]);setBusy(false);
     }
-    void loadGroups();
+    void loadGroups().catch(() => { setMessage(t.error); setBusy(false); });
   }, [t.error]);
 
   async function loadSurvey(){if(!groupId)return;setBusy(true);setMessage("");const response=await fetch("/api/student/survey/start",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({groupId})});if(!response.ok){setMessage(t.error);setBusy(false);return;}const result=await response.json() as {teachers?:Teacher[]};const list=result.teachers||[];
@@ -195,6 +199,22 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
     }
 
     setDone(true);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
+  function move(next: number) {
+    setMessage("");
+    setStep(next);
+    requestAnimationFrame(() => stepHeading.current?.focus());
+  }
+
+  function next() {
+    const answer = answers[step];
+    if (!answer || answer.ratings.some(rating => rating < 0) || !answer.violation) {
+      setMessage(t.required);
+      return;
+    }
+    move(step + 1);
   }
 
   if (done) {
@@ -227,7 +247,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
           <p className="mt-4 max-w-3xl leading-7 text-blue-50">{t.intro}</p>
         </header>
 
-        {teachers.length===0&&<section className="rounded-[28px] border bg-white p-6 shadow-sm sm:p-8"><label className="block font-black">{t.group}<select value={groupId} onChange={e=>setGroupId(e.target.value)} className="mt-3 w-full rounded-xl border bg-white p-4"><option value="">—</option>{groups.map(group=><option key={group.id} value={group.id}>{group.name}</option>)}</select></label><button disabled={!groupId||busy} onClick={()=>void loadSurvey()} className="mt-4 rounded-xl bg-blue-700 px-6 py-3 font-black text-white disabled:opacity-50">{t.open}</button></section>}
+        {teachers.length===0&&<section className="rounded-[28px] border bg-white p-6 shadow-sm sm:p-8"><label className="block font-black">{t.group}<select value={groupId} onChange={e=>setGroupId(e.target.value)} className="mt-3 w-full rounded-xl border bg-white p-4"><option value="">—</option>{groups.map(group=><option key={group.id} value={group.id}>{group.name}</option>)}</select></label><button disabled={!groupId||busy} onClick={()=>void loadSurvey().then(() => requestAnimationFrame(() => stepHeading.current?.focus())).catch(() => { setMessage(t.error); setBusy(false); })} className="mt-4 rounded-xl bg-blue-700 px-6 py-3 font-black text-white disabled:opacity-50">{t.open}</button></section>}
 
         {busy && teachers.length === 0 && (
           <section className="rounded-[28px] border border-slate-200 bg-white p-10 text-center shadow-sm">
@@ -248,7 +268,16 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
           </section>
         )}
 
+        {teachers.length > 0 && <section className="form-journey">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-bold">
+            <span>{step < teachers.length ? `${t.teacher} ${step + 1}/${teachers.length}` : t.general}</span>
+            <span>{step + 1}/{teachers.length + 1}</span>
+          </div>
+          <progress className="journey-progress" max={teachers.length + 1} value={step + 1} aria-label={ui.progress} />
+        </section>}
+
         {teachers.map((teacher, teacherIndex) => {
+          if (teacherIndex !== step) return null;
           const relation = Array.isArray(teacher.teachers)
             ? teacher.teachers[0]
             : teacher.teachers;
@@ -261,7 +290,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
               <p className="text-xs font-black uppercase tracking-[.18em] text-cyan-700">
                 {t.teacher} {teacherIndex + 1}/{teachers.length}
               </p>
-              <h2 className="mt-2 text-2xl font-black text-slate-900">
+              <h2 ref={stepHeading} tabIndex={-1} className="mt-2 scroll-mt-36 break-words text-2xl font-black text-slate-900">
                 {relation?.full_name}
               </h2>
               {teacher.subject && (
@@ -271,15 +300,15 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
 
               <div className="mt-6 space-y-6">
                 {surveyText.questions.map((question, questionIndex) => (
-                  <fieldset key={question}>
-                    <legend className="font-semibold leading-6 text-slate-800">
+                  <fieldset key={question} className="min-w-0">
+                    <legend className="max-w-full break-words font-semibold leading-6 text-slate-800">
                       {questionIndex + 1}. {question}
                     </legend>
                     <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
                       {[5, 4, 3, 2, 1, 0].map((value) => (
                         <label
                           key={value}
-                          className={`cursor-pointer rounded-xl border p-3 text-center text-sm transition ${
+                          className={`min-w-0 cursor-pointer break-words rounded-xl border p-3 text-center text-sm transition focus-within:ring-2 focus-within:ring-blue-500 ${
                             answers[teacherIndex]?.ratings[questionIndex] === value
                               ? "border-blue-700 bg-blue-700 text-white"
                               : "border-slate-200 hover:border-blue-300"
@@ -350,17 +379,18 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
           );
         })}
 
-        {teachers.length > 0 && (
+        {teachers.length > 0 && step === teachers.length && (
           <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
-            <h2 className="text-2xl font-black text-slate-900">{t.general}</h2>
+            <h2 ref={stepHeading} tabIndex={-1} className="scroll-mt-36 text-2xl font-black text-slate-900">{t.general}</h2>
 
-            <label className="mt-5 block font-semibold text-slate-800">
-              {t.satisfaction}
+            <fieldset className="mt-5 block font-semibold text-slate-800">
+              <legend>{t.satisfaction}</legend>
               <div className="mt-3 flex flex-wrap gap-2">
                 {[5, 4, 3, 2, 1].map((value) => (
                   <button
                     key={value}
                     type="button"
+                    aria-pressed={satisfaction === value}
                     onClick={() => setSatisfaction(value)}
                     className={`h-12 w-12 rounded-xl border text-lg font-black ${
                       satisfaction === value
@@ -372,7 +402,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
                   </button>
                 ))}
               </div>
-            </label>
+            </fieldset>
 
             <label className="mt-6 block font-semibold text-slate-800">
               {t.suggestions}
@@ -384,22 +414,17 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
               />
             </label>
 
-            {message && (
-              <p role="alert" className="mt-5 rounded-xl bg-amber-50 p-4 font-semibold text-amber-900">
-                {message}
-              </p>
-            )}
-
-            <button
-              type="button"
-              disabled={busy}
-              onClick={submit}
-              className="mt-6 w-full rounded-xl bg-emerald-700 px-6 py-4 text-lg font-black text-white hover:bg-emerald-800 disabled:opacity-50"
-            >
-              {busy ? t.loading : t.submit}
-            </button>
           </section>
         )}
+        {teachers.length > 0 && <div className="survey-actions">
+          {message && <p role="alert" className="mb-3 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-900">{message}</p>}
+          <div className="flex gap-3">
+            {step > 0 && <button type="button" disabled={busy} onClick={() => move(step - 1)} className="rounded-xl border border-slate-300 px-5 py-3 font-bold disabled:opacity-50">{ui.back}</button>}
+            {step < teachers.length
+              ? <button type="button" onClick={next} className="flex-1 rounded-xl bg-blue-700 px-5 py-3 font-bold text-white">{ui.next}</button>
+              : <button type="button" disabled={busy} onClick={() => void submit().catch(() => { setMessage(t.error); setBusy(false); })} className="flex-1 rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white disabled:opacity-50">{busy ? t.loading : t.submit}</button>}
+          </div>
+        </div>}
       </div>
     </main>
   );
