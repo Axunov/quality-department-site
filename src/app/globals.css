@@ -855,3 +855,49 @@ footer .official-portals { color: var(--campus-ink); }
   .workspace-content main > div { padding-inline: 12px; }
   .indicator-drawer { width: 100vw; max-width: 100vw; }
 }
+
+/* Interactive HEMIS charts: responsive layout, focus parity and optional motion. */
+.institute-chart { container-type: inline-size; min-width: 0; }
+.institute-chart-header { display: flex; flex-wrap: wrap; gap: .65rem 1rem; align-items: end; justify-content: space-between; }
+.institute-chart-hint { font-size: .8rem; color: var(--campus-muted, #54667c); margin-top: .15rem; }
+.institute-donut-layout { display: grid; gap: 1rem; align-items: center; margin-block: 1rem; }
+.institute-donut { position: relative; width: min(100%, 11rem); margin-inline: auto; }
+.institute-donut svg { width: 100%; overflow: visible; }
+.institute-donut-center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none; }
+.institute-donut-center strong { font-size: clamp(1.35rem, 5vw, 1.9rem); line-height: 1.12; }
+.institute-donut-center span { font-size: .85rem; opacity: .82; }
+.institute-donut-slice { cursor: pointer; opacity: .7; }
+.institute-donut-slice[data-active="true"] { stroke-width: 22; opacity: 1; }
+.institute-legend { display: grid; gap: .3rem; min-width: 0; }
+.institute-legend button, .institute-chart-row { display: grid; width: 100%; min-height: 44px; text-align: start; align-items: center; gap: .5rem; padding: .45rem .55rem; border: 1px solid transparent; border-radius: .65rem; font-size: .875rem; color: inherit; }
+.institute-legend button { grid-template-columns: auto minmax(0,1fr) auto; }
+.institute-legend button[data-active="true"], .institute-chart-row[data-active="true"] { border-color: var(--campus-line); background: color-mix(in srgb, var(--campus-surface), #3476df 10%); }
+.institute-legend button:focus-visible, .institute-chart-row:focus-visible { outline: 2px solid #3476df; outline-offset: 1px; }
+.institute-chart i { display: inline-block; }
+.institute-legend i, .institute-series i, .institute-chart-readout i { inline-size: .65rem; block-size: .65rem; border-radius: .2rem; flex: none; }
+.institute-chart-readout { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem .75rem; min-height: 3rem; margin-top: auto; align-items: center; padding: .7rem .85rem; border-radius: .75rem; background: color-mix(in srgb, var(--campus-surface), #3476df 10%); font-size: .85rem; }
+.institute-chart-readout-stack { display: grid; margin-top: .8rem; min-height: 5rem; }
+.institute-chart-readout ul, .institute-series { display: flex; flex-wrap: wrap; gap: .35rem 1rem; font-size: .8rem; }
+.institute-series { margin-block: .8rem .45rem; }
+.institute-series li, .institute-chart-readout li { display: inline-flex; align-items: center; gap: .35rem; }
+.institute-chart-rows { display: grid; gap: .15rem; }
+.institute-chart-row { grid-template-columns: minmax(0,1fr) auto; }
+.institute-chart-row > span:first-child { overflow-wrap: anywhere; }
+.institute-chart-row > strong { grid-column: 2; grid-row: 1; white-space: nowrap; }
+.institute-bar-track { display: flex; grid-row: 2; grid-column: 1 / -1; align-items: center; height: 13px; border-radius: 1rem; overflow: hidden; background: color-mix(in srgb, var(--campus-surface), #64768d 15%); }
+.institute-bar-track i { height: 8px; opacity: .78; }
+.institute-chart-row[data-active="true"] .institute-bar-track i { height: 13px; opacity: 1; }
+.institute-chart-filter { display: grid; gap: .2rem; font-size: .8rem; }
+.dark .institute-chart-hint { color: #bacdeb; }
+@container (min-width: 385px) {
+  .institute-donut-layout { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .institute-chart-row { grid-template-columns: minmax(6rem,.7fr) minmax(3rem,1.3fr) auto; }
+  .institute-chart-row > strong { grid-column: 3; }
+  .institute-bar-track { grid-column: 2; grid-row: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .institute-donut-slice { transition: stroke-width .23s ease, opacity .23s ease; }
+  .institute-bar-track i { transition: height .2s ease, opacity .2s ease; transform-origin: left; animation: institute-chart-grow .45s ease-out both; }
+  .institute-chart-row, .institute-legend button { transition: background-color .2s ease, border-color .2s ease; }
+  @keyframes institute-chart-grow { from { transform: scaleX(.1); opacity: .25; } to { transform: scaleX(1); } }
+}
