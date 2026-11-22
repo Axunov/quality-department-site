@@ -44,7 +44,7 @@ export function Header() {
 
   const navItems = [
   { href: "/", label: t("home") },
-  { href: "/about", label: t("about") },
+  { href: "/about", label: account.about },
   { href: "/analytics", label: portal.analytics },
   { href: "/surveys", label: catalogCopy[currentLocale].title },
   { href: "/appeals", label: portal.appeals },
