@@ -1,34 +1,113 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import type { Locale } from "@/lib/accreditation/specialData";
-import {responsibleLabel} from "@/lib/accreditation/localization";
+import { projectLabel, responsibleLabel } from "@/lib/accreditation/localization";
+import { indicatorHref } from "@/lib/accreditation/workspace";
 
 type Risk = {
-  id:string; project_code:string; status:string; completion_percent:number;
-  responsible_label:string|null; full_name:string|null; responsible_user_id:string|null;
-  due_date:string|null; overdue:boolean; days_left:number|null;
+  id: string; code: string; project_code: string; status: string; completion_percent: number;
+  responsible_label: string | null; full_name: string | null; responsible_user_id: string | null;
+  due_date: string | null; overdue: boolean; days_left: number | null;
 };
 
-export default function AccreditationControlCenter({locale:l,mode,projectCode="all"}:{locale:Locale;mode:"admin"|"director";projectCode?:string}){
-  const s=useMemo(()=>createClient(),[]),[rows,setRows]=useState<Risk[]>([]),[loading,setLoading]=useState(true),[q,setQ]=useState("");
-  const tx={
-    ru:{title:mode==="admin"?"Центр контроля 272 индикаторов":"Управленческая матрица",hint:"Цвет показывает готовность подразделения. Нажмите строку для детализации в зоне риска.",unit:"Ответственный",total:"Всего",approved:"Принято",review:"Проверка",revision:"Возврат",work:"В работе",draft:"Не начато",deadline:"Без срока",unassigned:"Не назначено",overload:"Перегружены",forecast:"Прогноз готовности",search:"Найти подразделение или сотрудника",empty:"Данные не найдены"},
-    uz:{title:mode==="admin"?"272 indikator nazorat markazi":"Boshqaruv matritsasi",hint:"Rang bo‘linmaning tayyorligini ko‘rsatadi. Xavf zonasida batafsil ko‘rish mumkin.",unit:"Mas’ul",total:"Jami",approved:"Qabul",review:"Tekshiruv",revision:"Qaytarilgan",work:"Jarayonda",draft:"Boshlanmagan",deadline:"Muddatsiz",unassigned:"Biriktirilmagan",overload:"Ortiqcha yuklama",forecast:"Tayyorlik prognozi",search:"Bo‘linma yoki xodimni topish",empty:"Ma’lumot topilmadi"},
-    en:{title:mode==="admin"?"272-indicator control centre":"Management matrix",hint:"Colour shows unit readiness. Use the risk zone for indicator-level detail.",unit:"Owner",total:"Total",approved:"Approved",review:"Review",revision:"Returned",work:"In progress",draft:"Not started",deadline:"No deadline",unassigned:"Unassigned",overload:"Overloaded",forecast:"Readiness forecast",search:"Find unit or employee",empty:"No data found"}
-  }[l];
-  useEffect(()=>{let active=true;(async()=>{const {data}=await s.from("accreditation_v6_risk").select("id,project_code,status,completion_percent,responsible_label,full_name,responsible_user_id,due_date,overdue,days_left");if(active){setRows((data||[]) as Risk[]);setLoading(false)}})();return()=>{active=false}},[s]);
-  const scopedRows=useMemo(()=>projectCode==="all"?rows:rows.filter(x=>x.project_code===projectCode),[rows,projectCode]);
-  const grouped=useMemo(()=>{const map=new Map<string,Risk[]>();for(const r of scopedRows){const key=r.full_name||responsibleLabel(r.responsible_label,l)||tx.unassigned;map.set(key,[...(map.get(key)||[]),r])}return [...map].map(([name,list])=>({name,list,total:list.length,approved:list.filter(x=>x.status==="approved").length,review:list.filter(x=>x.status==="review").length,revision:list.filter(x=>x.status==="revision").length,work:list.filter(x=>x.status==="in_progress").length,draft:list.filter(x=>x.status==="draft").length,noDeadline:list.filter(x=>!x.due_date&&x.status!=="approved").length,progress:Math.round(list.reduce((a,x)=>a+Number(x.completion_percent||0),0)/Math.max(1,list.length))})).filter(x=>x.name.toLowerCase().includes(q.toLowerCase())).sort((a,b)=>a.progress-b.progress||b.total-a.total)},[scopedRows,q,tx.unassigned,l]);
-  const assigned=scopedRows.filter(x=>x.responsible_user_id),unassigned=scopedRows.length-assigned.length,noDeadline=scopedRows.filter(x=>!x.due_date&&x.status!=="approved").length,overloaded=grouped.filter(x=>x.total>20).length;
-  const progress=scopedRows.length?Math.round(scopedRows.reduce((a,x)=>a+Number(x.completion_percent||0),0)/scopedRows.length):0;
-  const dated=scopedRows.filter(x=>x.due_date&&x.status!=="approved"),days=dated.map(x=>x.days_left).filter((x):x is number=>x!==null&&x>=0),avgDays=days.length?Math.round(days.reduce((a,b)=>a+b,0)/days.length):null;
-  const forecast=progress>=90?(l==="ru"?"Высокая готовность":l==="uz"?"Yuqori tayyorlik":"High readiness"):avgDays===null?(l==="ru"?"Нужны сроки":l==="uz"?"Muddatlar kerak":"Deadlines required"):avgDays<14?(l==="ru"?"Есть риск срыва":l==="uz"?"Kechikish xavfi bor":"Delivery risk"):l==="ru"?"Темп контролируемый":l==="uz"?"Sur’at nazoratda":"On track";
-  const heat=(n:number)=>n>=80?"bg-emerald-50 text-emerald-800":n>=50?"bg-amber-50 text-amber-900":"bg-red-50 text-red-800";
-  if(loading)return <section className="h-64 animate-pulse rounded-[28px] bg-slate-100"/>;
-  return <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm"><div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-2xl font-black text-slate-900">{tx.title}</h2><p className="mt-1 text-sm text-slate-500">{tx.hint}</p></div><div className={`rounded-2xl px-5 py-3 ${heat(progress)}`}><b className="text-3xl">{progress}%</b><p className="text-xs font-bold">{tx.forecast}: {forecast}</p></div></div>
-  <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{[[tx.total,scopedRows.length,"text-blue-800"],[tx.unassigned,unassigned,"text-violet-700"],[tx.deadline,noDeadline,"text-orange-700"],[tx.overload,overloaded,"text-red-700"]].map(([a,b,c])=><article key={String(a)} className="rounded-xl bg-slate-50 p-4"><b className={`text-3xl ${c}`}>{b}</b><p className="text-sm text-slate-500">{a}</p></article>)}</div>
-  <input value={q} onChange={e=>setQ(e.target.value)} placeholder={tx.search} className="mt-5 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"/>
-  <div className="mt-4 overflow-x-auto"><table className="w-full min-w-[850px] text-left text-sm"><thead className="border-b text-xs uppercase text-slate-500"><tr><th className="pb-3">{tx.unit}</th><th>{tx.total}</th><th>{tx.approved}</th><th>{tx.review}</th><th>{tx.revision}</th><th>{tx.work}</th><th>{tx.draft}</th><th>{tx.deadline}</th><th>%</th></tr></thead><tbody>{grouped.map(x=><tr key={x.name} className="border-b border-slate-100"><td className="max-w-sm py-3 pr-4 font-semibold">{x.name}</td><td>{x.total}</td><td className="text-emerald-700">{x.approved}</td><td className="text-amber-700">{x.review}</td><td className="text-red-700">{x.revision}</td><td>{x.work}</td><td>{x.draft}</td><td className={x.noDeadline?"font-bold text-orange-700":""}>{x.noDeadline}</td><td><span className={`inline-block min-w-16 rounded-lg px-2 py-1 text-center font-black ${heat(x.progress)}`}>{x.progress}%</span></td></tr>)}</tbody></table>{!grouped.length&&<p className="p-6 text-center text-slate-500">{tx.empty}</p>}</div></section>;
+const copy = {
+  ru: { admin:"Центр контроля индикаторов", director:"Готовность по ответственным", hint:"Откройте строку, чтобы увидеть её просроченные индикаторы, задачи на доработке и остальные позиции.", unit:"Ответственный", total:"Индикаторов", approved:"Принято", review:"На проверке", revision:"На доработке", overdue:"Просрочено", noDeadline:"Без срока", unassigned:"Не назначено", readiness:"Готовность", forecast:"Прогноз готовности", high:"Высокая готовность", needDates:"Нужны сроки", deliveryRisk:"Есть риск срыва", onTrack:"Темп контролируемый", search:"Найти подразделение или сотрудника", empty:"Подходящих данных нет.", loading:"Загружаем матрицу…", loadError:"Не удалось загрузить матрицу. Можно повторить запрос.", retry:"Повторить", all:"Все позиции", open:"Открыть индикатор", more:"Показать ещё", method:"Готовность — среднее значение процентов выполнения индикаторов. Просроченные и возвращённые задачи могут совпадать.", working:"В работе", draft:"Не начато" },
+  uz: { admin:"Indikatorlar nazorat markazi", director:"Mas’ullar bo‘yicha tayyorlik", hint:"Muddati o‘tgan, qayta ishlashga qaytarilgan va boshqa indikatorlarni ko‘rish uchun qatorni oching.", unit:"Mas’ul", total:"Indikatorlar", approved:"Qabul qilingan", review:"Tekshiruvda", revision:"Qayta ishlashda", overdue:"Muddati o‘tgan", noDeadline:"Muddatsiz", unassigned:"Biriktirilmagan", readiness:"Tayyorlik", forecast:"Tayyorlik prognozi", high:"Yuqori tayyorlik", needDates:"Muddatlar kerak", deliveryRisk:"Kechikish xavfi bor", onTrack:"Sur’at nazoratda", search:"Bo‘linma yoki xodimni topish", empty:"Mos ma’lumot topilmadi.", loading:"Matritsa yuklanmoqda…", loadError:"Matritsa yuklanmadi. Qayta urinib ko‘ring.", retry:"Qayta urinish", all:"Barcha indikatorlar", open:"Indikatorni ochish", more:"Yana ko‘rsatish", method:"Tayyorlik — indikatorlarning bajarilish foizlari o‘rtachasi. Muddati o‘tgan va qaytarilgan vazifalar bir-biriga mos kelishi mumkin.", working:"Jarayonda", draft:"Boshlanmagan" },
+  en: { admin:"Indicator control centre", director:"Readiness by owner", hint:"Expand a row to see overdue indicators, tasks returned for revision, and other items.", unit:"Owner", total:"Indicators", approved:"Approved", review:"Under review", revision:"For revision", overdue:"Overdue", noDeadline:"No deadline", unassigned:"Unassigned", readiness:"Readiness", forecast:"Readiness forecast", high:"High readiness", needDates:"Deadlines needed", deliveryRisk:"Delivery risk", onTrack:"On track", search:"Find a unit or staff member", empty:"No matching data.", loading:"Loading the matrix…", loadError:"Could not load the matrix. Try again.", retry:"Retry", all:"All indicators", open:"Open indicator", more:"Show more", method:"Readiness is the average completion percentage across indicators. Overdue and returned indicators can overlap.", working:"In progress", draft:"Not started" },
+} as const;
+
+type Filter = "all" | "overdue" | "revision";
+const pageSize = 15;
+
+export default function AccreditationControlCenter({ locale:l, mode, projectCode="all" }: { locale:Locale; mode:"admin"|"director"; projectCode?:string }) {
+  const s = useMemo(() => createClient(), []);
+  const [rows,setRows] = useState<Risk[] | null>(null);
+  const [loading,setLoading] = useState(true);
+  const [q,setQ] = useState("");
+  const [attempt,setAttempt] = useState(0);
+  const [expanded,setExpanded] = useState<string | null>(null);
+  const [filter,setFilter] = useState<Filter>("all");
+  const [limit,setLimit] = useState(pageSize);
+  const t = copy[l];
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      try {
+        const {data,error} = await s.from("accreditation_v6_risk")
+          .select("id,code,project_code,status,completion_percent,responsible_label,full_name,responsible_user_id,due_date,overdue,days_left")
+          .order("id");
+        if (active) setRows(error ? null : (data ?? []) as Risk[]);
+      } catch { if (active) setRows(null); }
+      finally { if (active) setLoading(false); }
+    })();
+    return () => { active = false; };
+  }, [s,attempt]);
+
+  const scopedRows = (rows ?? []).filter(row => projectCode === "all" || row.project_code === projectCode);
+  const units = new Map<string, { unit: string; name: string | null; items: Risk[] }>();
+  for (const row of scopedRows) {
+    const key = JSON.stringify([row.responsible_label || "", row.responsible_user_id || ""]);
+    const unit = units.get(key) ?? { unit:row.responsible_label ? responsibleLabel(row.responsible_label,l) : t.unassigned, name:row.full_name, items:[] };
+    unit.items.push(row);
+    units.set(key,unit);
+  }
+
+  const completion = (items: Risk[]) => items.length ? Math.round(items.reduce((sum,row)=>sum+Number(row.completion_percent || 0),0)/items.length) : 0;
+  const grouped = [...units.entries()].map(([key, unit]) => ({
+    key, ...unit, progress:completion(unit.items),
+    overdue:unit.items.filter(row=>row.overdue).length,
+    revision:unit.items.filter(row=>row.status === "revision").length,
+    approved:unit.items.filter(row=>row.status === "approved").length,
+  })).filter(unit=>`${unit.unit} ${unit.name || ""}`.toLowerCase().includes(q.trim().toLowerCase()))
+    .sort((a,b)=>b.overdue-a.overdue || b.revision-a.revision || a.progress-b.progress || a.unit.localeCompare(b.unit,l));
+  const progress = completion(scopedRows);
+  const days = scopedRows.filter(row=>row.status !== "approved" && row.days_left !== null && row.days_left >= 0).map(row=>row.days_left ?? 0);
+  const avgDays = days.length ? Math.round(days.reduce((sum,day)=>sum+day,0)/days.length) : null;
+  const forecast = progress >= 90 ? t.high : avgDays === null ? t.needDates : avgDays < 14 ? t.deliveryRisk : t.onTrack;
+  const statuses: Record<string,string> = { draft:t.draft, in_progress:t.working, review:t.review, revision:t.revision, approved:t.approved };
+  const date = new Intl.DateTimeFormat(l,{dateStyle:"medium",timeZone:"UTC"});
+
+  if (loading) return <section role="status" className="campus-card">{t.loading}</section>;
+  if (!rows) return <section className="campus-card"><p role="alert">{t.loadError}</p><button type="button" className="campus-filter mt-3 w-fit" onClick={()=>{setLoading(true);setAttempt(v=>v+1);}}>{t.retry}</button></section>;
+
+  return <section id="accreditation-matrix" className="campus-card scroll-mt-36">
+    <h2 className="text-2xl font-black">{mode === "admin" ? t.admin : t.director}</h2>
+    <p className="mt-2 text-sm leading-6 text-slate-600">{t.hint}</p>
+    <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {[[t.total,scopedRows.length],[t.overdue,scopedRows.filter(x=>x.overdue).length],[t.revision,scopedRows.filter(x=>x.status === "revision").length],[t.unassigned,scopedRows.filter(x=>!x.responsible_user_id).length],[t.noDeadline,scopedRows.filter(x=>x.status!=="approved"&&!x.due_date).length],[t.readiness,`${progress}%`]].map(([label,value])=><div key={label} className="rounded-xl border border-slate-200 p-4"><p className="text-sm font-semibold">{label}</p><strong className="mt-1 block text-2xl">{value}</strong></div>)}
+    </div>
+    {scopedRows.length > 0 && <p className="mt-3 text-sm text-slate-600">{t.forecast}: {forecast}. {t.method}</p>}
+    <label className="mt-5 text-sm font-semibold">{t.search}<input type="search" value={q} maxLength={100} onChange={e=>setQ(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3"/></label>
+    <div className="mt-4 grid gap-2">
+      {grouped.map(unit => {
+        const isOpen = expanded === unit.key;
+        const items = isOpen ? unit.items.filter(row=>filter === "all" || (filter === "overdue" ? row.overdue : row.status === "revision")).sort((a,b)=>Number(b.overdue)-Number(a.overdue) || (a.due_date ?? "9999").localeCompare(b.due_date ?? "9999") || a.code.localeCompare(b.code,l,{numeric:true})) : [];
+        return <article key={unit.key} className="rounded-xl border border-slate-200 p-3 sm:p-4">
+          <button type="button" aria-expanded={isOpen} className="flex w-full flex-wrap items-start justify-between gap-3 text-left" onClick={()=>{setExpanded(isOpen ? null : unit.key);setFilter(unit.overdue ? "overdue" : unit.revision ? "revision" : "all");setLimit(pageSize);}}>
+            <span className="min-w-0 flex-1 break-words"><strong className="block">{unit.unit}</strong>{unit.name && <span className="block text-sm font-normal text-slate-600">{unit.name}</span>}</span>
+            <span className="flex flex-wrap gap-x-3 gap-y-1 text-sm"><span>{t.overdue}: <b>{unit.overdue}</b></span><span>{t.revision}: <b>{unit.revision}</b></span><span>{t.readiness}: <b>{unit.progress}%</b></span><span aria-hidden="true">{isOpen ? "−" : "+"}</span></span>
+          </button>
+          {isOpen && <div className="mt-4 border-t border-slate-200 pt-4">
+            <div className="flex flex-wrap gap-2" role="group" aria-label={t.total}>
+              {([["all",t.all,unit.items.length],["overdue",t.overdue,unit.overdue],["revision",t.revision,unit.revision]] as const).map(([key,label,count])=><button key={key} type="button" className="campus-filter" aria-pressed={key===filter} onClick={()=>{setFilter(key);setLimit(pageSize);}}>{label}: {count}</button>)}
+            </div>
+            {!items.length ? <p className="mt-3 text-sm">{t.empty}</p> : <ul className="mt-4 grid gap-2">
+              {items.slice(0,limit).map(row=>{
+                const href = indicatorHref(row.project_code,row.code);
+                return <li key={row.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 p-3 text-sm">
+                  <div className="min-w-0 break-words"><strong>{row.code}</strong><p>{projectLabel(row.project_code,l)} · {statuses[row.status] ?? row.status}</p><p className={row.overdue ? "font-bold text-red-700" : "text-slate-600"}>{row.due_date ? date.format(new Date(row.due_date+"T00:00:00Z")) : t.noDeadline}</p></div>
+                  {href && <Link href={href} className="campus-filter font-semibold">{t.open}<span className="sr-only"> {row.code}</span></Link>}
+                </li>;
+              })}
+            </ul>}
+            {items.length > limit && <button type="button" className="campus-filter mt-3" onClick={()=>setLimit(value=>value+pageSize)}>{t.more}</button>}
+          </div>}
+        </article>;
+      })}
+      {!grouped.length && <p role="status" className="mt-3 text-sm text-slate-600">{t.empty}</p>}
+    </div>
+  </section>;
 }
