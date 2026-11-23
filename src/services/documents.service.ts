@@ -42,3 +42,12 @@ export async function getPublishedDocument(id: string) {
   const {data,error}=await supabase.from("documents").select("*").eq("id",id).eq("published",true).maybeSingle();
   return error ? null : data as DocumentItem|null;
 }
+
+export async function getDocumentRevisions(id:string, version?:string){
+  const table=supabase.from("document_public_revisions");
+  const [history,revision]=await Promise.all([
+    table.select("id,archived_at").eq("document_id",id).order("archived_at",{ascending:false}).limit(20),
+    version ? table.select("id,archived_at,snapshot").eq("document_id",id).eq("id",version).maybeSingle() : null,
+  ]);
+  return {history:history.data??[],revision:revision?.data??null};
+}

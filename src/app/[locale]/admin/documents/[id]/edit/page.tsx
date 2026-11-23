@@ -88,13 +88,7 @@ const labels = {
   },
 };
 
-function extractStoragePath(publicUrl?: string, bucket?: string) {
-  if (!publicUrl || !bucket) return null;
-  const marker = `/storage/v1/object/public/${bucket}/`;
-  const index = publicUrl.indexOf(marker);
-  if (index === -1) return null;
-  return decodeURIComponent(publicUrl.slice(index + marker.length));
-}
+
 
 export default function DocumentEditPage() {
   const params = useParams<{ id: string }>();
@@ -218,20 +212,6 @@ export default function DocumentEditPage() {
       setMessage(`${t.saveError}: ${error.message}`);
       setSaving(false);
       return;
-    }
-
-    if (uploadedFilePath) {
-      const oldPath = extractStoragePath(document.file_url, "documents");
-      if (oldPath) {
-        await supabase.storage.from("documents").remove([oldPath]);
-      }
-    }
-
-    if (uploadedFilePath) {
-      const oldPreviewPath = extractStoragePath(document.preview_url, "document-previews");
-      if (oldPreviewPath) {
-        await supabase.storage.from("document-previews").remove([oldPreviewPath]);
-      }
     }
 
     if (uploadedFilePath) {

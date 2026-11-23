@@ -18,7 +18,7 @@ export const presidentCopy = {
     label: "Ta’lim — taraqqiyot asosi",
     quote: "Ta’lim sifatini oşiriş – Yangi Özbekiston taraqqiyotining yakkayu yagona töğri yölidir.",
     name: "Şavkat Mirziyoyev",
-    role: "O‘zbekiston Respublikasi Prezidenti",
+    role: "Özbekiston Respublikasi Prezidenti",
     source: "Oliy Majlis va Özbekiston xalqiga Murojaatnoma",
     date: "2022-yil 20-dekabr",
     href: "https://president.uz/oz/lists/view/5774",
