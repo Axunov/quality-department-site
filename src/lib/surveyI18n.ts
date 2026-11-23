@@ -1,8 +1,8 @@
 // Translate displayed labels while preserving canonical stored answers.
 const translations: Record<string, { uz: string; en: string }> = {
-  "Опросы": {uz: "So‘rovnomalar", en: "Surveys"},
-  "Внутренние положения": {uz: "Ichki nizomlar", en: "Internal regulations"},
-  "Шаблоны": {uz: "Shablonlar", en: "Templates"},
+  "Опросы": {uz: "Sörovnomalar", en: "Surveys"},
+  "Внутренние положения": {uz: "Içki nizomlar", en: "Internal regulations"},
+  "Шаблоны": {uz: "Şablonlar", en: "Templates"},
   "Аккредитация": {uz: "Akkreditatsiya", en: "Accreditation"},
   "Объявления": {uz: "E’lonlar", en: "Announcements"},
   "Мероприятия": {uz: "Tadbirlar", en: "Events"},
@@ -19,11 +19,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Education quality"
   },
   "Трудоустройство": {
-    "uz": "Ishga joylashish",
+    "uz": "Işga joylaşiş",
     "en": "Employment"
   },
   "Проверка": {
-    "uz": "Tekshirish",
+    "uz": "Tekşiriş",
     "en": "Review"
   },
   "Общие сведения": {
@@ -39,19 +39,19 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Suggestions"
   },
   "Не удалось отправить анкету. Попробуйте ещё раз.": {
-    "uz": "So‘rovnomani yuborib bo‘lmadi. Qayta urinib ko‘ring.",
+    "uz": "Sörovnomani yuborib bölmadi. Qayta urinib köring.",
     "en": "The survey could not be submitted. Please try again."
   },
   "Ответ сохранён анонимно и уже учтён в мониторинге отдела качества.": {
-    "uz": "Javobingiz anonim saqlandi va sifat bo‘limi monitoringida hisobga olindi.",
+    "uz": "Javobingiz anonim saqlandi va sifat bölimi monitoringida hisobga olindi.",
     "en": "Your response was saved anonymously and included in the quality department’s monitoring."
   },
   "Опрос выпускников Института": {
-    "uz": "Institut bitiruvchilari so‘rovnomasi",
+    "uz": "Institut bitiruvçilari sörovnomasi",
     "en": "Institute graduate survey"
   },
   "Опрос докторантов об условиях обучения и научной деятельности": {
-    "uz": "Doktorantlarning ta’lim va ilmiy faoliyat sharoitlari bo‘yicha so‘rovnoma",
+    "uz": "Doktorantlarning ta’lim va ilmiy faoliyat şaroitlari böyiça sörovnoma",
     "en": "Doctoral survey on education and research conditions"
   },
   "Система качества": {
@@ -59,11 +59,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Quality system"
   },
   "Ваши ответы помогут оценить качество образовательных программ, условия обучения и востребованность полученных знаний и навыков на рынке труда.": {
-    "uz": "Javoblaringiz ta’lim dasturlari sifatini, o‘qish sharoitlarini hamda olingan bilim va ko‘nikmalarning mehnat bozoridagi talabga mosligini baholashga yordam beradi.",
+    "uz": "Javoblaringiz ta’lim dasturlari sifatini, öqiş şaroitlarini hamda olingan bilim va könikmalarning mehnat bozoridagi talabga mosligini baholaşga yordam beradi.",
     "en": "Your responses will help assess programme quality, learning conditions and the relevance of acquired knowledge and skills to the labour market."
   },
   "Ответы помогут улучшить условия обучения, научно-исследовательской работы и поддержки докторантов Института.": {
-    "uz": "Javoblaringiz institut doktorantlarining ta’lim, ilmiy tadqiqot va qo‘llab-quvvatlash sharoitlarini yaxshilashga yordam beradi.",
+    "uz": "Javoblaringiz institut doktorantlarining ta’lim, ilmiy tadqiqot va qöllab-quvvatlaş şaroitlarini yaxşilaşga yordam beradi.",
     "en": "Your responses will help improve education, research and support for the institute’s doctoral students."
   },
   "5–7 минут": {
@@ -87,7 +87,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Applied technical qualifications"
   },
   "Направление подготовки / специальность": {
-    "uz": "Ta’lim yo‘nalishi / mutaxassislik",
+    "uz": "Ta’lim yönalişi / mutaxassislik",
     "en": "Programme / specialty"
   },
   "Ваша текущая занятость": {
@@ -95,63 +95,63 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Current employment status"
   },
   "Работаю по полученной специальности": {
-    "uz": "O‘z mutaxassisligim bo‘yicha ishlayman",
+    "uz": "Öz mutaxassisligim böyiça işlayman",
     "en": "Employed in my field of study"
   },
   "Работаю не по специальности": {
-    "uz": "Boshqa sohada ishlayman",
+    "uz": "Boşqa sohada işlayman",
     "en": "Employed outside my field of study"
   },
   "Продолжаю обучение": {
-    "uz": "O‘qishni davom ettiryapman",
+    "uz": "Öqişni davom ettiryapman",
     "en": "Continuing my education"
   },
   "Временно не работаю, ищу работу": {
-    "uz": "Vaqtincha ishlamayman, ish qidiryapman",
+    "uz": "Vaqtinça işlamayman, iş qidiryapman",
     "en": "Currently unemployed and looking for work"
   },
   "Временно не работаю и не ищу работу": {
-    "uz": "Vaqtincha ishlamayman va ish qidirmayapman",
+    "uz": "Vaqtinça işlamayman va iş qidirmayapman",
     "en": "Currently not working or looking for work"
   },
   "Нахожусь в декретном отпуске / по уходу за ребёнком": {
-    "uz": "Homiladorlik yoki bola parvarishi ta’tilidaman",
+    "uz": "Homiladorlik yoki bola parvarişi ta’tilidaman",
     "en": "On maternity / parental leave"
   },
   "Другое": {
-    "uz": "Boshqa",
+    "uz": "Boşqa",
     "en": "Other"
   },
   "Если Вы работаете, укажите название организации и должность (необязательно)": {
-    "uz": "Agar ishlayotgan bo‘lsangiz, tashkilot nomi va lavozimingizni ko‘rsating (ixtiyoriy)",
+    "uz": "Agar işlayotgan bölsangiz, taşkilot nomi va lavozimingizni körsating (ixtiyoriy)",
     "en": "If employed, state your organisation and position (optional)"
   },
   "Направление подготовки (специальность) *": {
-    "uz": "Ta’lim yo‘nalishi (mutaxassislik) *",
+    "uz": "Ta’lim yönalişi (mutaxassislik) *",
     "en": "Programme (specialty) *"
   },
   "Курс обучения": {
-    "uz": "O‘qish bosqichi",
+    "uz": "Öqiş bosqiçi",
     "en": "Year of study"
   },
   "1-й курс": {
-    "uz": "1-bosqich",
+    "uz": "1-bosqiç",
     "en": "Year 1"
   },
   "2-й курс": {
-    "uz": "2-bosqich",
+    "uz": "2-bosqiç",
     "en": "Year 2"
   },
   "3-й курс": {
-    "uz": "3-bosqich",
+    "uz": "3-bosqiç",
     "en": "Year 3"
   },
   "Форма докторантуры": {
-    "uz": "Doktorantura shakli",
+    "uz": "Doktorantura şakli",
     "en": "Doctoral study mode"
   },
   "Базовая докторантура (PhD)": {
-    "uz": "Tayanch doktorantura (PhD)",
+    "uz": "Tayanç doktorantura (PhD)",
     "en": "Basic doctoral studies (PhD)"
   },
   "Докторантура (DSc)": {
@@ -159,27 +159,27 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Doctoral studies (DSc)"
   },
   "Самостоятельный соискатель": {
-    "uz": "Mustaqil izlanuvchi",
+    "uz": "Mustaqil izlanuvçi",
     "en": "Independent researcher"
   },
   ". 3 — затрудняюсь ответить / удовлетворён(а) частично.": {
-    "uz": ". 3 — javob berishga qiynalaman / qisman qoniqaman.",
+    "uz": ". 3 — javob berişga qiynalaman / qisman qoniqaman.",
     "en": ". 3 — unsure / partly satisfied."
   },
   "Через какой период после окончания Института Вы нашли первую работу?": {
-    "uz": "Institutni tugatgandan keyin qancha vaqtda birinchi ishni topdingiz?",
+    "uz": "Institutni tugatgandan keyin qança vaqtda birinçi işni topdingiz?",
     "en": "How soon after graduation did you find your first job?"
   },
   "До окончания обучения": {
-    "uz": "O‘qishni tugatishdan oldin",
+    "uz": "Öqişni tugatişdan oldin",
     "en": "Before graduation"
   },
   "В течение 3 месяцев": {
-    "uz": "3 oy ichida",
+    "uz": "3 oy içida",
     "en": "Within 3 months"
   },
   "От 3 до 6 месяцев": {
-    "uz": "3 oydan 6 oygacha",
+    "uz": "3 oydan 6 oygaça",
     "en": "Within 3–6 months"
   },
   "Более 6 месяцев": {
@@ -187,19 +187,19 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "After more than 6 months"
   },
   "Пока не трудоустроился(ась)": {
-    "uz": "Hali ishga joylashmadim",
+    "uz": "Hali işga joylaşmadim",
     "en": "Not yet employed"
   },
   "Какие компетенции следует усилить? (можно выбрать несколько)": {
-    "uz": "Qaysi kompetensiyalarni kuchaytirish kerak? (bir nechta tanlash mumkin)",
+    "uz": "Qaysi kompetensiyalarni kuçaytiriş kerak? (bir neçta tanlaş mumkin)",
     "en": "Which competencies need strengthening? (select all that apply)"
   },
   "Практические профессиональные навыки": {
-    "uz": "Amaliy kasbiy ko‘nikmalar",
+    "uz": "Amaliy kasbiy könikmalar",
     "en": "Practical professional skills"
   },
   "Работа с современным оборудованием": {
-    "uz": "Zamonaviy uskunalar bilan ishlash",
+    "uz": "Zamonaviy uskunalar bilan işlaş",
     "en": "Working with modern equipment"
   },
   "Цифровые технологии и программное обеспечение": {
@@ -211,23 +211,23 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Foreign languages"
   },
   "Коммуникативные навыки и работа в команде": {
-    "uz": "Muloqot ko‘nikmalari va jamoada ishlash",
+    "uz": "Muloqot könikmalari va jamoada işlaş",
     "en": "Communication and teamwork"
   },
   "Предпринимательские навыки": {
-    "uz": "Tadbirkorlik ko‘nikmalari",
+    "uz": "Tadbirkorlik könikmalari",
     "en": "Entrepreneurial skills"
   },
   "Какие дисциплины, темы или практические занятия необходимо добавить или расширить?": {
-    "uz": "Qaysi fanlar, mavzular yoki amaliy mashg‘ulotlarni qo‘shish yoki kengaytirish kerak?",
+    "uz": "Qaysi fanlar, mavzular yoki amaliy maşğulotlarni qöşiş yoki kengaytiriş kerak?",
     "en": "Which subjects, topics or practical classes should be added or expanded?"
   },
   "Что необходимо улучшить в деятельности Института?": {
-    "uz": "Institut faoliyatida nimalarni yaxshilash kerak?",
+    "uz": "Institut faoliyatida nimalarni yaxşilaş kerak?",
     "en": "What should be improved at the institute?"
   },
   "Рекомендовали бы Вы обучение в Институте своим знакомым?": {
-    "uz": "Tanishlaringizga institutda o‘qishni tavsiya qilasizmi?",
+    "uz": "Tanişlaringizga institutda öqişni tavsiya qilasizmi?",
     "en": "Would you recommend studying at the institute to others?"
   },
   "Да": {
@@ -235,39 +235,39 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Yes"
   },
   "Скорее да": {
-    "uz": "Ko‘proq ha",
+    "uz": "Köproq ha",
     "en": "Probably yes"
   },
   "Скорее нет": {
-    "uz": "Ko‘proq yo‘q",
+    "uz": "Köproq yöq",
     "en": "Probably no"
   },
   "Нет": {
-    "uz": "Yo‘q",
+    "uz": "Yöq",
     "en": "No"
   },
   "Дополнительные предложения и пожелания": {
-    "uz": "Qo‘shimcha taklif va istaklar",
+    "uz": "Qöşimça taklif va istaklar",
     "en": "Additional suggestions and wishes"
   },
   "Какие трудности Вы испытываете в процессе обучения и выполнения диссертационного исследования?": {
-    "uz": "Ta’lim va dissertatsiya tadqiqoti jarayonida qanday qiyinchiliklarga duch kelyapsiz?",
+    "uz": "Ta’lim va dissertatsiya tadqiqoti jarayonida qanday qiyinçiliklarga duç kelyapsiz?",
     "en": "What difficulties do you face in your studies and dissertation research?"
   },
   "Какие условия или виды поддержки необходимо улучшить в первую очередь?": {
-    "uz": "Qaysi sharoitlar yoki yordam turlarini birinchi navbatda yaxshilash kerak?",
+    "uz": "Qaysi şaroitlar yoki yordam turlarini birinçi navbatda yaxşilaş kerak?",
     "en": "Which conditions or types of support should be improved first?"
   },
   "Ваши предложения по повышению качества подготовки докторантов": {
-    "uz": "Doktorantlar tayyorgarligi sifatini oshirish bo‘yicha takliflaringiz",
+    "uz": "Doktorantlar tayyorgarligi sifatini oşiriş böyiça takliflaringiz",
     "en": "Your suggestions for improving doctoral education"
   },
   "Анкета готова к отправке.": {
-    "uz": "So‘rovnoma yuborishga tayyor.",
+    "uz": "Sörovnoma yuborişga tayyor.",
     "en": "Your survey is ready to submit."
   },
   "Ответы сохраняются без имени, Student ID, телефона и электронной почты. В админ-панели отображается только обобщённая аналитика и анонимные комментарии.": {
-    "uz": "Javoblar ism, Student ID, telefon va elektron pochta manzilisiz saqlanadi. Admin panelda faqat umumlashtirilgan tahlil va anonim izohlar ko‘rsatiladi.",
+    "uz": "Javoblar ism, Student ID, telefon va elektron poçta manzilisiz saqlanadi. Admin panelda faqat umumlaştirilgan tahlil va anonim izohlar körsatiladi.",
     "en": "Responses are stored without names, Student IDs, phone numbers or email addresses. The admin panel shows aggregate analytics and anonymous comments only."
   },
   "Выберите вариант": {
@@ -275,11 +275,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Choose an option"
   },
   "Наименование организации": {
-    "uz": "Tashkilot nomi",
+    "uz": "Taşkilot nomi",
     "en": "Organisation name"
   },
   "Сфера деятельности организации": {
-    "uz": "Tashkilot faoliyat sohasi",
+    "uz": "Taşkilot faoliyat sohasi",
     "en": "Organisation’s field of activity"
   },
   "Ваша должность": {
@@ -287,7 +287,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Your position"
   },
   "Количество выпускников института в организации": {
-    "uz": "Tashkilotdagi institut bitiruvchilari soni",
+    "uz": "Taşkilotdagi institut bitiruvçilari soni",
     "en": "Number of institute graduates in your organisation"
   },
   "Более 10": {
@@ -295,31 +295,31 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "More than 10"
   },
   "В настоящее время не работают": {
-    "uz": "Hozirda ishlamaydi",
+    "uz": "Hozirda işlamaydi",
     "en": "None currently employed"
   },
   "Выпускники каких направлений работают в организации?": {
-    "uz": "Tashkilotda qaysi yo‘nalish bitiruvchilari ishlaydi?",
+    "uz": "Taşkilotda qaysi yönaliş bitiruvçilari işlaydi?",
     "en": "Graduates of which programmes work in your organisation?"
   },
   "Другое направление": {
-    "uz": "Boshqa yo‘nalish",
+    "uz": "Boşqa yönaliş",
     "en": "Other programme"
   },
   "Участвуете ли Вы в разработке образовательных программ?": {
-    "uz": "Ta’lim dasturlarini ishlab chiqishda ishtirok etasizmi?",
+    "uz": "Ta’lim dasturlarini işlab çiqişda iştirok etasizmi?",
     "en": "Do you participate in developing educational programmes?"
   },
   "Участвуете ли Вы в работе аттестационных комиссий?": {
-    "uz": "Attestatsiya komissiyalari ishida ishtirok etasizmi?",
+    "uz": "Attestatsiya komissiyalari işida iştirok etasizmi?",
     "en": "Do you participate in examination boards?"
   },
   "Пока нет, но заинтересованы": {
-    "uz": "Hozircha yo‘q, lekin qiziqamiz",
+    "uz": "Hozirça yöq, lekin qiziqamiz",
     "en": "Not yet, but interested"
   },
   "Как Ваша организация участвует в практической подготовке?": {
-    "uz": "Tashkilotingiz amaliy tayyorgarlikda qanday ishtirok etadi?",
+    "uz": "Taşkilotingiz amaliy tayyorgarlikda qanday iştirok etadi?",
     "en": "How does your organisation support practical training?"
   },
   "Принимает студентов на практику": {
@@ -327,15 +327,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Hosts student placements"
   },
   "Участвует в практических занятиях": {
-    "uz": "Amaliy mashg‘ulotlarda ishtirok etadi",
+    "uz": "Amaliy maşğulotlarda iştirok etadi",
     "en": "Participates in practical classes"
   },
   "Проводит мастер-классы и консультации": {
-    "uz": "Mahorat darslari va maslahatlar o‘tkazadi",
+    "uz": "Mahorat darslari va maslahatlar ötkazadi",
     "en": "Provides masterclasses and consultations"
   },
   "Пока не участвует": {
-    "uz": "Hozircha ishtirok etmaydi",
+    "uz": "Hozirça iştirok etmaydi",
     "en": "Not currently involved"
   },
   "Заинтересована в сотрудничестве": {
@@ -343,15 +343,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Interested in cooperation"
   },
   "Какими качествами обладают выпускники?": {
-    "uz": "Bitiruvchilar qanday sifatlarga ega?",
+    "uz": "Bitiruvçilar qanday sifatlarga ega?",
     "en": "Which qualities do graduates possess?"
   },
   "Оцените уровень подготовки выпускников по шкале от 1 до 10": {
-    "uz": "Bitiruvchilar tayyorgarligini 1 dan 10 gacha baholang",
+    "uz": "Bitiruvçilar tayyorgarligini 1 dan 10 gaça baholang",
     "en": "Rate graduate preparation on a scale of 1 to 10"
   },
   "Общая оценка подготовки студентов, проходивших практику": {
-    "uz": "Amaliyot o‘tagan talabalar tayyorgarligining umumiy bahosi",
+    "uz": "Amaliyot ötagan talabalar tayyorgarligining umumiy bahosi",
     "en": "Overall preparation of students on placements"
   },
   "Не могу оценить": {
@@ -363,7 +363,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Alignment of programmes with labour market requirements"
   },
   "Полностью соответствует": {
-    "uz": "To‘liq mos keladi",
+    "uz": "Töliq mos keladi",
     "en": "Fully aligned"
   },
   "В основном соответствует": {
@@ -379,23 +379,23 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Not aligned"
   },
   "Готовы ли Вы принимать выпускников института на работу?": {
-    "uz": "Institut bitiruvchilarini ishga qabul qilishga tayyormisiz?",
+    "uz": "Institut bitiruvçilarini işga qabul qilişga tayyormisiz?",
     "en": "Are you willing to hire institute graduates?"
   },
   "В зависимости от вакансий": {
-    "uz": "Bo‘sh ish o‘rinlariga qarab",
+    "uz": "Böş iş örinlariga qarab",
     "en": "Depending on vacancies"
   },
   "Насколько готовы рекомендовать выпускников? (0–10)": {
-    "uz": "Bitiruvchilarni tavsiya qilishga qanchalik tayyorsiz? (0–10)",
+    "uz": "Bitiruvçilarni tavsiya qilişga qançalik tayyorsiz? (0–10)",
     "en": "How likely are you to recommend graduates? (0–10)"
   },
   "Перспективные направления сотрудничества": {
-    "uz": "Istiqbolli hamkorlik yo‘nalishlari",
+    "uz": "Istiqbolli hamkorlik yönalişlari",
     "en": "Promising areas of cooperation"
   },
   "Что следует улучшить в подготовке выпускников?": {
-    "uz": "Bitiruvchilar tayyorgarligida nimalarni yaxshilash kerak?",
+    "uz": "Bitiruvçilar tayyorgarligida nimalarni yaxşilaş kerak?",
     "en": "What should be improved in graduate preparation?"
   },
   "Наиболее востребованные знания и компетенции": {
@@ -403,27 +403,27 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Most in-demand knowledge and competencies"
   },
   "Дополнительные предложения": {
-    "uz": "Qo‘shimcha takliflar",
+    "uz": "Qöşimça takliflar",
     "en": "Additional suggestions"
   },
   "Готовы ли Вы к дальнейшему сотрудничеству?": {
-    "uz": "Kelgusida hamkorlik qilishga tayyormisiz?",
+    "uz": "Kelgusida hamkorlik qilişga tayyormisiz?",
     "en": "Are you willing to cooperate in the future?"
   },
   "При наличии конкретных предложений": {
-    "uz": "Aniq takliflar bo‘lsa",
+    "uz": "Aniq takliflar bölsa",
     "en": "If there are specific proposals"
   },
   "Контактные данные заполняются добровольно.": {
-    "uz": "Aloqa ma’lumotlari ixtiyoriy ko‘rsatiladi.",
+    "uz": "Aloqa ma’lumotlari ixtiyoriy körsatiladi.",
     "en": "Contact details are optional."
   },
   "Они могут использоваться только для связи по вопросам сотрудничества.": {
-    "uz": "Ular faqat hamkorlik masalalari bo‘yicha bog‘lanish uchun ishlatilishi mumkin.",
+    "uz": "Ular faqat hamkorlik masalalari böyiça boğlaniş uçun işlatilişi mumkin.",
     "en": "They may only be used to contact you about cooperation."
   },
   "Ф.И.О. представителя": {
-    "uz": "Vakilning F.I.Sh.",
+    "uz": "Vakilning F.I.Ş.",
     "en": "Representative’s full name"
   },
   "Телефон": {
@@ -431,7 +431,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Phone"
   },
   "Подтверждаю достоверность информации и согласен(на) на обработку предоставленных данных для анализа качества подготовки специалистов и организации взаимодействия с работодателями.": {
-    "uz": "Ma’lumotlarning to‘g‘riligini tasdiqlayman va mutaxassislar tayyorgarligi sifatini tahlil qilish hamda ish beruvchilar bilan hamkorlikni tashkil etish uchun taqdim etilgan ma’lumotlarni qayta ishlashga roziman.",
+    "uz": "Ma’lumotlarning töğriligini tasdiqlayman va mutaxassislar tayyorgarligi sifatini tahlil qiliş hamda iş beruvçilar bilan hamkorlikni taşkil etiş uçun taqdim etilgan ma’lumotlarni qayta işlaşga roziman.",
     "en": "I confirm the information is accurate and consent to its processing to analyse professional training quality and organise employer cooperation."
   },
   "Подтвердите, что вы не робот.": {
@@ -439,15 +439,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Please confirm you are not a robot."
   },
   "Слишком много обращений. Попробуйте через час.": {
-    "uz": "Murojaatlar soni ko‘p. Bir soatdan keyin qayta urinib ko‘ring.",
+    "uz": "Murojaatlar soni köp. Bir soatdan keyin qayta urinib köring.",
     "en": "Too many appeals. Please try again in an hour."
   },
   "Не удалось отправить обращение. Проверьте поля и попробуйте снова.": {
-    "uz": "Murojaatni yuborib bo‘lmadi. Maydonlarni tekshirib, qayta urinib ko‘ring.",
+    "uz": "Murojaatni yuborib bölmadi. Maydonlarni tekşirib, qayta urinib köring.",
     "en": "The appeal could not be submitted. Check the fields and try again."
   },
   "Обращение или код отслеживания не найдены.": {
-    "uz": "Murojaat yoki kuzatish kodi topilmadi.",
+    "uz": "Murojaat yoki kuzatiş kodi topilmadi.",
     "en": "The appeal or tracking code was not found."
   },
   "Обращение принято": {
@@ -455,7 +455,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Appeal received"
   },
   "Сохраните номер и код. Они нужны для проверки статуса и ответа администрации.": {
-    "uz": "Raqam va kodni saqlang. Ular murojaat holati va ma’muriyat javobini tekshirish uchun kerak.",
+    "uz": "Raqam va kodni saqlang. Ular murojaat holati va ma’muriyat javobini tekşiriş uçun kerak.",
     "en": "Save the number and code. You need them to check the status and the administration’s response."
   },
   "Номер:": {
@@ -463,19 +463,19 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Number:"
   },
   "Код отслеживания:": {
-    "uz": "Kuzatish kodi:",
+    "uz": "Kuzatiş kodi:",
     "en": "Tracking code:"
   },
   "Отправить другое обращение": {
-    "uz": "Boshqa murojaat yuborish",
+    "uz": "Boşqa murojaat yuboriş",
     "en": "Submit another appeal"
   },
   "Направить обращение": {
-    "uz": "Murojaat yuborish",
+    "uz": "Murojaat yuboriş",
     "en": "Submit an appeal"
   },
   "Все поля передаются по защищённому соединению.": {
-    "uz": "Barcha ma’lumotlar himoyalangan ulanish orqali yuboriladi.",
+    "uz": "Barça ma’lumotlar himoyalangan ulaniş orqali yuboriladi.",
     "en": "All information is sent over a secure connection."
   },
   "Категория *": {
@@ -495,19 +495,19 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Describe your concern or suggestion *"
   },
   "Отправить анонимно": {
-    "uz": "Anonim yuborish",
+    "uz": "Anonim yuboriş",
     "en": "Submit anonymously"
   },
   "Имя и контакты не будут запрашиваться. Ответ можно проверить по коду.": {
-    "uz": "Ism va aloqa ma’lumotlari so‘ralmaydi. Javobni kod orqali tekshirish mumkin.",
+    "uz": "Ism va aloqa ma’lumotlari söralmaydi. Javobni kod orqali tekşiriş mumkin.",
     "en": "No name or contact details will be requested. You can check the response using your code."
   },
   "Ф.И.О. *": {
-    "uz": "F.I.Sh. *",
+    "uz": "F.I.Ş. *",
     "en": "Full name *"
   },
   "Учебная группа": {
-    "uz": "O‘quv guruhi",
+    "uz": "Öquv guruhi",
     "en": "Study group"
   },
   "Способ связи": {
@@ -519,7 +519,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "No follow-up contact"
   },
   "Электронная почта": {
-    "uz": "Elektron pochta",
+    "uz": "Elektron poçta",
     "en": "Email"
   },
   "Номер, @username или e-mail": {
@@ -531,7 +531,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Attachments"
   },
   "До 3 файлов, каждый не более 5 МБ.": {
-    "uz": "3 tagacha fayl, har biri 5 MB dan oshmasligi kerak.",
+    "uz": "3 tagaça fayl, har biri 5 MB dan oşmasligi kerak.",
     "en": "Up to 3 files, no more than 5 MB each."
   },
   "Отправляем…": {
@@ -539,7 +539,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Submitting…"
   },
   "Отправить обращение": {
-    "uz": "Murojaatni yuborish",
+    "uz": "Murojaatni yuboriş",
     "en": "Submit appeal"
   },
   "Конфиденциальность": {
@@ -547,11 +547,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Confidentiality"
   },
   "Обращения видит только администратор сайта с двухфакторной защитой. Пароли, банковские данные и коды подтверждения указывать не нужно.": {
-    "uz": "Murojaatlarni faqat ikki bosqichli himoyaga ega sayt administratori ko‘radi. Parollar, bank ma’lumotlari va tasdiqlash kodlarini kiritmang.",
+    "uz": "Murojaatlarni faqat ikki bosqiçli himoyaga ega sayt administratori köradi. Parollar, bank ma’lumotlari va tasdiqlaş kodlarini kiritmang.",
     "en": "Only the site administrator protected by two-factor authentication can view appeals. Do not include passwords, banking details or verification codes."
   },
   "Проверить статус": {
-    "uz": "Holatni tekshirish",
+    "uz": "Holatni tekşiriş",
     "en": "Check status"
   },
   "Номер обращения": {
@@ -559,11 +559,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Appeal number"
   },
   "Код отслеживания": {
-    "uz": "Kuzatish kodi",
+    "uz": "Kuzatiş kodi",
     "en": "Tracking code"
   },
   "Проверить": {
-    "uz": "Tekshirish",
+    "uz": "Tekşiriş",
     "en": "Check"
   },
   "Статус:": {
@@ -579,15 +579,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Administration’s response:"
   },
   "Опрос выпускников": {
-    "uz": "Bitiruvchilar so‘rovnomasi",
+    "uz": "Bitiruvçilar sörovnomasi",
     "en": "Graduate survey"
   },
   "Опрос докторантов": {
-    "uz": "Doktorantlar so‘rovnomasi",
+    "uz": "Doktorantlar sörovnomasi",
     "en": "Doctoral survey"
   },
   "Мониторинг обновляется сразу после поступления новой анкеты": {
-    "uz": "Yangi so‘rovnoma kelganda monitoring yangilanadi",
+    "uz": "Yangi sörovnoma kelganda monitoring yangilanadi",
     "en": "Monitoring is updated when new responses arrive"
   },
   "Экспорт CSV": {
@@ -595,15 +595,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Export CSV"
   },
   "Всего анкет": {
-    "uz": "Jami so‘rovnomalar",
+    "uz": "Jami sörovnomalar",
     "en": "Total responses"
   },
   "За 7 дней": {
-    "uz": "7 kun ichida",
+    "uz": "7 kun içida",
     "en": "Last 7 days"
   },
   "Средняя общая оценка": {
-    "uz": "O‘rtacha umumiy baho",
+    "uz": "Örtaça umumiy baho",
     "en": "Average overall rating"
   },
   "Рекомендуют Институт": {
@@ -615,31 +615,31 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Recommend doctoral studies"
   },
   "Все направления": {
-    "uz": "Barcha yo‘nalishlar",
+    "uz": "Barça yönalişlar",
     "en": "All programmes"
   },
   "Все формы докторантуры": {
-    "uz": "Doktoranturaning barcha shakllari",
+    "uz": "Doktoranturaning barça şakllari",
     "en": "All doctoral study modes"
   },
   "Дата от": {
-    "uz": "Boshlanish sanasi",
+    "uz": "Boşlaniş sanasi",
     "en": "From date"
   },
   "Дата до": {
-    "uz": "Tugash sanasi",
+    "uz": "Tugaş sanasi",
     "en": "To date"
   },
   "Средние оценки": {
-    "uz": "O‘rtacha baholar",
+    "uz": "Örtaça baholar",
     "en": "Average ratings"
   },
   "Количество по категориям": {
-    "uz": "Toifalar bo‘yicha soni",
+    "uz": "Toifalar böyiça soni",
     "en": "Response counts by category"
   },
   "Пока нет данных": {
-    "uz": "Hozircha ma’lumot yo‘q",
+    "uz": "Hozirça ma’lumot yöq",
     "en": "No data yet"
   },
   "Анонимные ответы и комментарии": {
@@ -655,11 +655,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Selected competencies:"
   },
   "Анкеты пока не поступили": {
-    "uz": "Hozircha so‘rovnomalar kelmagan",
+    "uz": "Hozirça sörovnomalar kelmagan",
     "en": "No responses received yet"
   },
   "Автоматизация технологических процессов и производств (Компьютерная мехатроника)": {
-    "uz": "Texnologik jarayonlar va ishlab chiqarishni avtomatlashtirish (kompyuter mexatronikasi)",
+    "uz": "Texnologik jarayonlar va işlab çiqarişni avtomatlaştiriş (kompyuter mexatronikasi)",
     "en": "Automation of technological processes and production (computer mechatronics)"
   },
   "Биомедицинская инженерия": {
@@ -667,11 +667,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Biomedical engineering"
   },
   "Технология машиностроения, металлорежущие станки и инструменты": {
-    "uz": "Mashinasozlik texnologiyasi, metall kesish dastgohlari va asboblari",
+    "uz": "Maşinasozlik texnologiyasi, metall kesiş dastgohlari va asboblari",
     "en": "Mechanical engineering technology, metal-cutting machines and tools"
   },
   "Оборудование и технология сварочного производства": {
-    "uz": "Payvandlash ishlab chiqarish uskunalari va texnologiyasi",
+    "uz": "Payvandlaş işlab çiqariş uskunalari va texnologiyasi",
     "en": "Welding equipment and technology"
   },
   "Автомобили, тракторы, мобильные и технологические комплексы": {
@@ -679,23 +679,23 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Automobiles, tractors, mobile and technological systems"
   },
   "Организация дорожного движения и транспортное планирование": {
-    "uz": "Yo‘l harakatini tashkil etish va transportni rejalashtirish",
+    "uz": "Yöl harakatini taşkil etiş va transportni rejalaştiriş",
     "en": "Traffic management and transport planning"
   },
   "Метрология, стандартизация и контроль качества": {
-    "uz": "Metrologiya, standartlashtirish va sifat nazorati",
+    "uz": "Metrologiya, standartlaştiriş va sifat nazorati",
     "en": "Metrology, standardisation and quality control"
   },
   "Теплогазоснабжение и вентиляция зданий и сооружений": {
-    "uz": "Bino va inshootlarning issiqlik va gaz ta’minoti hamda ventilyatsiyasi",
+    "uz": "Bino va inşootlarning issiqlik va gaz ta’minoti hamda ventilyatsiyasi",
     "en": "Heat and gas supply and ventilation of buildings and structures"
   },
   "Управление инновационными проектами промышленных предприятий (менеджмент)": {
-    "uz": "Sanoat korxonalarining innovatsion loyihalarini boshqarish (menejment)",
+    "uz": "Sanoat korxonalarining innovatsion loyihalarini boşqariş (menejment)",
     "en": "Management of innovative projects in industrial enterprises"
   },
   "Экономика и управление": {
-    "uz": "Iqtisodiyot va boshqaruv",
+    "uz": "Iqtisodiyot va boşqaruv",
     "en": "Economics and management"
   },
   "Транспортная логистика (международная логистика)": {
@@ -707,11 +707,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Engineering business"
   },
   "Строительство": {
-    "uz": "Qurilish",
+    "uz": "Quriliş",
     "en": "Construction"
   },
   "Обеспечение качества": {
-    "uz": "Sifatni ta’minlash",
+    "uz": "Sifatni ta’minlaş",
     "en": "Quality assurance"
   },
   "Транспорт": {
@@ -719,7 +719,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Transport"
   },
   "Инновационные технологии в машиностроении": {
-    "uz": "Mashinasozlikdagi innovatsion texnologiyalar",
+    "uz": "Maşinasozlikdagi innovatsion texnologiyalar",
     "en": "Innovative technologies in mechanical engineering"
   },
   "Инженерно-педагогическая деятельность": {
@@ -727,23 +727,23 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Engineering and teaching"
   },
   "Автоматизация": {
-    "uz": "Avtomatlashtirish",
+    "uz": "Avtomatlaştiriş",
     "en": "Automation"
   },
   "Обучение в Институте дало мне знания, необходимые для профессиональной деятельности.": {
-    "uz": "Institutdagi ta’lim kasbiy faoliyatim uchun zarur bilimlarni berdi.",
+    "uz": "Institutdagi ta’lim kasbiy faoliyatim uçun zarur bilimlarni berdi.",
     "en": "Studying at the institute gave me the knowledge needed for my professional work."
   },
   "Полученные практические навыки помогают мне в работе или дальнейшем обучении.": {
-    "uz": "Olgan amaliy ko‘nikmalarim ishda yoki keyingi ta’limda yordam beradi.",
+    "uz": "Olgan amaliy könikmalarim işda yoki keyingi ta’limda yordam beradi.",
     "en": "The practical skills I acquired help me at work or in further study."
   },
   "Учебные дисциплины соответствовали современным требованиям профессии и работодателей.": {
-    "uz": "O‘quv fanlari kasb va ish beruvchilarning zamonaviy talablariga mos edi.",
+    "uz": "Öquv fanlari kasb va iş beruvçilarning zamonaviy talablariga mos edi.",
     "en": "The subjects met current professional and employer requirements."
   },
   "Преподаватели доступно и качественно объясняли учебный материал.": {
-    "uz": "O‘qituvchilar o‘quv materialini tushunarli va sifatli tushuntirishdi.",
+    "uz": "Öqituvçilar öquv materialini tuşunarli va sifatli tuşuntirişdi.",
     "en": "Teachers explained the material clearly and effectively."
   },
   "В процессе обучения использовались современные технологии, оборудование и программные средства.": {
@@ -751,15 +751,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Modern technologies, equipment and software were used in teaching."
   },
   "Производственная практика была полезной для моего профессионального развития.": {
-    "uz": "Ishlab chiqarish amaliyoti kasbiy rivojlanishim uchun foydali bo‘ldi.",
+    "uz": "Işlab çiqariş amaliyoti kasbiy rivojlanişim uçun foydali böldi.",
     "en": "Work placements were useful for my professional development."
   },
   "В Институте были созданы условия для развития самостоятельности, ответственности и профессиональных компетенций.": {
-    "uz": "Institutda mustaqillik, mas’uliyat va kasbiy kompetensiyalarni rivojlantirish uchun sharoitlar yaratildi.",
+    "uz": "Institutda mustaqillik, mas’uliyat va kasbiy kompetensiyalarni rivojlantiriş uçun şaroitlar yaratildi.",
     "en": "The institute provided conditions for developing independence, responsibility and professional competencies."
   },
   "Я получил(а) достаточные навыки работы в команде, делового общения и решения практических задач.": {
-    "uz": "Jamoada ishlash, ishbilarmonlik muloqoti va amaliy masalalarni hal qilish bo‘yicha yetarli ko‘nikmalar oldim.",
+    "uz": "Jamoada işlaş, işbilarmonlik muloqoti va amaliy masalalarni hal qiliş böyiça yetarli könikmalar oldim.",
     "en": "I acquired sufficient teamwork, business communication and practical problem-solving skills."
   },
   "В целом я удовлетворён(а) качеством полученного образования.": {
@@ -767,87 +767,87 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Overall, I am satisfied with the quality of my education."
   },
   "Насколько понятны Вам цели, задачи и требования образовательной программы докторантуры?": {
-    "uz": "Doktorantura dasturining maqsadlari, vazifalari va talablari sizga qanchalik tushunarli?",
+    "uz": "Doktorantura dasturining maqsadlari, vazifalari va talablari sizga qançalik tuşunarli?",
     "en": "How clear are the objectives, tasks and requirements of the doctoral programme?"
   },
   "Насколько своевременно Вы получаете информацию о документах, сроках, аттестации и мероприятиях для докторантов?": {
-    "uz": "Hujjatlar, muddatlar, attestatsiya va doktorantlar tadbirlari haqida ma’lumotni qanchalik o‘z vaqtida olasiz?",
+    "uz": "Hujjatlar, muddatlar, attestatsiya va doktorantlar tadbirlari haqida ma’lumotni qançalik öz vaqtida olasiz?",
     "en": "How promptly do you receive information about documents, deadlines, assessments and doctoral events?"
   },
   "Насколько содержание учебных занятий и научных семинаров соответствует Вашему направлению исследования?": {
-    "uz": "Darslar va ilmiy seminarlar mazmuni tadqiqot yo‘nalishingizga qanchalik mos?",
+    "uz": "Darslar va ilmiy seminarlar mazmuni tadqiqot yönalişingizga qançalik mos?",
     "en": "How well do classes and research seminars match your research area?"
   },
   "Насколько учебные дисциплины помогают Вам в подготовке диссертационного исследования?": {
-    "uz": "O‘quv fanlari dissertatsiya tadqiqotingizni tayyorlashda qanchalik yordam beradi?",
+    "uz": "Öquv fanlari dissertatsiya tadqiqotingizni tayyorlaşda qançalik yordam beradi?",
     "en": "How useful are the subjects for your dissertation research?"
   },
   "Насколько удобно составлено расписание занятий, консультаций и научных мероприятий?": {
-    "uz": "Darslar, maslahatlar va ilmiy tadbirlar jadvali qanchalik qulay?",
+    "uz": "Darslar, maslahatlar va ilmiy tadbirlar jadvali qançalik qulay?",
     "en": "How convenient is the schedule of classes, consultations and research events?"
   },
   "Насколько Вы удовлетворены работой научного руководителя (научного консультанта)?": {
-    "uz": "Ilmiy rahbar (ilmiy maslahatchi) faoliyatidan qanchalik qoniqasiz?",
+    "uz": "Ilmiy rahbar (ilmiy maslahatçi) faoliyatidan qançalik qoniqasiz?",
     "en": "How satisfied are you with your research supervisor or adviser?"
   },
   "Насколько регулярно Вы получаете консультации и рекомендации по диссертационному исследованию?": {
-    "uz": "Dissertatsiya tadqiqoti bo‘yicha maslahat va tavsiyalarni qanchalik muntazam olasiz?",
+    "uz": "Dissertatsiya tadqiqoti böyiça maslahat va tavsiyalarni qançalik muntazam olasiz?",
     "en": "How regularly do you receive advice and recommendations on your dissertation?"
   },
   "Насколько доступен научный руководитель для обсуждения текущих вопросов?": {
-    "uz": "Joriy masalalarni muhokama qilish uchun ilmiy rahbar bilan bog‘lanish qanchalik oson?",
+    "uz": "Joriy masalalarni muhokama qiliş uçun ilmiy rahbar bilan boğlaniş qançalik oson?",
     "en": "How accessible is your supervisor for discussing current issues?"
   },
   "Насколько Вам оказывается помощь в выборе темы, уточнении плана и методологии исследования?": {
-    "uz": "Mavzu tanlash, tadqiqot rejasi va metodologiyasini aniqlashtirishda sizga qanchalik yordam beriladi?",
+    "uz": "Mavzu tanlaş, tadqiqot rejasi va metodologiyasini aniqlaştirişda sizga qançalik yordam beriladi?",
     "en": "How much support do you receive in choosing a topic and refining your research plan and methodology?"
   },
   "Насколько доступны библиотечные фонды, электронные ресурсы и научные базы данных?": {
-    "uz": "Kutubxona fondlari, elektron resurslar va ilmiy ma’lumotlar bazalaridan foydalanish qanchalik qulay?",
+    "uz": "Kutubxona fondlari, elektron resurslar va ilmiy ma’lumotlar bazalaridan foydalaniş qançalik qulay?",
     "en": "How accessible are library collections, electronic resources and research databases?"
   },
   "Насколько условия Института позволяют пользоваться компьютерами, интернетом, лабораториями и необходимым оборудованием?": {
-    "uz": "Institut sharoitlari kompyuter, internet, laboratoriya va zarur uskunalardan foydalanishga qanchalik imkon beradi?",
+    "uz": "Institut şaroitlari kompyuter, internet, laboratoriya va zarur uskunalardan foydalanişga qançalik imkon beradi?",
     "en": "How well do institute facilities support access to computers, internet, laboratories and necessary equipment?"
   },
   "Насколько Вы удовлетворены организацией научных конференций, семинаров, круглых столов и других научных мероприятий?": {
-    "uz": "Ilmiy konferensiyalar, seminarlar, davra suhbatlari va boshqa ilmiy tadbirlar tashkil etilishidan qanchalik qoniqasiz?",
+    "uz": "Ilmiy konferensiyalar, seminarlar, davra suhbatlari va boşqa ilmiy tadbirlar taşkil etilişidan qançalik qoniqasiz?",
     "en": "How satisfied are you with the organisation of conferences, seminars, round tables and other research events?"
   },
   "Насколько Вам оказывается поддержка при подготовке научных статей, тезисов, патентов и иных результатов исследования?": {
-    "uz": "Ilmiy maqolalar, tezislar, patentlar va boshqa tadqiqot natijalarini tayyorlashda sizga qanchalik yordam beriladi?",
+    "uz": "Ilmiy maqolalar, tezislar, patentlar va boşqa tadqiqot natijalarini tayyorlaşda sizga qançalik yordam beriladi?",
     "en": "How much support do you receive in preparing papers, abstracts, patents and other research outputs?"
   },
   "Насколько понятен порядок публикации научных работ и предъявляемые к ним требования?": {
-    "uz": "Ilmiy ishlarni nashr etish tartibi va ularga qo‘yiladigan talablar qanchalik tushunarli?",
+    "uz": "Ilmiy işlarni naşr etiş tartibi va ularga qöyiladigan talablar qançalik tuşunarli?",
     "en": "How clear are the publication procedures and requirements for research papers?"
   },
   "Насколько эффективно организованы процедуры промежуточной и итоговой аттестации докторантов?": {
-    "uz": "Doktorantlarning oraliq va yakuniy attestatsiyasi qanchalik samarali tashkil etilgan?",
+    "uz": "Doktorantlarning oraliq va yakuniy attestatsiyasi qançalik samarali taşkil etilgan?",
     "en": "How effectively are interim and final doctoral assessments organised?"
   },
   "Насколько объективно и прозрачно оцениваются результаты Вашей учебной и научной деятельности?": {
-    "uz": "Ta’lim va ilmiy faoliyatingiz natijalari qanchalik xolis va shaffof baholanadi?",
+    "uz": "Ta’lim va ilmiy faoliyatingiz natijalari qançalik xolis va şaffof baholanadi?",
     "en": "How fairly and transparently are your education and research outcomes assessed?"
   },
   "Насколько сотрудники Института оперативно помогают в решении организационных и учебных вопросов?": {
-    "uz": "Institut xodimlari tashkiliy va o‘quv masalalarini hal qilishda qanchalik tez yordam beradi?",
+    "uz": "Institut xodimlari taşkiliy va öquv masalalarini hal qilişda qançalik tez yordam beradi?",
     "en": "How promptly do institute staff help with administrative and academic issues?"
   },
   "Насколько Вы удовлетворены общей образовательной и научной средой Института?": {
-    "uz": "Institutning umumiy ta’lim va ilmiy muhitidan qanchalik qoniqasiz?",
+    "uz": "Institutning umumiy ta’lim va ilmiy muhitidan qançalik qoniqasiz?",
     "en": "How satisfied are you with the institute’s overall education and research environment?"
   },
   "Насколько вероятно, что Вы порекомендуете обучение в докторантуре Института своим коллегам?": {
-    "uz": "Hamkasblaringizga institut doktoranturasida o‘qishni tavsiya qilish ehtimolingiz qanchalik yuqori?",
+    "uz": "Hamkasblaringizga institut doktoranturasida öqişni tavsiya qiliş ehtimolingiz qançalik yuqori?",
     "en": "How likely are you to recommend the institute’s doctoral studies to colleagues?"
   },
   "Затрудняюсь ответить": {
-    "uz": "Javob berishga qiynalaman",
+    "uz": "Javob berişga qiynalaman",
     "en": "Not sure"
   },
   "Умение своевременно выполнять поставленные задачи": {
-    "uz": "Vazifalarni o‘z vaqtida bajarish",
+    "uz": "Vazifalarni öz vaqtida bajariş",
     "en": "Completing tasks on time"
   },
   "Достаточный уровень теоретических знаний": {
@@ -855,67 +855,67 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Sufficient theoretical knowledge"
   },
   "Практические умения и навыки": {
-    "uz": "Amaliy bilim va ko‘nikmalar",
+    "uz": "Amaliy bilim va könikmalar",
     "en": "Practical skills"
   },
   "Ответственность и производственная дисциплина": {
-    "uz": "Mas’uliyat va ishlab chiqarish intizomi",
+    "uz": "Mas’uliyat va işlab çiqariş intizomi",
     "en": "Responsibility and workplace discipline"
   },
   "Умение работать в команде": {
-    "uz": "Jamoada ishlash",
+    "uz": "Jamoada işlaş",
     "en": "Teamwork"
   },
   "Коммуникативные навыки": {
-    "uz": "Muloqot ko‘nikmalari",
+    "uz": "Muloqot könikmalari",
     "en": "Communication skills"
   },
   "Способность самостоятельно принимать решения": {
-    "uz": "Mustaqil qaror qabul qilish qobiliyati",
+    "uz": "Mustaqil qaror qabul qiliş qobiliyati",
     "en": "Independent decision-making"
   },
   "Способность адаптироваться к новым условиям": {
-    "uz": "Yangi sharoitlarga moslashish qobiliyati",
+    "uz": "Yangi şaroitlarga moslaşiş qobiliyati",
     "en": "Adapting to new conditions"
   },
   "Владение цифровыми инструментами": {
-    "uz": "Raqamli vositalardan foydalanish",
+    "uz": "Raqamli vositalardan foydalaniş",
     "en": "Using digital tools"
   },
   "Знание требований охраны труда и техники безопасности": {
-    "uz": "Mehnat muhofazasi va xavfsizlik talablarini bilish",
+    "uz": "Mehnat muhofazasi va xavfsizlik talablarini biliş",
     "en": "Knowledge of occupational health and safety requirements"
   },
   "Организация практики студентов": {
-    "uz": "Talabalar amaliyotini tashkil etish",
+    "uz": "Talabalar amaliyotini taşkil etiş",
     "en": "Organising student placements"
   },
   "Участие в разработке образовательных программ": {
-    "uz": "Ta’lim dasturlarini ishlab chiqishda ishtirok etish",
+    "uz": "Ta’lim dasturlarini işlab çiqişda iştirok etiş",
     "en": "Developing educational programmes"
   },
   "Участие в государственных аттестационных комиссиях": {
-    "uz": "Davlat attestatsiya komissiyalarida ishtirok etish",
+    "uz": "Davlat attestatsiya komissiyalarida iştirok etiş",
     "en": "Participating in state examination boards"
   },
   "Проведение мастер-классов и гостевых лекций": {
-    "uz": "Mahorat darslari va mehmon ma’ruzalarini o‘tkazish",
+    "uz": "Mahorat darslari va mehmon ma’ruzalarini ötkaziş",
     "en": "Providing masterclasses and guest lectures"
   },
   "Стажировки студентов и преподавателей": {
-    "uz": "Talabalar va o‘qituvchilar stajirovkasi",
+    "uz": "Talabalar va öqituvçilar stajirovkasi",
     "en": "Student and teacher internships"
   },
   "Трудоустройство выпускников": {
-    "uz": "Bitiruvchilarni ishga joylashtirish",
+    "uz": "Bitiruvçilarni işga joylaştiriş",
     "en": "Graduate employment"
   },
   "Совместные научные и практические проекты": {
-    "uz": "Qo‘shma ilmiy va amaliy loyihalar",
+    "uz": "Qöşma ilmiy va amaliy loyihalar",
     "en": "Joint research and practical projects"
   },
   "Целевая подготовка специалистов": {
-    "uz": "Mutaxassislarni maqsadli tayyorlash",
+    "uz": "Mutaxassislarni maqsadli tayyorlaş",
     "en": "Targeted specialist training"
   },
   "Теоретические знания": {
@@ -923,7 +923,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Theoretical knowledge"
   },
   "Практические навыки": {
-    "uz": "Amaliy ko‘nikmalar",
+    "uz": "Amaliy könikmalar",
     "en": "Practical skills"
   },
   "Цифровые компетенции": {
@@ -931,15 +931,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Digital competencies"
   },
   "Деловое общение": {
-    "uz": "Ishbilarmonlik muloqoti",
+    "uz": "Işbilarmonlik muloqoti",
     "en": "Business communication"
   },
   "Самостоятельное принятие решений": {
-    "uz": "Mustaqil qaror qabul qilish",
+    "uz": "Mustaqil qaror qabul qiliş",
     "en": "Independent decision-making"
   },
   "Производственная дисциплина": {
-    "uz": "Ishlab chiqarish intizomi",
+    "uz": "Işlab çiqariş intizomi",
     "en": "Workplace discipline"
   },
   "Содержание и продолжительность практики": {
@@ -947,7 +947,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Placement content and duration"
   },
   "Существенных изменений не требуется": {
-    "uz": "Jiddiy o‘zgarishlar talab qilinmaydi",
+    "uz": "Jiddiy özgarişlar talab qilinmaydi",
     "en": "No major changes needed"
   },
   "Профессиональные компетенции": {
@@ -955,15 +955,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Professional competencies"
   },
   "Применение знаний на практике": {
-    "uz": "Bilimlarni amalda qo‘llash",
+    "uz": "Bilimlarni amalda qöllaş",
     "en": "Applying knowledge in practice"
   },
   "Владение современными технологиями и оборудованием": {
-    "uz": "Zamonaviy texnologiya va uskunalardan foydalanish",
+    "uz": "Zamonaviy texnologiya va uskunalardan foydalaniş",
     "en": "Using modern technologies and equipment"
   },
   "Самостоятельность при выполнении задач": {
-    "uz": "Vazifalarni mustaqil bajarish",
+    "uz": "Vazifalarni mustaqil bajariş",
     "en": "Independence in completing tasks"
   },
   "Ответственность и дисциплина": {
@@ -971,7 +971,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Responsibility and discipline"
   },
   "Адаптация к изменениям в профессиональной деятельности": {
-    "uz": "Kasbiy faoliyatdagi o‘zgarishlarga moslashish",
+    "uz": "Kasbiy faoliyatdagi özgarişlarga moslaşiş",
     "en": "Adapting to professional changes"
   },
   "Анонимно": {
@@ -995,7 +995,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Student"
   },
   "Выбрать файлы": {
-    "uz": "Fayllarni tanlash",
+    "uz": "Fayllarni tanlaş",
     "en": "Choose files"
   },
   "Файлы не выбраны": {
@@ -1003,7 +1003,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "No files selected"
   },
   "Не удалось проверить статус. Попробуйте ещё раз.": {
-    "uz": "Holatni tekshirib bo‘lmadi. Qayta urinib ko‘ring.",
+    "uz": "Holatni tekşirib bölmadi. Qayta urinib köring.",
     "en": "Unable to check the status. Please try again."
   },
   "Логотип института": {
@@ -1011,7 +1011,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Institute logo"
   },
   "Главная": {
-    "uz": "Bosh sahifa",
+    "uz": "Boş sahifa",
     "en": "Home"
   },
   "Русский": {
@@ -1019,7 +1019,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Russian"
   },
   "Узбекский": {
-    "uz": "O‘zbek tili",
+    "uz": "Özbek tili",
     "en": "Uzbek"
   },
   "Английский": {
@@ -1027,7 +1027,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "English"
   },
   "Открыть →": {
-    "uz": "Ochish →",
+    "uz": "Oçiş →",
     "en": "Open →"
   },
   "Подробнее →": {
@@ -1039,7 +1039,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Documents"
   },
   "Все документы →": {
-    "uz": "Barcha hujjatlar →",
+    "uz": "Barça hujjatlar →",
     "en": "All documents →"
   },
   "Новости": {
@@ -1047,15 +1047,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "News"
   },
   "Последние новости": {
-    "uz": "So‘nggi yangiliklar",
+    "uz": "Sönggi yangiliklar",
     "en": "Latest news"
   },
   "Все новости →": {
-    "uz": "Barcha yangiliklar →",
+    "uz": "Barça yangiliklar →",
     "en": "All news →"
   },
   "Читать подробнее →": {
-    "uz": "Batafsil o‘qish →",
+    "uz": "Batafsil öqiş →",
     "en": "Read more →"
   },
   "Мониторинг": {
@@ -1067,15 +1067,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Analytics"
   },
   "Посещаемость, успеваемость и качество занятий.": {
-    "uz": "Davomat, o‘zlashtirish va darslar sifati.",
+    "uz": "Davomat, özlaştiriş va darslar sifati.",
     "en": "Attendance, academic performance and teaching quality."
   },
   "Сводные показатели и аналитические материалы.": {
-    "uz": "Umumlashtirilgan ko‘rsatkichlar va tahliliy materiallar.",
+    "uz": "Umumlaştirilgan körsatkiçlar va tahliliy materiallar.",
     "en": "Summary indicators and analytical materials."
   },
   "Ответы на часто задаваемые вопросы.": {
-    "uz": "Ko‘p beriladigan savollarga javoblar.",
+    "uz": "Köp beriladigan savollarga javoblar.",
     "en": "Answers to frequently asked questions."
   },
   "Обращения": {
@@ -1083,7 +1083,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Appeals"
   },
   "Предложения, замечания и вопросы по качеству образования.": {
-    "uz": "Ta’lim sifati bo‘yicha takliflar, mulohazalar va savollar.",
+    "uz": "Ta’lim sifati böyiça takliflar, mulohazalar va savollar.",
     "en": "Suggestions, concerns and questions about education quality."
   },
   "Админ-панель": {
@@ -1091,7 +1091,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Admin panel"
   },
   "Управление новостями, документами и сотрудниками.": {
-    "uz": "Yangiliklar, hujjatlar va xodimlarni boshqarish.",
+    "uz": "Yangiliklar, hujjatlar va xodimlarni boşqariş.",
     "en": "Manage news, documents and employees."
   },
   "Сервисы": {
@@ -1099,15 +1099,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Services"
   },
   "Быстрые сервисы отдела": {
-    "uz": "Bo‘limning tezkor xizmatlari",
+    "uz": "Bölimning tezkor xizmatlari",
     "en": "Quick department services"
   },
   "CAPTCHA ещё не настроена администратором.": {
-    "uz": "Administrator CAPTCHA ni hali sozlamagan.",
+    "uz": "Administrator CAPTÇA ni hali sozlamagan.",
     "en": "CAPTCHA has not yet been configured by the administrator."
   },
   "Ошибка загрузки сотрудника": {
-    "uz": "Xodim ma’lumotlarini yuklashda xatolik",
+    "uz": "Xodim ma’lumotlarini yuklaşda xatolik",
     "en": "Unable to load employee"
   },
   "Сотрудник не найден": {
@@ -1119,23 +1119,23 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "The record with ID"
   },
   "недоступна или была удалена.": {
-    "uz": "mavjud emas yoki o‘chirilgan.",
+    "uz": "mavjud emas yoki öçirilgan.",
     "en": "is unavailable or has been deleted."
   },
   "Редактирование сотрудника": {
-    "uz": "Xodim ma’lumotlarini tahrirlash",
+    "uz": "Xodim ma’lumotlarini tahrirlaş",
     "en": "Edit employee"
   },
   "Редактировать новость": {
-    "uz": "Yangilikni tahrirlash",
+    "uz": "Yangilikni tahrirlaş",
     "en": "Edit news"
   },
   "Добавить новость": {
-    "uz": "Yangilik qo‘shish",
+    "uz": "Yangilik qöşiş",
     "en": "Add news"
   },
   "Управление новостями сайта": {
-    "uz": "Sayt yangiliklarini boshqarish",
+    "uz": "Sayt yangiliklarini boşqariş",
     "en": "Manage site news"
   },
   "+ Новая новость": {
@@ -1143,7 +1143,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "+ New article"
   },
   "Аналитические показатели деятельности отдела.": {
-    "uz": "Bo‘lim faoliyatining tahliliy ko‘rsatkichlari.",
+    "uz": "Bölim faoliyatining tahliliy körsatkiçlari.",
     "en": "Analytical indicators of department activity."
   },
   "Мониторинги": {
@@ -1155,59 +1155,59 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Reports"
   },
   "Проведение мониторинга качества образования и размещение результатов.": {
-    "uz": "Ta’lim sifati monitoringini o‘tkazish va natijalarni joylashtirish.",
+    "uz": "Ta’lim sifati monitoringini ötkaziş va natijalarni joylaştiriş.",
     "en": "Monitor education quality and publish results."
   },
   "Здесь будут формы мониторинга, результаты проверок и публикация материалов.": {
-    "uz": "Bu yerda monitoring shakllari, tekshiruv natijalari va materiallar joylashtiriladi.",
+    "uz": "Bu yerda monitoring şakllari, tekşiruv natijalari va materiallar joylaştiriladi.",
     "en": "Monitoring forms, review results and materials will be published here."
   },
   "Контроль прохождения": {
-    "uz": "O‘tish holati nazorati",
+    "uz": "Ötiş holati nazorati",
     "en": "Completion tracking"
   },
   "Тест по HEMIS": {
-    "uz": "HEMIS bo‘yicha test",
+    "uz": "HEMIS böyiça test",
     "en": "HEMIS test"
   },
   "Отображаются преподаватели, которые самостоятельно зарегистрировались.": {
-    "uz": "Mustaqil ro‘yxatdan o‘tgan o‘qituvchilar ko‘rsatiladi.",
+    "uz": "Mustaqil röyxatdan ötgan öqituvçilar körsatiladi.",
     "en": "Shows teachers who registered themselves."
   },
   "Скачать Excel/CSV": {
-    "uz": "Excel/CSV yuklab olish",
+    "uz": "Excel/CSV yuklab oliş",
     "en": "Download Excel/CSV"
   },
   "Зарегистрировано": {
-    "uz": "Ro‘yxatdan o‘tgan",
+    "uz": "Röyxatdan ötgan",
     "en": "Registered"
   },
   "Успешно прошли": {
-    "uz": "Muvaffaqiyatli o‘tgan",
+    "uz": "Muvaffaqiyatli ötgan",
     "en": "Passed"
   },
   "Не начали": {
-    "uz": "Boshlamagan",
+    "uz": "Boşlamagan",
     "en": "Not started"
   },
   "Не набрали 80%": {
-    "uz": "80% to‘plamagan",
+    "uz": "80% töplamagan",
     "en": "Below 80%"
   },
   "Поиск по Ф.И.О., кафедре или почте": {
-    "uz": "F.I.Sh., kafedra yoki pochta bo‘yicha qidirish",
+    "uz": "F.I.Ş., kafedra yoki poçta böyiça qidiriş",
     "en": "Search by name, department or email"
   },
   "Все статусы": {
-    "uz": "Barcha holatlar",
+    "uz": "Barça holatlar",
     "en": "All statuses"
   },
   "Регистрация:": {
-    "uz": "Ro‘yxatdan o‘tish:",
+    "uz": "Röyxatdan ötiş:",
     "en": "Registered:"
   },
   "Попыток:": {
-    "uz": "Urinishlar:",
+    "uz": "Urinişlar:",
     "en": "Attempts:"
   },
   "Записи не найдены.": {
@@ -1215,27 +1215,27 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "No records found."
   },
   "Загрузка реестра…": {
-    "uz": "Ro‘yxat yuklanmoqda…",
+    "uz": "Röyxat yuklanmoqda…",
     "en": "Loading register…"
   },
   "Не удалось загрузить реестр. Сначала выполните SQL-файл установки модуля в Supabase.": {
-    "uz": "Ro‘yxatni yuklab bo‘lmadi. Avval Supabase da modulni o‘rnatish SQL faylini bajaring.",
+    "uz": "Röyxatni yuklab bölmadi. Avval Supabase da modulni örnatiş SQL faylini bajaring.",
     "en": "Unable to load the register. Run the module setup SQL file in Supabase first."
   },
   "Не начал": {
-    "uz": "Boshlamagan",
+    "uz": "Boşlamagan",
     "en": "Not started"
   },
   "Пройден": {
-    "uz": "O‘tgan",
+    "uz": "Ötgan",
     "en": "Passed"
   },
   "Не набран проходной балл": {
-    "uz": "O‘tish bali to‘planmagan",
+    "uz": "Ötiş bali töplanmagan",
     "en": "Pass mark not reached"
   },
   "Ф.И.О.": {
-    "uz": "F.I.Sh.",
+    "uz": "F.I.Ş.",
     "en": "Full name"
   },
   "Кафедра и должность": {
@@ -1255,15 +1255,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Status"
   },
   "Удалить": {
-    "uz": "O‘chirish",
+    "uz": "Öçiriş",
     "en": "Delete"
   },
   "Удалить эту новость?": {
-    "uz": "Ushbu yangilik o‘chirilsinmi?",
+    "uz": "Uşbu yangilik öçirilsinmi?",
     "en": "Delete this article?"
   },
   "Ошибка удаления:": {
-    "uz": "O‘chirishda xatolik:",
+    "uz": "Öçirişda xatolik:",
     "en": "Deletion error:"
   },
   "Заголовок RU": {
@@ -1295,7 +1295,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Category"
   },
   "Ошибка сохранения:": {
-    "uz": "Saqlashda xatolik:",
+    "uz": "Saqlaşda xatolik:",
     "en": "Save error:"
   },
   "Новость обновлена!": {
@@ -1307,11 +1307,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Saving..."
   },
   "Сохранить изменения": {
-    "uz": "O‘zgarishlarni saqlash",
+    "uz": "Özgarişlarni saqlaş",
     "en": "Save changes"
   },
   "Ошибка загрузки фото:": {
-    "uz": "Rasmni yuklashda xatolik:",
+    "uz": "Rasmni yuklaşda xatolik:",
     "en": "Photo upload error:"
   },
   "Новость успешно опубликована!": {
@@ -1343,15 +1343,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Publishing..."
   },
   "Опубликовать новость": {
-    "uz": "Yangilikni e’lon qilish",
+    "uz": "Yangilikni e’lon qiliş",
     "en": "Publish article"
   },
   "• Список": {
-    "uz": "• Ro‘yxat",
+    "uz": "• Röyxat",
     "en": "• List"
   },
   "Список": {
-    "uz": "Ro‘yxat",
+    "uz": "Röyxat",
     "en": "List"
   },
   "Текст": {
@@ -1363,11 +1363,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Heading"
   },
   "Вход для преподавателя": {
-    "uz": "O‘qituvchi uchun kirish",
+    "uz": "Öqituvçi uçun kiriş",
     "en": "Teacher sign-in"
   },
   "Войдите, чтобы пройти тест по работе с HEMIS": {
-    "uz": "HEMIS bo‘yicha testni topshirish uchun tizimga kiring",
+    "uz": "HEMIS böyiça testni topşiriş uçun tizimga kiring",
     "en": "Sign in to take the HEMIS test"
   },
   "Пароль": {
@@ -1375,27 +1375,27 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Password"
   },
   "Нет учётной записи?": {
-    "uz": "Hisobingiz yo‘qmi?",
+    "uz": "Hisobingiz yöqmi?",
     "en": "Don’t have an account?"
   },
   "Зарегистрироваться": {
-    "uz": "Ro‘yxatdan o‘tish",
+    "uz": "Röyxatdan ötiş",
     "en": "Register"
   },
   "Регистрация преподавателя": {
-    "uz": "O‘qituvchini ro‘yxatdan o‘tkazish",
+    "uz": "Öqituvçini röyxatdan ötkaziş",
     "en": "Teacher registration"
   },
   "Заполните данные самостоятельно. Они будут доступны администратору системы качества.": {
-    "uz": "Ma’lumotlarni o‘zingiz kiriting. Ular sifat tizimi administratoriga ko‘rinadi.",
+    "uz": "Ma’lumotlarni özingiz kiriting. Ular sifat tizimi administratoriga körinadi.",
     "en": "Enter your details. They will be visible to the quality system administrator."
   },
   "Ф.И.О. полностью *": {
-    "uz": "To‘liq F.I.Sh. *",
+    "uz": "Töliq F.I.Ş. *",
     "en": "Full name *"
   },
   "Кафедра / подразделение *": {
-    "uz": "Kafedra / bo‘linma *",
+    "uz": "Kafedra / bölinma *",
     "en": "Department / unit *"
   },
   "Должность *": {
@@ -1407,7 +1407,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Phone number"
   },
   "Электронная почта *": {
-    "uz": "Elektron pochta *",
+    "uz": "Elektron poçta *",
     "en": "Email *"
   },
   "Пароль (не менее 8 символов) *": {
@@ -1419,19 +1419,19 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Confirm password *"
   },
   "Подтверждаю достоверность указанных сведений и даю согласие на их обработку для организации тестирования.": {
-    "uz": "Kiritilgan ma’lumotlarning to‘g‘riligini tasdiqlayman va testni tashkil etish uchun ularni qayta ishlashga roziman.",
+    "uz": "Kiritilgan ma’lumotlarning töğriligini tasdiqlayman va testni taşkil etiş uçun ularni qayta işlaşga roziman.",
     "en": "I confirm these details are accurate and consent to their processing to organise testing."
   },
   "Уже зарегистрированы?": {
-    "uz": "Ro‘yxatdan o‘tganmisiz?",
+    "uz": "Röyxatdan ötganmisiz?",
     "en": "Already registered?"
   },
   "Войти": {
-    "uz": "Kirish",
+    "uz": "Kiriş",
     "en": "Sign in"
   },
   "Неверная электронная почта или пароль.": {
-    "uz": "Elektron pochta yoki parol noto‘g‘ri.",
+    "uz": "Elektron poçta yoki parol notöğri.",
     "en": "Incorrect email or password."
   },
   "Выполняется вход…": {
@@ -1443,11 +1443,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Passwords do not match."
   },
   "Необходимо подтвердить согласие на обработку данных.": {
-    "uz": "Ma’lumotlarni qayta ishlashga rozilikni tasdiqlang.",
+    "uz": "Ma’lumotlarni qayta işlaşga rozilikni tasdiqlang.",
     "en": "Please confirm your consent to data processing."
   },
   "Ошибка регистрации.": {
-    "uz": "Ro‘yxatdan o‘tishda xatolik.",
+    "uz": "Röyxatdan ötişda xatolik.",
     "en": "Registration failed."
   },
   "Создаём учётную запись…": {
@@ -1455,7 +1455,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Creating account…"
   },
   "Зарегистрироваться и перейти к тесту": {
-    "uz": "Ro‘yxatdan o‘tish va testga o‘tish",
+    "uz": "Röyxatdan ötiş va testga ötiş",
     "en": "Register and start the test"
   },
   "Загружаем тест…": {
@@ -1463,15 +1463,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Loading test…"
   },
   "Проверка цифровых компетенций": {
-    "uz": "Raqamli kompetensiyalarni tekshirish",
+    "uz": "Raqamli kompetensiyalarni tekşiriş",
     "en": "Digital competency assessment"
   },
   "Знание функций HEMIS": {
-    "uz": "HEMIS funksiyalarini bilish",
+    "uz": "HEMIS funksiyalarini biliş",
     "en": "Knowledge of HEMIS features"
   },
   "Выйти": {
-    "uz": "Chiqish",
+    "uz": "Çiqiş",
     "en": "Sign out"
   },
   "Вопросов": {
@@ -1479,11 +1479,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Questions"
   },
   "Проходной балл": {
-    "uz": "O‘tish bali",
+    "uz": "Ötiş bali",
     "en": "Pass mark"
   },
   "Лучший результат": {
-    "uz": "Eng yaxshi natija",
+    "uz": "Eng yaxşi natija",
     "en": "Best result"
   },
   "из": {
@@ -1491,7 +1491,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "of"
   },
   "Пройти ещё раз": {
-    "uz": "Qayta topshirish",
+    "uz": "Qayta topşiriş",
     "en": "Take again"
   },
   "Вопрос": {
@@ -1503,35 +1503,35 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Answered:"
   },
   "Ответьте на все вопросы перед отправкой.": {
-    "uz": "Yuborishdan oldin barcha savollarga javob bering.",
+    "uz": "Yuborişdan oldin barça savollarga javob bering.",
     "en": "Answer all questions before submitting."
   },
   "Не удалось проверить тест.": {
-    "uz": "Testni tekshirib bo‘lmadi.",
+    "uz": "Testni tekşirib bölmadi.",
     "en": "Unable to grade the test."
   },
   "Тест успешно пройден": {
-    "uz": "Test muvaffaqiyatli topshirildi",
+    "uz": "Test muvaffaqiyatli topşirildi",
     "en": "Test passed"
   },
   "Рекомендуется пройти тест повторно": {
-    "uz": "Testni qayta topshirish tavsiya etiladi",
+    "uz": "Testni qayta topşiriş tavsiya etiladi",
     "en": "Please retake the test"
   },
   "Проверяем…": {
-    "uz": "Tekshirilmoqda…",
+    "uz": "Tekşirilmoqda…",
     "en": "Checking…"
   },
   "Завершить и узнать результат": {
-    "uz": "Yakunlash va natijani ko‘rish",
+    "uz": "Yakunlaş va natijani köriş",
     "en": "Finish and view result"
   },
   "В каком разделе HEMIS преподаватель формирует содержание дисциплины по отдельным темам?": {
-    "uz": "HEMIS ning qaysi bo‘limida o‘qituvchi fan mazmunini alohida mavzular bo‘yicha shakllantiradi?",
+    "uz": "HEMIS ning qaysi bölimida öqituvçi fan mazmunini alohida mavzular böyiça şakllantiradi?",
     "en": "In which HEMIS section does a teacher organise subject content by topic?"
   },
   "Учебные занятия → Расписание": {
-    "uz": "O‘quv mashg‘ulotlari → Dars jadvali",
+    "uz": "Öquv maşğulotlari → Dars jadvali",
     "en": "Classes → Schedule"
   },
   "База предметов → Темы предметов": {
@@ -1543,15 +1543,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Research process → Research activity"
   },
   "Сотрудники → Индивидуальный план": {
-    "uz": "Xodimlar → Shaxsiy reja",
+    "uz": "Xodimlar → Şaxsiy reja",
     "en": "Employees → Individual plan"
   },
   "Темы закреплённой дисциплины находятся в разделе «База предметов → Темы предметов».": {
-    "uz": "Biriktirilgan fan mavzulari «Fanlar bazasi → Fan mavzulari» bo‘limida joylashgan.",
+    "uz": "Biriktirilgan fan mavzulari «Fanlar bazasi → Fan mavzulari» bölimida joylaşgan.",
     "en": "Assigned subject topics are in “Subject database → Subject topics”."
   },
   "Какой подраздел предназначен для размещения электронных учебных материалов по дисциплине?": {
-    "uz": "Fan bo‘yicha elektron o‘quv materiallari qaysi kichik bo‘limga joylashtiriladi?",
+    "uz": "Fan böyiça elektron öquv materiallari qaysi kiçik bölimga joylaştiriladi?",
     "en": "Which subsection is used to upload electronic learning materials for a subject?"
   },
   "Ресурсы предмета": {
@@ -1559,11 +1559,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Subject resources"
   },
   "Задачи предмета": {
-    "uz": "Fan topshiriqlari",
+    "uz": "Fan topşiriqlari",
     "en": "Subject tasks"
   },
   "Журнал оценок": {
-    "uz": "Baholash jurnali",
+    "uz": "Baholaş jurnali",
     "en": "Grade book"
   },
   "Календарный план": {
@@ -1571,11 +1571,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Calendar plan"
   },
   "Файлы и учебные материалы размещаются в подразделе «Ресурсы предмета».": {
-    "uz": "Fayllar va o‘quv materiallari «Fan resurslari» kichik bo‘limiga joylashtiriladi.",
+    "uz": "Fayllar va öquv materiallari «Fan resurslari» kiçik bölimiga joylaştiriladi.",
     "en": "Files and learning materials are uploaded to “Subject resources”."
   },
   "В каком подразделе преподаватель создаёт задания, относящиеся к конкретной дисциплине?": {
-    "uz": "O‘qituvchi muayyan fanga oid topshiriqlarni qaysi kichik bo‘limda yaratadi?",
+    "uz": "Öqituvçi muayyan fanga oid topşiriqlarni qaysi kiçik bölimda yaratadi?",
     "en": "Where does a teacher create tasks for a specific subject?"
   },
   "Информация предмета": {
@@ -1587,35 +1587,35 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Schedule"
   },
   "Методические публикации": {
-    "uz": "Uslubiy nashrlar",
+    "uz": "Uslubiy naşrlar",
     "en": "Teaching publications"
   },
   "Для создания задач по дисциплине используется подраздел «Задачи предмета».": {
-    "uz": "Fan topshiriqlarini yaratish uchun «Fan topshiriqlari» kichik bo‘limidan foydalaniladi.",
+    "uz": "Fan topşiriqlarini yaratiş uçun «Fan topşiriqlari» kiçik bölimidan foydalaniladi.",
     "en": "Subject tasks are created in “Subject tasks”."
   },
   "Какой подраздел используется для работы с заданиями, выдаваемыми студентам в рамках курса?": {
-    "uz": "Kurs doirasida talabalarga beriladigan topshiriqlar bilan qaysi kichik bo‘limda ishlanadi?",
+    "uz": "Kurs doirasida talabalarga beriladigan topşiriqlar bilan qaysi kiçik bölimda işlanadi?",
     "en": "Which subsection is used to manage assignments given to students within a course?"
   },
   "Задания курса": {
-    "uz": "Kurs topshiriqlari",
+    "uz": "Kurs topşiriqlari",
     "en": "Course assignments"
   },
   "Проведение урока": {
-    "uz": "Darsni o‘tkazish",
+    "uz": "Darsni ötkaziş",
     "en": "Conduct lesson"
   },
   "Индивидуальный план": {
-    "uz": "Shaxsiy reja",
+    "uz": "Şaxsiy reja",
     "en": "Individual plan"
   },
   "Работа с заданиями курса выполняется в одноимённом подразделе «Задания курса».": {
-    "uz": "Kurs topshiriqlari bilan «Kurs topshiriqlari» kichik bo‘limida ishlanadi.",
+    "uz": "Kurs topşiriqlari bilan «Kurs topşiriqlari» kiçik bölimida işlanadi.",
     "en": "Course assignments are managed in “Course assignments”."
   },
   "Где формируется календарная последовательность изучения учебного материала?": {
-    "uz": "O‘quv materialini o‘rganishning taqvimiy ketma-ketligi qayerda tuziladi?",
+    "uz": "Öquv materialini örganişning taqvimiy ketma-ketligi qayerda tuziladi?",
     "en": "Where is the calendar sequence for studying learning material prepared?"
   },
   "Журнал посещаемости": {
@@ -1631,15 +1631,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Research activity"
   },
   "Последовательность тем и занятий отражается в «Календарном плане».": {
-    "uz": "Mavzular va mashg‘ulotlar ketma-ketligi «Taqvimiy reja»da aks ettiriladi.",
+    "uz": "Mavzular va maşğulotlar ketma-ketligi «Taqvimiy reja»da aks ettiriladi.",
     "en": "The sequence of topics and classes is shown in the “Calendar plan”."
   },
   "Какой подраздел содержит основные сведения о закреплённой дисциплине?": {
-    "uz": "Biriktirilgan fan haqidagi asosiy ma’lumotlar qaysi kichik bo‘limda joylashgan?",
+    "uz": "Biriktirilgan fan haqidagi asosiy ma’lumotlar qaysi kiçik bölimda joylaşgan?",
     "en": "Which subsection contains key information about an assigned subject?"
   },
   "Список уроков": {
-    "uz": "Darslar ro‘yxati",
+    "uz": "Darslar röyxati",
     "en": "Lesson list"
   },
   "Итоговый контроль": {
@@ -1647,11 +1647,11 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Final assessment"
   },
   "Основные сведения доступны в подразделе «Информация предмета».": {
-    "uz": "Asosiy ma’lumotlar «Fan haqida ma’lumot» kichik bo‘limida mavjud.",
+    "uz": "Asosiy ma’lumotlar «Fan haqida ma’lumot» kiçik bölimida mavjud.",
     "en": "Key details are available in “Subject information”."
   },
   "Где преподаватель просматривает своё расписание занятий?": {
-    "uz": "O‘qituvchi o‘z dars jadvalini qayerda ko‘radi?",
+    "uz": "Öqituvçi öz dars jadvalini qayerda köradi?",
     "en": "Where can a teacher view their class schedule?"
   },
   "База предметов → Ресурсы предмета": {
@@ -1659,23 +1659,23 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Subject database → Subject resources"
   },
   "Расписание находится в разделе «Учебные занятия → Расписание».": {
-    "uz": "Dars jadvali «O‘quv mashg‘ulotlari → Dars jadvali» bo‘limida joylashgan.",
+    "uz": "Dars jadvali «Öquv maşğulotlari → Dars jadvali» bölimida joylaşgan.",
     "en": "The schedule is in “Classes → Schedule”."
   },
   "Какая функция используется для регистрации факта проведения занятия?": {
-    "uz": "Dars o‘tkazilganini qayd etish uchun qaysi funksiyadan foydalaniladi?",
+    "uz": "Dars ötkazilganini qayd etiş uçun qaysi funksiyadan foydalaniladi?",
     "en": "Which function records that a class has been held?"
   },
   "Научные публикации": {
-    "uz": "Ilmiy nashrlar",
+    "uz": "Ilmiy naşrlar",
     "en": "Research publications"
   },
   "Факт проведения занятия фиксируется через функцию «Проведение урока».": {
-    "uz": "Dars o‘tkazilgani «Darsni o‘tkazish» funksiyasi orqali qayd etiladi.",
+    "uz": "Dars ötkazilgani «Darsni ötkaziş» funksiyasi orqali qayd etiladi.",
     "en": "A completed class is recorded using “Conduct lesson”."
   },
   "В каком подразделе отмечается присутствие или отсутствие студентов?": {
-    "uz": "Talabalarning borligi yoki yo‘qligi qaysi kichik bo‘limda belgilanadi?",
+    "uz": "Talabalarning borligi yoki yöqligi qaysi kiçik bölimda belgilanadi?",
     "en": "Where is student attendance or absence recorded?"
   },
   "Посещаемость фиксируется в «Журнале посещаемости».": {
@@ -1683,15 +1683,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Attendance is recorded in the “Attendance register”."
   },
   "Где преподаватель работает с оценками студентов?": {
-    "uz": "O‘qituvchi talabalar baholari bilan qayerda ishlaydi?",
+    "uz": "Öqituvçi talabalar baholari bilan qayerda işlaydi?",
     "en": "Where does a teacher manage student grades?"
   },
   "Результаты учебной деятельности вносятся в «Журнал оценок».": {
-    "uz": "O‘quv faoliyati natijalari «Baholash jurnali»ga kiritiladi.",
+    "uz": "Öquv faoliyati natijalari «Baholaş jurnali»ga kiritiladi.",
     "en": "Academic results are entered in the “Grade book”."
   },
   "В каком разделе преподаватель работает со своим индивидуальным планом?": {
-    "uz": "O‘qituvchi shaxsiy rejasi bilan qaysi bo‘limda ishlaydi?",
+    "uz": "Öqituvçi şaxsiy rejasi bilan qaysi bölimda işlaydi?",
     "en": "In which section does a teacher manage their individual plan?"
   },
   "База предметов → Календарный план": {
@@ -1699,19 +1699,19 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Subject database → Calendar plan"
   },
   "Индивидуальный план расположен в разделе «Сотрудники».": {
-    "uz": "Shaxsiy reja «Xodimlar» bo‘limida joylashgan.",
+    "uz": "Şaxsiy reja «Xodimlar» bölimida joylaşgan.",
     "en": "The individual plan is in the “Employees” section."
   },
   "Где отражаются сведения о подготовленных учебно-методических работах?": {
-    "uz": "Tayyorlangan o‘quv-uslubiy ishlar haqidagi ma’lumotlar qayerda aks ettiriladi?",
+    "uz": "Tayyorlangan öquv-uslubiy işlar haqidagi ma’lumotlar qayerda aks ettiriladi?",
     "en": "Where are completed teaching and methodological works recorded?"
   },
   "Учебно-методические работы вносятся в «Методические публикации».": {
-    "uz": "O‘quv-uslubiy ishlar «Uslubiy nashrlar»ga kiritiladi.",
+    "uz": "Öquv-uslubiy işlar «Uslubiy naşrlar»ga kiritiladi.",
     "en": "Teaching and methodological works are entered in “Teaching publications”."
   },
   "Какой подраздел предназначен для внесения сведений о научных статьях преподавателя?": {
-    "uz": "O‘qituvchining ilmiy maqolalari haqidagi ma’lumotlar qaysi kichik bo‘limga kiritiladi?",
+    "uz": "Öqituvçining ilmiy maqolalari haqidagi ma’lumotlar qaysi kiçik bölimga kiritiladi?",
     "en": "Which subsection records a teacher’s research articles?"
   },
   "Интеллектуальная собственность": {
@@ -1719,7 +1719,7 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Intellectual property"
   },
   "Статьи и иные научные публикации вносятся в «Научные публикации».": {
-    "uz": "Maqolalar va boshqa ilmiy nashrlar «Ilmiy nashrlar»ga kiritiladi.",
+    "uz": "Maqolalar va boşqa ilmiy naşrlar «Ilmiy naşrlar»ga kiritiladi.",
     "en": "Articles and other research publications are entered in “Research publications”."
   },
   "Где отражаются сведения об объектах интеллектуальной собственности?": {
@@ -1727,15 +1727,15 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Where are intellectual property assets recorded?"
   },
   "Для этого предусмотрен подраздел «Интеллектуальная собственность».": {
-    "uz": "Buning uchun «Intellektual mulk» kichik bo‘limi mavjud.",
+    "uz": "Buning uçun «Intellektual mulk» kiçik bölimi mavjud.",
     "en": "The “Intellectual property” subsection is used for this."
   },
   "Где отражаются сведения об участии преподавателя в научных мероприятиях?": {
-    "uz": "O‘qituvchining ilmiy tadbirlardagi ishtiroki haqidagi ma’lumotlar qayerda aks ettiriladi?",
+    "uz": "Öqituvçining ilmiy tadbirlardagi iştiroki haqidagi ma’lumotlar qayerda aks ettiriladi?",
     "en": "Where is a teacher’s participation in research events recorded?"
   },
   "Участие в мероприятиях и другие виды научной деятельности отражаются в «Научной активности».": {
-    "uz": "Tadbirlardagi ishtirok va boshqa ilmiy faoliyat turlari «Ilmiy faollik»da aks ettiriladi.",
+    "uz": "Tadbirlardagi iştirok va boşqa ilmiy faoliyat turlari «Ilmiy faollik»da aks ettiriladi.",
     "en": "Event participation and other research activities are recorded in “Research activity”."
   },
   "Публикуется...": {
@@ -1743,59 +1743,59 @@ const translations: Record<string, { uz: string; en: string }> = {
     "en": "Publishing..."
   },
   "Опубликовать": {
-    "uz": "E’lon qilish",
+    "uz": "E’lon qiliş",
     "en": "Publish"
   },
   "Преподаватель глазами студента": {
-    "uz": "Talaba nigohida o‘qituvchi",
+    "uz": "Talaba nigohida öqituvçi",
     "en": "Teachers through students’ eyes"
   },
   "Анонимная оценка качества преподавания студентами института": {
-    "uz": "Institut talabalari tomonidan ta’lim sifatini anonim baholash",
+    "uz": "Institut talabalari tomonidan ta’lim sifatini anonim baholaş",
     "en": "Anonymous student assessment of teaching quality"
   },
   "Опрос работодателей": {
-    "uz": "Ish beruvchilar so‘rovnomasi",
+    "uz": "Iş beruvçilar sörovnomasi",
     "en": "Employer survey"
   },
   "Оценка качества подготовки выпускников и взаимодействия института с работодателями": {
-    "uz": "Bitiruvchilar tayyorgarligi sifati va institutning ish beruvchilar bilan hamkorligini baholash",
+    "uz": "Bitiruvçilar tayyorgarligi sifati va institutning iş beruvçilar bilan hamkorligini baholaş",
     "en": "Assessing graduate preparation and institute cooperation with employers"
   },
   "Анонимная оценка качества обучения выпускниками Института": {
-    "uz": "Institut bitiruvchilari tomonidan ta’lim sifatini anonim baholash",
+    "uz": "Institut bitiruvçilari tomonidan ta’lim sifatini anonim baholaş",
     "en": "Anonymous graduate assessment of education quality"
   },
   "Анонимная оценка условий обучения и научной деятельности": {
-    "uz": "Ta’lim va ilmiy faoliyat sharoitlarini anonim baholash",
+    "uz": "Ta’lim va ilmiy faoliyat şaroitlarini anonim baholaş",
     "en": "Anonymous assessment of education and research conditions"
   },
   "Тест по функциям HEMIS": {
-    "uz": "HEMIS funksiyalari bo‘yicha test",
+    "uz": "HEMIS funksiyalari böyiça test",
     "en": "HEMIS features test"
   },
   "Вход преподавателя — тест HEMIS": {
-    "uz": "O‘qituvchi uchun kirish — HEMIS testi",
+    "uz": "Öqituvçi uçun kiriş — HEMIS testi",
     "en": "Teacher sign-in — HEMIS test"
   },
   "Регистрация преподавателя — тест HEMIS": {
-    "uz": "O‘qituvchini ro‘yxatdan o‘tkazish — HEMIS testi",
+    "uz": "Öqituvçini röyxatdan ötkaziş — HEMIS testi",
     "en": "Teacher registration — HEMIS test"
   },
   "Личный кабинет студента": {
-    "uz": "Talabaning shaxsiy kabineti",
+    "uz": "Talabaning şaxsiy kabineti",
     "en": "Student account"
   },
   "Доступные анонимные опросы и статус участия": {
-    "uz": "Mavjud anonim so‘rovnomalar va ishtirok holati",
+    "uz": "Mavjud anonim sörovnomalar va iştirok holati",
     "en": "Available anonymous surveys and participation status"
   },
   "Вход в кабинет студента": {
-    "uz": "Talaba kabinetiga kirish",
+    "uz": "Talaba kabinetiga kiriş",
     "en": "Student sign-in"
   },
   "Личный кабинет студента и доступ к анонимным опросам": {
-    "uz": "Talabaning shaxsiy kabineti va anonim so‘rovnomalarga kirish",
+    "uz": "Talabaning şaxsiy kabineti va anonim sörovnomalarga kiriş",
     "en": "Student account and access to anonymous surveys"
   }
 };

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const labels = {
   ru: { eyebrow: "Открытая аналитика", title: "Мониторинг качества образования", lead: "Обобщённые результаты опросов обновляются автоматически. Персональные данные и письменные ответы здесь не публикуются.", answers: "ответов", average: "Средняя оценка", questions: "Результаты по вопросам", loading: "Загрузка аналитики…", error: "Не удалось загрузить данные мониторинга.", empty: "Пока нет данных", updated: "Обновлено" },
-  uz: { eyebrow: "Ochiq tahlil", title: "Ta’lim sifati monitoringi", lead: "So‘rovlarning umumlashtirilgan natijalari avtomatik yangilanadi. Shaxsiy ma’lumotlar va yozma javoblar e’lon qilinmaydi.", answers: "javob", average: "O‘rtacha baho", questions: "Savollar bo‘yicha natijalar", loading: "Tahlil yuklanmoqda…", error: "Monitoring ma’lumotlarini yuklab bo‘lmadi.", empty: "Hozircha ma’lumot yo‘q", updated: "Yangilangan" },
+  uz: { eyebrow: "Oçiq tahlil", title: "Ta’lim sifati monitoringi", lead: "Sörovlarning umumlaştirilgan natijalari avtomatik yangilanadi. Şaxsiy ma’lumotlar va yozma javoblar e’lon qilinmaydi.", answers: "javob", average: "Örtaça baho", questions: "Savollar böyiça natijalar", loading: "Tahlil yuklanmoqda…", error: "Monitoring ma’lumotlarini yuklab bölmadi.", empty: "Hozirça ma’lumot yöq", updated: "Yangilangan" },
   en: { eyebrow: "Public analytics", title: "Education quality monitoring", lead: "Aggregated survey results update automatically. Personal data and written responses are not published here.", answers: "responses", average: "Average score", questions: "Results by question", loading: "Loading analytics…", error: "Could not load monitoring data.", empty: "No data yet", updated: "Updated" },
 } as const;
 
@@ -44,7 +44,7 @@ function QuestionCard({ question, responses, locale }: { question: Question; res
 
 const countsCopy = {
   ru: { forms:"Получено анкет", evaluations:"Оценок преподавателей", answers:"Анкет по вопросу", monthly:"Анкеты по месяцам", all:"За всё время", noDate:"Месяцы поступления не указаны", scope:"Во всех диаграммах показаны данные по выбранному опросу за всё время. В процентах по каждому вопросу учитываются только анкеты с ответом на этот вопрос." },
-  uz: { forms:"Qabul qilingan anketalar", evaluations:"O‘qituvchilarga berilgan baholar", answers:"Savolga javob bergan anketalar", monthly:"Oylar bo‘yicha anketalar", all:"Barcha davr", noDate:"Anketalar kelgan oylar ko‘rsatilmagan", scope:"Diagrammalar tanlangan so‘rovning barcha davrdagi ma’lumotlarini ko‘rsatadi. Har bir savol foizida faqat shu savolga javob berilgan anketalar hisobga olinadi." },
+  uz: { forms:"Qabul qilingan anketalar", evaluations:"Öqituvçilarga berilgan baholar", answers:"Savolga javob bergan anketalar", monthly:"Oylar böyiça anketalar", all:"Barça davr", noDate:"Anketalar kelgan oylar körsatilmagan", scope:"Diagrammalar tanlangan sörovning barça davrdagi ma’lumotlarini körsatadi. Har bir savol foizida faqat şu savolga javob berilgan anketalar hisobga olinadi." },
   en: { forms:"Forms received", evaluations:"Teacher evaluations", answers:"Forms answering this question", monthly:"Forms by month", all:"All time", noDate:"Submission months are unavailable", scope:"Charts show all-time data for the selected survey. Each question’s percentages count only forms that answered that question." },
 } as const;
 
@@ -55,7 +55,7 @@ export default function PublicMonitoringDashboard({ locale, initialReport }: { l
   const fmt = monitoringFormat(lang);
   const ui = {
     ru: { select: "Выберите опрос", forms: "Анкеты", languages: "Языки анкет", method: "По каждому критерию сначала усредняются оценки преподавателей внутри одной анкеты. Для диаграммы этот балл округляется до целого. «Не могу оценить» не входит в средний балл.", retry: "Повторить" },
-    uz: { select: "So‘rovni tanlang", forms: "Anketalar", languages: "Anketa tillari", method: "Har bir mezon uchun avval bitta anketadagi o‘qituvchi baholari o‘rtachasi hisoblanadi. Diagrammada u butun songa yaxlitlanadi. «Baholay olmayman» o‘rtacha ballga kiritilmaydi.", retry: "Qayta urinish" },
+    uz: { select: "Sörovni tanlang", forms: "Anketalar", languages: "Anketa tillari", method: "Har bir mezon uçun avval bitta anketadagi öqituvçi baholari örtaçasi hisoblanadi. Diagrammada u butun songa yaxlitlanadi. «Baholay olmayman» örtaça ballga kiritilmaydi.", retry: "Qayta uriniş" },
     en: { select: "Select a survey", forms: "Forms", languages: "Survey languages", method: "For each criterion, teacher scores are averaged within each form and rounded for the breakdown. ‘Unable to assess’ is excluded from the mean score.", retry: "Retry" },
   }[lang];
   const [payload, setPayload] = useState<Payload | null>(null);

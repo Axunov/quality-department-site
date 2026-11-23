@@ -37,29 +37,29 @@ const labels = {
     saved: "Изменения сохранены",
   },
   uz: {
-    title: "Hujjatni tahrirlash",
-    back: "Hujjatlarga qaytish",
+    title: "Hujjatni tahrirlaş",
+    back: "Hujjatlarga qaytiş",
     titleRu: "Rus tilidagi nomi",
-    titleUz: "O‘zbek tilidagi nomi",
+    titleUz: "Özbek tilidagi nomi",
     titleEn: "Ingliz tilidagi nomi",
     descriptionRu: "Rus tilidagi tavsif",
-    descriptionUz: "O‘zbek tilidagi tavsif",
+    descriptionUz: "Özbek tilidagi tavsif",
     descriptionEn: "Ingliz tilidagi tavsif",
     category: "Toifa",
-    replaceFile: "Asosiy faylni almashtirish",
-    replacePreview: "Muqovani almashtirish",
+    replaceFile: "Asosiy faylni almaştiriş",
+    replacePreview: "Muqovani almaştiriş",
     currentFile: "Joriy fayl",
     currentPreview: "Joriy muqova",
     published: "E’lon qilingan",
-    save: "O‘zgarishlarni saqlash",
+    save: "Özgarişlarni saqlaş",
     saving: "Saqlanmoqda...",
     loading: "Yuklanmoqda...",
     notFound: "Hujjat topilmadi",
-    loadError: "Yuklashda xato",
-    uploadError: "Yangi faylni yuklashda xato",
-    previewUploadError: "Yangi muqovani yuklashda xato",
-    saveError: "Saqlashda xato",
-    saved: "O‘zgarishlar saqlandi",
+    loadError: "Yuklaşda xato",
+    uploadError: "Yangi faylni yuklaşda xato",
+    previewUploadError: "Yangi muqovani yuklaşda xato",
+    saveError: "Saqlaşda xato",
+    saved: "Özgarişlar saqlandi",
   },
   en: {
     title: "Edit document",
@@ -88,13 +88,7 @@ const labels = {
   },
 };
 
-function extractStoragePath(publicUrl?: string, bucket?: string) {
-  if (!publicUrl || !bucket) return null;
-  const marker = `/storage/v1/object/public/${bucket}/`;
-  const index = publicUrl.indexOf(marker);
-  if (index === -1) return null;
-  return decodeURIComponent(publicUrl.slice(index + marker.length));
-}
+
 
 export default function DocumentEditPage() {
   const params = useParams<{ id: string }>();
@@ -218,20 +212,6 @@ export default function DocumentEditPage() {
       setMessage(`${t.saveError}: ${error.message}`);
       setSaving(false);
       return;
-    }
-
-    if (uploadedFilePath) {
-      const oldPath = extractStoragePath(document.file_url, "documents");
-      if (oldPath) {
-        await supabase.storage.from("documents").remove([oldPath]);
-      }
-    }
-
-    if (uploadedFilePath) {
-      const oldPreviewPath = extractStoragePath(document.preview_url, "document-previews");
-      if (oldPreviewPath) {
-        await supabase.storage.from("document-previews").remove([oldPreviewPath]);
-      }
     }
 
     if (uploadedFilePath) {

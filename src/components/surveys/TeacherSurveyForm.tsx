@@ -50,29 +50,29 @@ const content = {
     cabinet: "Вернуться на сайт",
   },
   uz: {
-    eyebrow: "Anonim so‘rov",
-    title: "O‘qituvchi talaba nigohida",
+    eyebrow: "Anonim sörov",
+    title: "Öqituvçi talaba nigohida",
     intro:
-      "O‘qituvchilarni xolis baholang. Javoblar anonim saqlanadi va faqat ta’lim sifatini oshirish uchun ishlatiladi.",
-    loading: "So‘rov tayyorlanmoqda…",
-    teacher: "O‘qituvchi",
-    scale: "5 — to‘liq qo‘shilaman, 1 — mutlaqo qo‘shilmayman.",
+      "Öqituvçilarni xolis baholang. Javoblar anonim saqlanadi va faqat ta’lim sifatini oşiriş uçun işlatiladi.",
+    loading: "Sörov tayyorlanmoqda…",
+    teacher: "Öqituvçi",
+    scale: "5 — töliq qöşilaman, 1 — mutlaqo qöşilmayman.",
     violation:
-      "Mazkur o‘qituvchi faoliyatida ma’muriyat e’tiborini talab qiladigan holatlar bo‘lganmi?",
+      "Mazkur öqituvçi faoliyatida ma’muriyat e’tiborini talab qiladigan holatlar bölganmi?",
     choose: "Variantni tanlang",
-    comment: "O‘qituvchi haqida izoh (ixtiyoriy)",
+    comment: "Öqituvçi haqida izoh (ixtiyoriy)",
     general: "Umumiy savollar",
-    satisfaction: "Joriy semestrdagi o‘qitish sifatidan umuman qay darajada qoniqasiz?",
-    suggestions: "O‘qitish sifatini oshirish bo‘yicha takliflaringiz (ixtiyoriy)",
-    submit: "Anketani yuborish",
-    required: "Barcha majburiy savollarga javob bering.",
-    noTeachers: "Guruhingiz uchun o‘qituvchilar hali kiritilmagan.",
-    group: "O‘quv guruhingizni tanlang", open: "So‘rovni ochish",
-    error: "So‘rovni ochib yoki yuborib bo‘lmadi. Qayta urinib ko‘ring.",
+    satisfaction: "Joriy semestrdagi öqitiş sifatidan umuman qay darajada qoniqasiz?",
+    suggestions: "Öqitiş sifatini oşiriş böyiça takliflaringiz (ixtiyoriy)",
+    submit: "Anketani yuboriş",
+    required: "Barça majburiy savollarga javob bering.",
+    noTeachers: "Guruhingiz uçun öqituvçilar hali kiritilmagan.",
+    group: "Öquv guruhingizni tanlang", open: "Sörovni oçiş",
+    error: "Sörovni oçib yoki yuborib bölmadi. Qayta urinib köring.",
     success: "Rahmat! Anonim anketa muvaffaqiyatli yuborildi.",
     successText:
-      "So‘rov qabul qilindi. Javoblar shaxsiy ma’lumotlaringiz bilan bog‘lanmaydi.",
-    cabinet: "Saytga qaytish",
+      "Sörov qabul qilindi. Javoblar şaxsiy ma’lumotlaringiz bilan boğlanmaydi.",
+    cabinet: "Saytga qaytiş",
   },
   en: {
     eyebrow: "Anonymous survey",
@@ -113,7 +113,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const groupCopy = {
     ru: { query:"Поиск группы по номеру или названию", mode:"Форма обучения", all:"Все формы", full:"Очная", part:"Заочная", distance:"Дистанционная", other:"Не указана", none:"Нет групп по выбранным условиям. Измените поиск или форму обучения.", found:"Групп найдено" },
-    uz: { query:"Guruh raqami yoki nomi bo‘yicha qidirish", mode:"Ta’lim shakli", all:"Barcha shakllar", full:"Kunduzgi", part:"Sirtqi", distance:"Masofaviy", other:"Ko‘rsatilmagan", none:"Guruh topilmadi. Qidiruvni yoki ta’lim shaklini o‘zgartiring.", found:"Topilgan guruhlar" },
+    uz: { query:"Guruh raqami yoki nomi böyiça qidiriş", mode:"Ta’lim şakli", all:"Barça şakllar", full:"Kunduzgi", part:"Sirtqi", distance:"Masofaviy", other:"Körsatilmagan", none:"Guruh topilmadi. Qidiruvni yoki ta’lim şaklini özgartiring.", found:"Topilgan guruhlar" },
     en: { query:"Find a group by number or name", mode:"Study mode", all:"All modes", full:"Full-time", part:"Part-time", distance:"Distance learning", other:"Unspecified", none:"No groups match. Change the search or study mode.", found:"Groups found" },
   }[lang];
   const [searchGroup, setSearchGroup] = useState("");

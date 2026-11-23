@@ -4,7 +4,7 @@ import survey from "@/data/learningQualitySurvey.json";
 import { learningLocale, learningQualityCopy } from "@/data/learningQualityCopy";
 import { learningStats, safeCsvCell, type LearningResponse } from "@/lib/learningQuality";
 
-const languageNames = { ru: ["Русский", "Узбекский", "Английский"], uz: ["Rus tili", "O‘zbek tili", "Ingliz tili"], en: ["Russian", "Uzbek", "English"] };
+const languageNames = { ru: ["Русский", "Узбекский", "Английский"], uz: ["Rus tili", "Özbek tili", "Ingliz tili"], en: ["Russian", "Uzbek", "English"] };
 export default function LearningQualityAdmin({locale}:{locale:string}) {
   const lang = learningLocale(locale), t = learningQualityCopy[lang];
   const [rows, setRows] = useState<LearningResponse[]>([]), [error, setError] = useState("");

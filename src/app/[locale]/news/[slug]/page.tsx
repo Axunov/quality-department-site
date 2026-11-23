@@ -9,6 +9,7 @@ import { getLocalizedText } from "@/utils/getLocalizedText";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import sanitizeHtml from "sanitize-html";
+import { uzbekAlphabet } from "@/lib/uzbekAlphabet";
 
 const labels = {
   ru: {
@@ -21,10 +22,10 @@ const labels = {
   },
   uz: {
     news: "Yangiliklar",
-    author: "Ta’lim sifatini ta’minlash bo‘limi",
+    author: "Ta’lim sifatini ta’minlaş bölimi",
     notice:
-      "Material talabalar, professor-o‘qituvchilar, institut xodimlari va manfaatdor tomonlarni xabardor qilish maqsadida e’lon qilindi.",
-    back: "← Yangiliklarga qaytish",
+      "Material talabalar, professor-öqituvçilar, institut xodimlari va manfaatdor tomonlarni xabardor qiliş maqsadida e’lon qilindi.",
+    back: "← Yangiliklarga qaytiş",
     locale: "uz-UZ",
   },
   en: {
@@ -88,14 +89,10 @@ export default async function NewsDetailPage({
     item.title_en
   );
 
-  const text = getLocalizedText(
-    locale,
-    item.content_ru || item.text_ru,
-    item.content_uz || item.text_uz,
-    item.content_en || item.text_en
-  );
+  const text = locale === "uz" ? item.content_uz || item.text_uz : locale === "en" ? item.content_en || item.text_en : item.content_ru || item.text_ru;
 
-  const safeText = sanitizeHtml(text, {
+  const safeText = sanitizeHtml(text || "", {
+    textFilter: locale === "uz" ? uzbekAlphabet : undefined,
     allowedTags: [
       "p",
       "br",

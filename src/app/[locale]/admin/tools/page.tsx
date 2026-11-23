@@ -18,20 +18,20 @@ const labels = {
   uz: {
     title: "Administrator vositalari",
     subtitle:
-      "Ta’lim sifatini ta’minlash bo‘limining ichki xizmatlari",
+      "Ta’lim sifatini ta’minlaş bölimining içki xizmatlari",
     dashboard: "Admin panel",
     dashboardDesc:
-      "Yangiliklar, hujjatlar va xodimlarni boshqarish",
+      "Yangiliklar, hujjatlar va xodimlarni boşqariş",
     appeals: "Murojaatlar",
     appealsDesc:
-      "Kelib tushgan murojaatlarni ko‘rish va ko‘rib chiqish",
+      "Kelib tuşgan murojaatlarni köriş va körib çiqiş",
     monitoring: "Monitoring",
     monitoringDesc:
-      "Monitoring o‘tkazish va natijalarni joylashtirish",
+      "Monitoring ötkaziş va natijalarni joylaştiriş",
     analytics: "Tahlil",
     analyticsDesc:
-      "Tahliliy ma’lumotlar, hisobotlar va ko‘rsatkichlar",
-    open: "Ochish",
+      "Tahliliy ma’lumotlar, hisobotlar va körsatkiçlar",
+    open: "Oçiş",
   },
   en: {
     title: "Administrator tools",

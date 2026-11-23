@@ -41,7 +41,7 @@ test("new control matrix, priority queue and saved response checklist are wired"
     read("src/components/accreditation/AccreditationControlCenter.tsx"),read("src/components/accreditation/MyPriorityQueue.tsx"),read("src/components/accreditation/EmployeeEvidenceAssistant.tsx"),read("src/components/accreditation/AdminAccreditation.tsx"),read("src/components/accreditation/DirectorDashboard.tsx"),read("src/components/accreditation/HeadCabinet.tsx"),read("src/components/accreditation/ComplexIndicatorMonitor.tsx"),read("src/components/accreditation/SpecialIndicatorMonitor.tsx")
   ]);
   assert.match(matrix,/accreditation_v6_risk/);assert.match(matrix,/Прогноз готовности/);
-  assert.match(queue,/Что сделать в первую очередь/);assert.match(queue,/scope=mine/);
+  assert.match(queue,/Что сделать в первую очередь/);assert.match(queue,/scope:"mine",indicator:x.code/);
   assert.match(assistant,/localStorage/);assert.match(assistant,/Подготовка ответа/);
   assert.match(admin,/AccreditationControlCenter/);assert.match(director,/AccreditationControlCenter/);
   assert.match(head,/MyPriorityQueue/);assert.match(complex,/EmployeeEvidenceAssistant/);assert.match(special,/EmployeeEvidenceAssistant/);
@@ -87,11 +87,11 @@ test("all 272 complex indicators have matching RU UZ and EN records",async()=>{
 test("responsible labels are localized for complex and special accreditation",async()=>{
   const labels=await read("src/lib/accreditation/localization.ts");
   for(const value of [
-    "O‘quv ishlari bo‘yicha direktor o‘rinbosari",
+    "Öquv işlari böyiça direktor örinbosari",
     "Yoshlar masalalari va maʼnaviyiy-maʼrifiy ishlar boʻyicha direktor oʻrinbosari",
-    "Tegishli kafedra mudiri",
+    "Tegişli kafedra mudiri",
     "Axborot-resurs markazi (kutubxona)",
-    "Raqamli va axborot texnologiyalari bo‘limi",
+    "Raqamli va axborot texnologiyalari bölimi",
   ])assert.match(labels,new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));
   assert.match(labels,/split\(\/\\s\*;\\s\*\//);
   assert.match(labels,/Заведующий соответствующей кафедрой/);
@@ -105,7 +105,7 @@ test("V7.3 supports admin-only additional employee positions without weakening R
   assert.match(sql,/revoke all[\s\S]+from public,anon,authenticated/i);assert.match(sql,/accreditation_v73_is_admin/);
   assert.match(sql,/assignment_source='role'/);assert.match(sql,/assignment_source='manual'/);assert.match(sql,/pg_advisory_xact_lock/);
   assert.match(manager,/accreditation_v73_add_position/);assert.match(manager,/conflicts/);assert.match(admin,/EmployeePositionManager/);
-  assert.match(cabinet,/Мои обязанности/);assert.match(cabinet,/Qo‘shimcha rol/);assert.match(cabinet,/Additional role/);
+  assert.match(cabinet,/Мои обязанности/);assert.match(cabinet,/Qöşimça rol/);assert.match(cabinet,/Additional role/);
 });
 test("V7.5 supports written responses, revision editing and admin action journal",async()=>{
   const [sql,assistant,journal,admin,historyApi]=await Promise.all([

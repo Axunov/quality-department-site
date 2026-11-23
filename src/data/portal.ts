@@ -17,12 +17,12 @@ export const portalUI = {
     admin: ["Администратор сайта", "Публикации, документы и управление сервисами."],
   },
   uz: {
-    account: "Kabinet", title: "Shaxsiy kabinetga kirish", description: "Kirish maqsadini tanlang. Kabinetingizga tegishli kirish ma’lumotlaridan foydalaning.",
-    about: "Bo‘lim haqida", enter: "Kirish", publicTitle: "Kirish talab qilinmaydigan xizmatlar", survey: "So‘rovda qatnashish", appeal: "Murojaat yuborish", monitoring: "So‘rovnomalar monitoringi",
-    student: ["Talaba", "Murojaatlar, bildirishnomalar va tayinlangan so‘rovlar."],
-    teacher: ["O‘qituvchi", "O‘qituvchilar uchun kirish, jumladan HEMIS testidan o‘tish."],
-    accreditation: ["Akkreditatsiya va rahbariyat", "Indikatorlar, vazifalar va hisobotlar. Rahbarlar va mas’ul xodimlar uchun kirish."],
-    admin: ["Sayt administratori", "Nashrlar, hujjatlar va xizmatlarni boshqarish."],
+    account: "Kabinet", title: "Şaxsiy kabinetga kiriş", description: "Kiriş maqsadini tanlang. Kabinetingizga tegişli kiriş ma’lumotlaridan foydalaning.",
+    about: "Bölim haqida", enter: "Kiriş", publicTitle: "Kiriş talab qilinmaydigan xizmatlar", survey: "Sörovda qatnaşiş", appeal: "Murojaat yuboriş", monitoring: "Sörovnomalar monitoringi",
+    student: ["Talaba", "Murojaatlar, bildirişnomalar va tayinlangan sörovlar."],
+    teacher: ["Öqituvçi", "Öqituvçilar uçun kiriş, jumladan HEMIS testidan ötiş."],
+    accreditation: ["Akkreditatsiya va rahbariyat", "Indikatorlar, vazifalar va hisobotlar. Rahbarlar va mas’ul xodimlar uçun kiriş."],
+    admin: ["Sayt administratori", "Naşrlar, hujjatlar va xizmatlarni boşqariş."],
   },
   en: {
     account: "Account", title: "Sign in to your account", description: "Choose what you need to access. Use your existing sign-in details.",

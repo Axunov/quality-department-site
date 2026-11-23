@@ -32,22 +32,22 @@ const content = {
     writeAppeal: "Написать обращение", myAppeals: "Мои обращения", notifications: "Уведомления",
   },
   uz: {
-    eyebrow: "Shaxsiy kabinet",
+    eyebrow: "Şaxsiy kabinet",
     title: "Assalomu alaykum",
-    group: "O‘quv guruhi",
-    surveys: "Mavjud so‘rovlar",
-    survey: "O‘qituvchi talaba nigohida",
-    surveyDescription: "Joriy semestrdagi o‘qitish sifatini anonim baholash.",
-    available: "Ishtirok etish mumkin",
-    completed: "So‘rov yakunlangan",
+    group: "Öquv guruhi",
+    surveys: "Mavjud sörovlar",
+    survey: "Öqituvçi talaba nigohida",
+    surveyDescription: "Joriy semestrdagi öqitiş sifatini anonim baholaş.",
+    available: "Iştirok etiş mumkin",
+    completed: "Sörov yakunlangan",
     unavailable: "Hozir mavjud emas",
-    start: "So‘rovni boshlash",
-    logout: "Chiqish",
+    start: "Sörovni boşlaş",
+    logout: "Çiqiş",
     loading: "Kabinet yuklanmoqda…",
     privacy:
-      "Shaxsiy kabinet faqat ishtirok etganlik holatini qayd etadi. Javoblar F.I.Sh. yoki Student ID bilan bog‘lanmaydi.",
-    continue: "Davom ettirish", deadline: "Muddat", anonymousDone: "Anonim yakunlangan",
-    writeAppeal: "Murojaat yozish", myAppeals: "Mening murojaatlarim", notifications: "Bildirishnomalar",
+      "Şaxsiy kabinet faqat iştirok etganlik holatini qayd etadi. Javoblar F.I.Ş. yoki Student ID bilan boğlanmaydi.",
+    continue: "Davom ettiriş", deadline: "Muddat", anonymousDone: "Anonim yakunlangan",
+    writeAppeal: "Murojaat yoziş", myAppeals: "Mening murojaatlarim", notifications: "Bildirişnomalar",
   },
   en: {
     eyebrow: "Student account",
@@ -115,7 +115,7 @@ export default function StudentDashboard({ locale }: { locale: string }) {
   const actionable = genericSurveys.filter(survey => survey.status !== "completed" && (!survey.ends_at || Date.parse(survey.ends_at) >= Date.now())).length;
   const stats = {
     ru: ["Доступные назначенные опросы", "Непрочитанные уведомления"],
-    uz: ["Mavjud tayinlangan so‘rovlar", "O‘qilmagan bildirishnomalar"],
+    uz: ["Mavjud tayinlangan sörovlar", "Öqilmagan bildirişnomalar"],
     en: ["Available assigned surveys", "Unread notifications"],
   }[lang];
   const status = profile.teacher_survey_completed

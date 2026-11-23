@@ -17,11 +17,12 @@ export function deadlineFilter(input: unknown): IndicatorDeadlineFilter {
   return indicatorDeadlines.find(deadline => deadline === input) ?? "all";
 }
 
-export function registryHref(project: string, filters: { indicator?: string; status?: IndicatorStatusFilter; deadline?: IndicatorDeadlineFilter } = {}) {
+export function registryHref(project: string, filters: { scope?: "mine"; indicator?: string; status?: IndicatorStatusFilter; deadline?: IndicatorDeadlineFilter } = {}) {
   const program = specialPrograms.find(entry => project === `special-${entry.slug}`);
   if (project !== "complex" && !program) return null;
   const params = new URLSearchParams();
   if (program) params.set("program", program.slug);
+  if (filters.scope==="mine") params.set("scope","mine");
   const code = registryQuery(filters.indicator,40);
   if (code) params.set("indicator", code);
   if (filters.status && filters.status !== "all") params.set("status", filters.status);
@@ -51,6 +52,6 @@ export function deadlineMatches(filter: IndicatorDeadlineFilter, state: { status
 
 export const registryCopy = {
   ru: { registry:"Реестр индикаторов", search:"Код, формулировка или ответственный", scope:"Назначение", all:"Все индикаторы", mine:"Мои индикаторы", status:"Статус", allStatus:"Все статусы", deadline:"Срок", allDeadline:"Все сроки", overdue:"Просрочено", soon:"Ближайшие 7 дней", none:"Без срока", reset:"Сбросить фильтры", found:"Найдено", empty:"Нет индикаторов с такими параметрами. Измените фильтры или сбросьте их.", loading:"Загружаем статусы индикаторов…", error:"Не удалось обновить статусы индикаторов.", previous:"Предыдущая страница", next:"Следующая страница", open:"Открыть индикатор", close:"Закрыть", readiness:"Готовность", responsible:"Ответственный" },
-  uz: { registry:"Indikatorlar reyestri", search:"Kod, indikator nomi yoki mas’ul", scope:"Biriktirish", all:"Barcha indikatorlar", mine:"Mening indikatorlarim", status:"Holat", allStatus:"Barcha holatlar", deadline:"Muddat", allDeadline:"Barcha muddatlar", overdue:"Muddati o‘tgan", soon:"Yaqin 7 kun", none:"Muddatsiz", reset:"Filtrlarni tozalash", found:"Topildi", empty:"Bu mezonlarga mos indikatorlar yo‘q. Filtrlarni o‘zgartiring yoki tozalang.", loading:"Indikator holatlari yuklanmoqda…", error:"Indikator holatlarini yangilab bo‘lmadi.", previous:"Oldingi sahifa", next:"Keyingi sahifa", open:"Indikatorni ochish", close:"Yopish", readiness:"Tayyorlik", responsible:"Mas’ul" },
+  uz: { registry:"Indikatorlar reyestri", search:"Kod, indikator nomi yoki mas’ul", scope:"Biriktiriş", all:"Barça indikatorlar", mine:"Mening indikatorlarim", status:"Holat", allStatus:"Barça holatlar", deadline:"Muddat", allDeadline:"Barça muddatlar", overdue:"Muddati ötgan", soon:"Yaqin 7 kun", none:"Muddatsiz", reset:"Filtrlarni tozalaş", found:"Topildi", empty:"Bu mezonlarga mos indikatorlar yöq. Filtrlarni özgartiring yoki tozalang.", loading:"Indikator holatlari yuklanmoqda…", error:"Indikator holatlarini yangilab bölmadi.", previous:"Oldingi sahifa", next:"Keyingi sahifa", open:"Indikatorni oçiş", close:"Yopiş", readiness:"Tayyorlik", responsible:"Mas’ul" },
   en: { registry:"Indicator register", search:"Code, indicator text or owner", scope:"Assignment", all:"All indicators", mine:"My indicators", status:"Status", allStatus:"All statuses", deadline:"Deadline", allDeadline:"All deadlines", overdue:"Overdue", soon:"Next 7 days", none:"No deadline", reset:"Clear filters", found:"Found", empty:"No indicators match. Change or clear the filters.", loading:"Loading indicator statuses…", error:"Could not update indicator statuses.", previous:"Previous page", next:"Next page", open:"Open indicator", close:"Close", readiness:"Readiness", responsible:"Owner" },
 } as const;

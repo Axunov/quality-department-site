@@ -4,7 +4,7 @@ import PublicAppealForm from "@/components/student/PublicAppealForm";
 
 const labels = {
   ru: { label: "Обращения", title: "Электронные обращения студентов", description: "Отправьте вопрос, предложение или сообщение непосредственно через защищённую форму сайта." },
-  uz: { label: "Murojaatlar", title: "Talabalarning elektron murojaatlari", description: "Savol, taklif yoki xabaringizni saytning himoyalangan shakli orqali to‘g‘ridan-to‘g‘ri yuboring." },
+  uz: { label: "Murojaatlar", title: "Talabalarning elektron murojaatlari", description: "Savol, taklif yoki xabaringizni saytning himoyalangan şakli orqali töğridan-töğri yuboring." },
   en: { label: "Appeals", title: "Student appeals", description: "Submit a question, suggestion or concern directly through the secure website form." },
 };
 

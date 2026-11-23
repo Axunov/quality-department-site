@@ -1,3 +1,5 @@
+import sanitizeHtml from "sanitize-html";
+import { uzbekAlphabet } from "@/lib/uzbekAlphabet";
 import { NewsViews } from "@/components/news/NewsViews";
 import { surveyText } from "@/lib/surveyI18n";
 import { Link } from "@/i18n/routing";
@@ -39,27 +41,27 @@ const labels = {
     label: "Yangiliklar",
     title: "Yangiliklar va e’lonlar",
     description:
-      "Ta’lim sifatini ta’minlash bo‘limi faoliyati, tadbirlar, monitoring va akkreditatsiya jarayonlari haqidagi dolzarb ma’lumotlar.",
+      "Ta’lim sifatini ta’minlaş bölimi faoliyati, tadbirlar, monitoring va akkreditatsiya jarayonlari haqidagi dolzarb ma’lumotlar.",
 
     heroCardLabel: "Axborot markazi",
-    heroCardTitle: "Nashrlarning asosiy yo‘nalishlari",
+    heroCardTitle: "Naşrlarning asosiy yönalişlari",
     heroCardItems: [
-      "Bo‘lim yangiliklari",
+      "Bölim yangiliklari",
       "E’lonlar va tadbirlar",
       "Sifat monitoringi",
       "Akkreditatsiya jarayonlari",
     ],
     heroStatus: "Ma’lumotlar muntazam yangilanadi",
 
-    sectionLabel: "So‘nggi nashrlar",
+    sectionLabel: "Sönggi naşrlar",
     sectionTitle: "Dolzarb yangiliklar",
     sectionDescription:
-      "Ta’lim sifatini ta’minlash bo‘limining tadbirlari, e’lonlari va faoliyat natijalarini kuzatib boring.",
+      "Ta’lim sifatini ta’minlaş bölimining tadbirlari, e’lonlari va faoliyat natijalarini kuzatib boring.",
 
-    newsCount: "Nashrlar soni",
-    readMore: "Batafsil o‘qish",
+    newsCount: "Naşrlar soni",
+    readMore: "Batafsil öqiş",
     defaultCategory: "Yangiliklar",
-    empty: "Hozircha yangiliklar qo‘shilmagan",
+    empty: "Hozirça yangiliklar qöşilmagan",
   },
 
   en: {
@@ -271,12 +273,9 @@ export default async function NewsPage({
               item.title_en
             );
 
-            const text = getLocalizedText(
-              currentLocale,
-              item.content_ru || item.text_ru,
-              item.content_uz || item.text_uz,
-              item.content_en || item.text_en
-            );
+            const raw = currentLocale === "uz" ? item.content_uz || item.text_uz : currentLocale === "en" ? item.content_en || item.text_en : item.content_ru || item.text_ru;
+            const excerpt = sanitizeHtml(raw || "", {allowedTags:[],allowedAttributes:{}});
+            const text = currentLocale === "uz" ? uzbekAlphabet(excerpt) : excerpt;
 
             return (
               <article

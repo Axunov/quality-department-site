@@ -36,3 +36,18 @@ export async function getDocuments(limit?: number) {
 
   return (data || []) as DocumentItem[];
 }
+
+export async function getPublishedDocument(id: string) {
+  if (!/^(?:[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}|\d{1,18})$/i.test(id)) return null;
+  const {data,error}=await supabase.from("documents").select("*").eq("id",id).eq("published",true).maybeSingle();
+  return error ? null : data as DocumentItem|null;
+}
+
+export async function getDocumentRevisions(id:string, version?:string){
+  const table=supabase.from("document_public_revisions");
+  const [history,revision]=await Promise.all([
+    table.select("id,archived_at").eq("document_id",id).order("archived_at",{ascending:false}).limit(20),
+    version ? table.select("id,archived_at,snapshot").eq("document_id",id).eq("id",version).maybeSingle() : null,
+  ]);
+  return {history:history.data??[],revision:revision?.data??null};
+}

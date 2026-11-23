@@ -46,6 +46,6 @@ export const doctoralRatingItems = [
 
 export const qualitySurveyLabels = {
   ru: { next: "Далее", back: "Назад", submit: "Отправить анкету", required: "Пожалуйста, заполните обязательные поля.", sending: "Отправляем…", success: "Спасибо! Анкета успешно отправлена.", privacy: "Анонимно: Ф.И.О. и контакты не запрашиваются", choose: "Выберите вариант", comments: "Развёрнутый ответ", scale: "1 — низкая оценка, 5 — высокая оценка" },
-  uz: { next: "Keyingi", back: "Orqaga", submit: "So‘rovnomani yuborish", required: "Majburiy maydonlarni to‘ldiring.", sending: "Yuborilmoqda…", success: "Rahmat! So‘rovnoma yuborildi.", privacy: "Anonim: F.I.Sh. va aloqa ma’lumotlari so‘ralmaydi", choose: "Variantni tanlang", comments: "Batafsil javob", scale: "1 — past baho, 5 — yuqori baho" },
+  uz: { next: "Keyingi", back: "Orqaga", submit: "Sörovnomani yuboriş", required: "Majburiy maydonlarni töldiring.", sending: "Yuborilmoqda…", success: "Rahmat! Sörovnoma yuborildi.", privacy: "Anonim: F.I.Ş. va aloqa ma’lumotlari söralmaydi", choose: "Variantni tanlang", comments: "Batafsil javob", scale: "1 — past baho, 5 — yuqori baho" },
   en: { next: "Next", back: "Back", submit: "Submit survey", required: "Please complete the required fields.", sending: "Submitting…", success: "Thank you! Your response was submitted.", privacy: "Anonymous: no name or contact details are requested", choose: "Choose an option", comments: "Detailed response", scale: "1 — low rating, 5 — high rating" },
 } as const;

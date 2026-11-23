@@ -36,34 +36,34 @@ const labels = {
 
   uz: {
     label: "Xodimlar",
-    title: "Bo‘lim xodimlari",
+    title: "Bölim xodimlari",
     description:
-      "Ta’lim jarayoni monitoringi, tahliliy faoliyat, akkreditatsiya jarayonlari va ichki sifat tizimini rivojlantirishni ta’minlovchi bo‘lim jamoasi.",
+      "Ta’lim jarayoni monitoringi, tahliliy faoliyat, akkreditatsiya jarayonlari va içki sifat tizimini rivojlantirişni ta’minlovçi bölim jamoasi.",
 
-    heroCardLabel: "Bo‘lim jamoasi",
+    heroCardLabel: "Bölim jamoasi",
     heroCardTitle: "Sifat sohasidagi professional faoliyat",
     heroCardItems: [
       "Ta’lim jarayoni monitoringi",
       "Akkreditatsiyaga tayyorgarlik",
       "Tahliliy faoliyat",
-      "Qayta aloqa va rivojlanish",
+      "Qayta aloqa va rivojlaniş",
     ],
-    heroStatus: "Hamkorlik uchun ochiqmiz",
+    heroStatus: "Hamkorlik uçun oçiqmiz",
 
     sectionLabel: "Bizning jamoa",
-    sectionTitle: "Bo‘lim mutaxassislari",
+    sectionTitle: "Bölim mutaxassislari",
     sectionDescription:
-      "Ta’lim sifatini ta’minlash bo‘limi xodimlarining lavozimlari, aloqa ma’lumotlari va qabul jadvali.",
+      "Ta’lim sifatini ta’minlaş bölimi xodimlarining lavozimlari, aloqa ma’lumotlari va qabul jadvali.",
 
     employeesCount: "Xodimlar soni",
     contactInformation: "Aloqa ma’lumotlari",
 
     phone: "Telefon",
-    email: "Elektron pochta",
+    email: "Elektron poçta",
     telegram: "Telegram",
     room: "Xona",
     reception: "Qabul vaqti",
-    empty: "Xodimlar haqida ma’lumot hozircha qo‘shilmagan",
+    empty: "Xodimlar haqida ma’lumot hozirça qöşilmagan",
   },
 
   en: {

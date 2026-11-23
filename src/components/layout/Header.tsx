@@ -24,9 +24,9 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const portalLabels = {
-    ru: { quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов", employerSurvey: "Опрос работодателей", graduateSurvey: "Опрос выпускников", doctoralSurvey: "Опрос докторантов" },
-    uz: { quality: "Sifat tizimi", self: "O‘zini o‘zi baholash", monitoring: "Monitoring", analytics: "Tahlil", open: "Ochiq materiallar", appeals: "Murojaatlar", faq: "FAQ", survey: "Talabalar so‘rovi", employerSurvey: "Ish beruvchilar so‘rovi", graduateSurvey: "Bitiruvchilar so‘rovi", doctoralSurvey: "Doktorantlar so‘rovi" },
-    en: { quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ", survey: "Student survey", employerSurvey: "Employer survey", graduateSurvey: "Graduate survey", doctoralSurvey: "Doctoral survey" },
+    ru: { services:"Сервисы", navigation:"Основная навигация", resources:"Ресурсы", quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов", employerSurvey: "Опрос работодателей", graduateSurvey: "Опрос выпускников", doctoralSurvey: "Опрос докторантов" },
+    uz: { services:"Xizmatlar", navigation:"Asosiy menyu", resources:"Resurslar", quality: "Sifat tizimi", self: "Özini özi baholaş", monitoring: "Monitoring", analytics: "Tahlil", open: "Oçiq materiallar", appeals: "Murojaatlar", faq: "FAQ", survey: "Talabalar sörovi", employerSurvey: "Iş beruvçilar sörovi", graduateSurvey: "Bitiruvçilar sörovi", doctoralSurvey: "Doktorantlar sörovi" },
+    en: { services:"Services", navigation:"Main navigation", resources:"Resources", quality: "Quality system", self: "Self-assessment", monitoring: "Monitoring", analytics: "Analytics", open: "Open resources", appeals: "Appeals", faq: "FAQ", survey: "Student survey", employerSurvey: "Employer survey", graduateSurvey: "Graduate survey", doctoralSurvey: "Doctoral survey" },
   } as const;
   const currentLocale = locale === "uz" || locale === "en" ? locale : "ru";
   const portal = portalLabels[currentLocale];
@@ -45,16 +45,22 @@ export function Header() {
   const navItems = [
   { href: "/", label: t("home") },
   { href: "/about", label: account.about },
+  { href: "/documents", label: t("documents") },
   { href: "/analytics", label: portal.analytics },
   { href: "/surveys", label: catalogCopy[currentLocale].title },
   { href: "/appeals", label: portal.appeals },
   { href: "/monitoring", label: portal.monitoring },
   { href: "/employees", label: t("employees") },
   { href: "/news", label: t("news") },
-  { href: "/documents", label: t("documents") },
   { href: "/accreditation", label: t("accreditation") },
   { href: "/contacts", label: t("contacts") },
   ];
+
+  const main = navItems.slice(0,4);
+  const services = navItems.filter(item => ["/surveys","/appeals","/monitoring","/accreditation"].includes(item.href));
+  const resources = navItems.filter(item => ["/news","/employees","/contacts"].includes(item.href));
+  const isActive = (href:string) => pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+  const sections = [[portal.services,services],[portal.quality,portalItems],[portal.resources,resources]] as const;
 
   return (
     <header className="site-header sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl">
@@ -100,9 +106,9 @@ export function Header() {
           </div>
         </div>
 
-        <nav className="hidden items-center flex-wrap justify-between gap-1 border-t border-slate-200 py-1.5 text-sm font-semibold lg:flex">
-          {navItems.filter(item => ["/", "/about", "/analytics", "/surveys", "/appeals", "/monitoring", "/accreditation"].includes(item.href)).map((item) => {
-            const active = pathname === item.href || (item.href === "/surveys" && pathname.startsWith("/surveys/"));
+        <nav aria-label={portal.navigation} className="hidden items-center flex-wrap justify-start gap-3 border-t border-slate-200 py-1.5 text-sm font-semibold lg:flex">
+          {main.map((item) => {
+            const active = isActive(item.href);
                        
 
             return (
@@ -121,18 +127,19 @@ export function Header() {
               </Link>
             );
           })}
-          <details className="group relative" name="main-menu">
-            <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-slate-700 hover:bg-blue-50">{{ru:"Ресурсы",uz:"Resurslar",en:"Resources"}[currentLocale]} <span aria-hidden="true">⌄</span></summary>
-            <div className="header-dropdown absolute right-0 top-full grid min-w-48 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
-              {navItems.filter(item => ["/news", "/documents", "/employees", "/contacts"].includes(item.href)).map(item => <Link key={item.href} href={item.href} onClick={event => event.currentTarget.closest("details")?.removeAttribute("open")} className="rounded-xl px-4 py-3 hover:bg-blue-50">{item.label}</Link>)}
-            </div>
-          </details>
-          <details className="group relative" name="main-menu">
-            <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
-              {portal.quality} <span aria-hidden="true" className="ml-1">⌄</span>
+          <details className="group relative" name="main-menu" onKeyDown={event=>{
+            if(event.key==="Escape"&&event.currentTarget.open){
+              event.currentTarget.open=false;event.currentTarget.querySelector("summary")?.focus();
+            }
+          }}>
+            <summary className="cursor-pointer list-none rounded-xl px-3 py-3 text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
+              {portal.services} <span aria-hidden="true" className="ml-1">⌄</span>
             </summary>
-            <div className="header-dropdown absolute right-0 top-full z-50 grid min-w-64 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl">
-              {portalItems.map((item) => <Link key={item.href} href={item.href} onClick={event => event.currentTarget.closest("details")?.removeAttribute("open")} className="rounded-xl px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-700">{item.label}</Link>)}
+            <div className="header-dropdown absolute left-0 top-full z-50 grid max-h-[65vh] w-[min(46rem,55vw)] grid-cols-3 gap-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl">
+              {sections.map(([label,items])=><section key={label} aria-label={label}>
+                <p className="px-2 py-2 text-xs font-bold uppercase tracking-wide text-cyan-700">{label}</p>
+                {items.map(item=><Link key={item.href} href={item.href} aria-current={isActive(item.href)?"page":undefined} onClick={event=>event.currentTarget.closest("details")?.removeAttribute("open")} className="block rounded-lg px-2 py-2.5 text-slate-700 hover:bg-blue-50 hover:text-blue-700">{item.label}</Link>)}
+              </section>)}
             </div>
           </details>
         </nav>
@@ -143,8 +150,8 @@ export function Header() {
               <LanguageSwitcher />
               <Link href="/portal" onClick={() => setMenuOpen(false)} className="rounded-xl bg-[#123b60] px-4 py-2.5 font-semibold text-white">{account.account}</Link>
             </div>
-            <nav className="grid gap-1 text-sm font-semibold">
-              {navItems.map((item) => (
+            <nav aria-label={portal.navigation} className="grid gap-1 text-sm font-semibold">
+              {main.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -155,10 +162,10 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
-              <p className="px-4 pb-1 pt-4 text-xs font-black uppercase tracking-[.18em] text-cyan-700">{portal.quality}</p>
-              {portalItems.map((item) => (
-                <Link key={item.href} href={item.href} locale={locale} onClick={() => setMenuOpen(false)} className="rounded-xl px-4 py-3 text-slate-700 hover:bg-blue-50">{item.label}</Link>
-              ))}
+              {sections.map(([label,items])=><details key={label} className="rounded-xl border border-slate-200 px-2">
+                <summary className="cursor-pointer px-2 py-3 font-bold">{label}</summary>
+                <div className="grid pb-2">{items.map(item=><Link key={item.href} href={item.href} locale={locale} onClick={()=>setMenuOpen(false)} aria-current={isActive(item.href)?"page":undefined} className="rounded-lg px-2 py-2.5 text-slate-700 hover:bg-blue-50">{item.label}</Link>)}</div>
+              </details>)}
             </nav>
             <div className="mt-3 border-t border-slate-100 pt-3">
               <AccessibilityToggle label={t("accessibility")} />

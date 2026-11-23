@@ -3,7 +3,7 @@
 import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const labels = { ru: "Просмотры", uz: "Ko‘rishlar", en: "Views" };
+const labels = { ru: "Просмотры", uz: "Körişlar", en: "Views" };
 
 export function NewsViews({ id, count = 0, locale, track = false }: {
   id: string; count?: number; locale: string; track?: boolean;

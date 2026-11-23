@@ -901,3 +901,23 @@ footer .official-portals { color: var(--campus-ink); }
   .institute-chart-row, .institute-legend button { transition: background-color .2s ease, border-color .2s ease; }
   @keyframes institute-chart-grow { from { transform: scaleX(.1); opacity: .25; } to { transform: scaleX(1); } }
 }
+
+/* Public portal entry points */
+.home-modern .hero-campus-content { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(16rem,.75fr); gap:clamp(1rem,5vw,4.5rem); align-content:center; }
+.home-modern .hero-copy { width:auto; max-width:44rem; }
+.hero-task-stack { display:grid; min-width:0; gap:.55rem; align-self:center; }
+.hero-task { display:grid; grid-template-columns:1.6rem minmax(0,1fr) 1.1rem; align-items:center; gap:.8rem; border:1px solid rgb(215 242 250 / .32); background:rgb(9 36 58 / .95); padding:.85rem 1rem; border-radius:.85rem; color:white; min-height:3.25rem; transition:background .18s,border-color .18s,transform .18s; }
+.hero-task:hover { border-color:#a5f1dc; transform:translateX(.2rem); }
+.hero-task:first-child { background:#a5f1dc; border-color:#a5f1dc; color:#073e38; }
+.hero-task:focus-visible { outline:2px solid white; outline-offset:3px; }
+.hero-task strong,.hero-task small { display:block; }
+.hero-task small { margin-top:.2rem; font-size:.8rem; line-height:1.35; }
+@media(max-width:767px) {
+ .home-modern .hero-campus-content { display:flex; flex-direction:column; align-items:stretch; justify-content:center; padding-block:2rem; min-height:unset; }
+ .home-modern .hero-title { margin-top:.65rem; font-size:clamp(1.9rem,7vw,3rem); }
+ .home-modern .hero-description { margin-top:.65rem; font-size:.95rem; line-height:1.45; }
+ .home-modern .hero-privacy,.home-modern .hero-secondary { margin-top:.75rem; }
+ .hero-task-stack { align-self:stretch; }
+ .hero-task small { display:none; }
+}
+@media(prefers-reduced-motion:reduce) { .hero-task { transition:none; } .hero-task:hover { transform:none; } }

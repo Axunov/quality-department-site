@@ -5,7 +5,7 @@ import { portalLocale } from "@/data/portal";
 export default function Breadcrumbs({ locale, items }: { locale: string; items: ReadonlyArray<{ label: string; href?: string }> }) {
   const [navigation, home] = {
     ru: ["Путь к странице", "Главная"],
-    uz: ["Sahifa yo‘li", "Bosh sahifa"],
+    uz: ["Sahifa yöli", "Boş sahifa"],
     en: ["Breadcrumb", "Home"],
   }[portalLocale(locale)];
   return <nav aria-label={navigation} className="mb-4 text-sm text-slate-600">
