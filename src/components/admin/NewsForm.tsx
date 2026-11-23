@@ -10,6 +10,7 @@ import type { NewsItem } from "@/services/news.service";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 import { EditorialTranslation, editorialCopy, editorialLanguage, editorialLanguages, getEditorialTranslations, hasEditorialContent, translationError, type EditorialLanguage } from "./EditorialTranslation";
 import EditorialPreview, { publicationCopy } from "./EditorialPreview";
+import NewsRevisionHistory from "./NewsRevisionHistory";
 import NewsMediaEditor from "@/components/admin/NewsMediaEditor";
 
 export default function NewsForm({ item }: { item?: NewsItem }) {
@@ -85,7 +86,7 @@ export default function NewsForm({ item }: { item?: NewsItem }) {
     <fieldset disabled={saving || translating} className="min-w-0 space-y-5">
       <EditorialTranslation locale={language} source={source} setSource={setSource} busy={translating} translate={translate} />
       {editorialLanguages.map(lang => <details key={lang} open={source === lang || expanded || undefined} data-news-language={lang} className="editorial-fields">
-        <summary className="cursor-pointer font-semibold">{({ ru: "Русский", uz: "O‘zbekcha", en: "English" })[lang]}</summary>
+        <summary className="cursor-pointer font-semibold">{({ ru: "Русский", uz: "Özbekça", en: "English" })[lang]}</summary>
         <label className="mt-4 block text-sm font-semibold">{tr(`Заголовок ${lang.toUpperCase()}`)}<input name={`title_${lang}`} defaultValue={item?.[`title_${lang}`] || ""} maxLength={500} className="mt-2 w-full rounded-lg border p-3" /></label>
         <div className="mt-3"><p className="mb-2 text-sm font-semibold">{tr(`Текст новости ${lang.toUpperCase()}`)}</p><RichTextEditor key={`${lang}-${editorKey}-${translatedBodies[lang]?.revision || 0}`} name={`text_${lang}`} initialContent={translatedBodies[lang]?.html || item?.[`content_${lang}`] || item?.[`text_${lang}`] || ""} /></div>
       </details>)}
@@ -96,5 +97,6 @@ export default function NewsForm({ item }: { item?: NewsItem }) {
       <button disabled={saving || uploading} className="rounded-xl bg-blue-700 px-8 py-3 font-semibold text-white disabled:opacity-50">{saving ? t.saving : publication.save}</button>
     </fieldset>
     {message && <p role="status" className="mt-4 rounded-lg bg-slate-100 p-4 text-sm font-medium">{message}</p>}
+    {item && <NewsRevisionHistory id={item.id} locale={language}/>}
   </form>;
 }

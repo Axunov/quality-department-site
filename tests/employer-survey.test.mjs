@@ -18,7 +18,7 @@ test("employer survey is linked, protected, visible to admins and stored server-
 
   assert.match(header, /href: "\/surveys\/employers"/);
   assert.match(header, /Опрос работодателей/);
-  assert.match(header, /Ish beruvchilar so‘rovi/);
+  assert.match(header, /Iş beruvçilar sörovi/);
   assert.match(header, /Employer survey/);
   assert.match(form, /\/api\/employer-survey\/submit/);
   assert.match(form, /data-action="employer_survey"/);

@@ -2,12 +2,12 @@
   "id": "5c07785b-d196-4c25-adb6-d04b67c8af6b",
   "title": {
     "ru": "Качество преподавания и условия обучения — 2026/2027",
-    "uz": "O‘qitish sifati va ta’lim olish sharoitlari — 2026/2027",
+    "uz": "Öqitiş sifati va ta’lim oliş şaroitlari — 2026/2027",
     "en": "Teaching quality and learning conditions — 2026/2027"
   },
   "description": {
     "ru": "Уважаемые студенты! Просим вас принять участие в опросе о качестве преподавания и условиях обучения в СБУМИПТК в 2026/2027 учебном году. Ваши ответы помогут определить, что необходимо улучшить в образовательном процессе и среде института. Пожалуйста, отвечайте на основании личного опыта обучения в текущем учебном году. Заполнение анкеты займёт 3–5 минут.",
-    "uz": "Hurmatli talabalar! Sizni Toshkent shahridagi Belarus–O‘zbekiston qo‘shma tarmoqlararo amaliy texnik kvalifikatsiyalar institutida 2026/2027-o‘quv yilidagi o‘qitish sifati va ta’lim olish sharoitlari haqidagi so‘rovda ishtirok etishga taklif qilamiz. Javoblaringiz ta’lim jarayoni va institut muhitida nimalarni yaxshilash zarurligini aniqlashga yordam beradi. Iltimos, joriy o‘quv yilidagi shaxsiy ta’lim tajribangiz asosida javob bering. So‘rovnomani to‘ldirish 3–5 daqiqa vaqt oladi.",
+    "uz": "Hurmatli talabalar! Sizni Toşkent şahridagi Belarus–Özbekiston qöşma tarmoqlararo amaliy texnik kvalifikatsiyalar institutida 2026/2027-öquv yilidagi öqitiş sifati va ta’lim oliş şaroitlari haqidagi sörovda iştirok etişga taklif qilamiz. Javoblaringiz ta’lim jarayoni va institut muhitida nimalarni yaxşilaş zarurligini aniqlaşga yordam beradi. Iltimos, joriy öquv yilidagi şaxsiy ta’lim tajribangiz asosida javob bering. Sörovnomani töldiriş 3–5 daqiqa vaqt oladi.",
     "en": "Dear students, please take part in this survey on teaching quality and learning conditions at the Belarus–Uzbekistan Joint Intersectoral Institute of Applied Technical Qualifications in Tashkent in the 2026/2027 academic year. Your answers will help identify improvements needed in teaching and the Institute’s learning environment. Please answer based on your personal experience during the current academic year. The survey takes 3–5 minutes to complete."
   },
   "questions": [
@@ -15,7 +15,7 @@
       "id": "f2494b23-44c9-4530-b0f7-de9e5d8a737c",
       "prompt": {
         "ru": "Понятно ли преподаватели объясняют учебный материал?",
-        "uz": "O‘qituvchilar o‘quv materialini tushunarli tarzda tushuntiradilarmi?",
+        "uz": "Öqituvçilar öquv materialini tuşunarli tarzda tuşuntiradilarmi?",
         "en": "Do your teachers explain the course material clearly?"
       },
       "options": [
@@ -26,22 +26,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -52,7 +52,7 @@
       "id": "1fb6b3b1-4fb8-46a0-bf52-8ece8bce6592",
       "prompt": {
         "ru": "Связано ли содержание занятий с вашей будущей профессией?",
-        "uz": "Mashg‘ulotlar mazmuni kelajakdagi kasbingiz bilan bog‘liqmi?",
+        "uz": "Maşğulotlar mazmuni kelajakdagi kasbingiz bilan boğliqmi?",
         "en": "Is the content of your classes relevant to your future profession?"
       },
       "options": [
@@ -63,22 +63,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -89,7 +89,7 @@
       "id": "297d7cf9-f5cb-45f4-a8c8-e527c43a6e6a",
       "prompt": {
         "ru": "Достаточно ли практических заданий для освоения дисциплин?",
-        "uz": "Fanlarni o‘zlashtirish uchun amaliy topshiriqlar yetarlimi?",
+        "uz": "Fanlarni özlaştiriş uçun amaliy topşiriqlar yetarlimi?",
         "en": "Are there enough practical assignments to help you master the subjects?"
       },
       "options": [
@@ -100,22 +100,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -126,7 +126,7 @@
       "id": "5b7f99ef-32ed-43c0-b155-b6d41d11c404",
       "prompt": {
         "ru": "Доступны ли необходимые учебные материалы?",
-        "uz": "Zarur o‘quv materiallaridan foydalanish imkoniyati bormi?",
+        "uz": "Zarur öquv materiallaridan foydalaniş imkoniyati bormi?",
         "en": "Are the necessary learning materials accessible?"
       },
       "options": [
@@ -137,22 +137,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -163,7 +163,7 @@
       "id": "7c394398-6a33-4591-b045-6655cfacd576",
       "prompt": {
         "ru": "Понятны ли требования к самостоятельным работам?",
-        "uz": "Mustaqil ishlarni bajarish talablari tushunarlimi?",
+        "uz": "Mustaqil işlarni bajariş talablari tuşunarlimi?",
         "en": "Are the requirements for independent study assignments clear?"
       },
       "options": [
@@ -174,22 +174,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -200,7 +200,7 @@
       "id": "98faa3cf-2dfc-45b3-9594-47d6066fd8d6",
       "prompt": {
         "ru": "Понятны ли вам критерии выставления оценок?",
-        "uz": "Baholash mezonlari sizga tushunarlimi?",
+        "uz": "Baholaş mezonlari sizga tuşunarlimi?",
         "en": "Are the grading criteria clear to you?"
       },
       "options": [
@@ -211,22 +211,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -248,22 +248,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -274,7 +274,7 @@
       "id": "1ca43c8d-054c-409f-a53c-10238e768e15",
       "prompt": {
         "ru": "Получаете ли вы помощь преподавателей при трудностях в обучении?",
-        "uz": "O‘qishda qiyinchiliklarga duch kelganingizda o‘qituvchilardan yordam olasizmi?",
+        "uz": "Öqişda qiyinçiliklarga duç kelganingizda öqituvçilardan yordam olasizmi?",
         "en": "Do you receive help from teachers when you experience difficulties with your studies?"
       },
       "options": [
@@ -285,22 +285,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -311,7 +311,7 @@
       "id": "7a3f690a-4121-460e-902b-83be1bd88112",
       "prompt": {
         "ru": "Уважительно ли преподаватели общаются со студентами?",
-        "uz": "O‘qituvchilar talabalar bilan hurmat asosida muloqot qiladilarmi?",
+        "uz": "Öqituvçilar talabalar bilan hurmat asosida muloqot qiladilarmi?",
         "en": "Do teachers communicate respectfully with students?"
       },
       "options": [
@@ -322,22 +322,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -348,7 +348,7 @@
       "id": "0bd79bd7-383f-4a9f-b71f-e189785025d2",
       "prompt": {
         "ru": "Удовлетворяют ли вас условия для обучения в институте?",
-        "uz": "Institutdagi ta’lim olish sharoitlari sizni qoniqtiradimi?",
+        "uz": "Institutdagi ta’lim oliş şaroitlari sizni qoniqtiradimi?",
         "en": "Are you satisfied with the learning conditions at the Institute?"
       },
       "options": [
@@ -359,22 +359,22 @@
         },
         {
           "ru": "Скорее да",
-          "uz": "Ko‘proq ha",
+          "uz": "Köproq ha",
           "en": "Mostly yes"
         },
         {
           "ru": "Скорее нет",
-          "uz": "Ko‘proq yo‘q",
+          "uz": "Köproq yöq",
           "en": "Mostly no"
         },
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
           "ru": "Затрудняюсь ответить",
-          "uz": "Javob berishga qiynalaman",
+          "uz": "Javob berişga qiynalaman",
           "en": "Unable to say"
         }
       ],
@@ -385,13 +385,13 @@
       "id": "a558c521-df45-4318-af53-681d44ea5862",
       "prompt": {
         "ru": "Сталкивались ли вы лично в процессе обучения в 2026/2027 учебном году с ситуациями, которые, по вашему мнению, могли иметь коррупционные признаки?",
-        "uz": "2026/2027-o‘quv yilida ta’lim olish jarayonida, sizning fikringizcha, korrupsiyaga oid belgilar bo‘lishi mumkin bo‘lgan holatlarga shaxsan duch keldingizmi?",
+        "uz": "2026/2027-öquv yilida ta’lim oliş jarayonida, sizning fikringizça, korrupsiyaga oid belgilar bölişi mumkin bölgan holatlarga şaxsan duç keldingizmi?",
         "en": "During your studies in the 2026/2027 academic year, have you personally encountered situations that, in your opinion, may have shown signs of corruption?"
       },
       "options": [
         {
           "ru": "Нет",
-          "uz": "Yo‘q",
+          "uz": "Yöq",
           "en": "No"
         },
         {
@@ -401,7 +401,7 @@
         },
         {
           "ru": "Предпочитаю не отвечать",
-          "uz": "Javob bermaslikni afzal ko‘raman",
+          "uz": "Javob bermaslikni afzal köraman",
           "en": "Prefer not to answer"
         }
       ],
@@ -412,7 +412,7 @@
       "id": "71c4adaf-6be6-4f73-9551-5e6dc74d14ad",
       "prompt": {
         "ru": "Что необходимо улучшить в преподавании или условиях обучения в первую очередь?",
-        "uz": "O‘qitish sifati yoki ta’lim olish sharoitlarida birinchi navbatda nimalarni yaxshilash kerak?",
+        "uz": "Öqitiş sifati yoki ta’lim oliş şaroitlarida birinçi navbatda nimalarni yaxşilaş kerak?",
         "en": "What should be improved first in teaching or learning conditions?"
       },
       "options": [],

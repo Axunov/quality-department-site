@@ -66,7 +66,7 @@ test('all steps of graduate, doctoral and employer forms are fully localized',()
   for (const locale of ['uz','en']) {
     for (const kind of ['graduates','doctoral']) for(let step=0;step<4;step++) {
       const html=render('src/components/surveys/QualitySurveyForm.tsx',{locale,kind},{0:step}); assertLocalized(html);
-      if(kind==='doctoral'&&step===0) assert.match(html,/<option value="1-й курс">(?:1-bosqich|Year 1)<\/option>/);
+      if(kind==='doctoral'&&step===0) assert.match(html,/<option value="1-й курс">(?:1-bosqiç|Year 1)<\/option>/);
       if(kind==='graduates'&&step===2) assert.match(html,/<option value="Да">(?:Ha|Yes)<\/option>/);
     }
     for(let step=0;step<5;step++) assertLocalized(render('src/components/surveys/EmployerSurveyForm.tsx',{locale},{0:step}));
@@ -80,7 +80,7 @@ test('appeal form, receipt and tracking status use the chosen language',()=>{
     assertLocalized(render('src/components/student/PublicAppealForm.tsx',{locale},{1:true}));
     assertLocalized(render('src/components/student/PublicAppealForm.tsx',{locale},{3:{number:'APL-001',trackingCode:'test-code'}}));
     const html=render('src/components/student/PublicAppealForm.tsx',{locale},{7:{appeal_number:'APL-001',status:'in_review',subject:'Example',messages:[{body:'Example reply'}]}});
-    assertLocalized(html); assert.match(html,locale==='en'?/Under review/:/Ko‘rib chiqilmoqda/);
+    assertLocalized(html); assert.match(html,locale==='en'?/Under review/:/Körib çiqilmoqda/);
   }
 });
 

@@ -26,9 +26,9 @@ const labels = {
     date: "Sana",
     actions: "Amallar",
     defaultCategory: "Yangiliklar",
-    empty: "Hozircha yangiliklar qo‘shilmagan",
-    view: "Ko‘rish",
-    edit: "Tahrirlash",
+    empty: "Hozirça yangiliklar qöşilmagan",
+    view: "Köriş",
+    edit: "Tahrirlaş",
   },
   en: {
     photo: "Photo / video",

@@ -10,7 +10,7 @@ export type ChartRow = { label: string; values: number[] };
 
 const copy = {
   ru: { tip: "Наведите, нажмите или выберите элемент клавишей Tab", total: "Всего", details: "Данные выбранного элемента", empty: "Нет данных",  programmes: "Количество студентов по направлениям", modes: "Форма обучения", all: "Все формы", rest: "Показать все направления", fewer: "Показать первые восемь" },
-  uz: { tip: "Ustiga olib boring, bosing yoki Tab tugmasi bilan tanlang", total: "Jami", details: "Tanlangan element ma’lumotlari", empty: "Ma’lumot yo‘q",  programmes: "Yo‘nalishlar bo‘yicha talabalar soni", modes: "Ta’lim shakli", all: "Barcha shakllar", rest: "Barcha yo‘nalishlarni ko‘rsatish", fewer: "Birinchi sakkiztasini ko‘rsatish" },
+  uz: { tip: "Ustiga olib boring, bosing yoki Tab tugmasi bilan tanlang", total: "Jami", details: "Tanlangan element ma’lumotlari", empty: "Ma’lumot yöq",  programmes: "Yönalişlar böyiça talabalar soni", modes: "Ta’lim şakli", all: "Barça şakllar", rest: "Barça yönalişlarni körsatiş", fewer: "Birinçi sakkiztasini körsatiş" },
   en: { tip: "Hover, tap, or use Tab to explore", total: "Total", details: "Selected data", empty: "No data",  programmes: "Students by programme", modes: "Study mode", all: "All modes", rest: "Show all programmes", fewer: "Show the first eight" },
 };
 

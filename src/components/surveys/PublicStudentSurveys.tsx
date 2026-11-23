@@ -6,7 +6,7 @@ import { Link } from "@/i18n/routing";
 type Survey = { id:string; title_ru:string; title_uz:string; title_en:string; description_ru:string|null; description_uz:string|null; description_en:string|null; ends_at:string|null };
 const copy = {
   ru: { title:"Опросы студентов", lead:"Выберите доступный опрос. Регистрация и личный кабинет не требуются.", anonymous:"Ответы отправляются анонимно: анкета не запрашивает Ф.И.О. или Student ID.", open:"Пройти опрос", empty:"Сейчас нет доступных опросов.", deadline:"Доступен до", error:"Не удалось загрузить список опросов." },
-  uz: { title:"Talabalar so‘rovlari", lead:"Mavjud so‘rovni tanlang. Ro‘yxatdan o‘tish va shaxsiy kabinet talab qilinmaydi.", anonymous:"Javoblar anonim yuboriladi: so‘rov F.I.Sh. yoki Student ID ni so‘ramaydi.", open:"So‘rovdan o‘tish", empty:"Hozircha mavjud so‘rovlar yo‘q.", deadline:"Amal qilish muddati", error:"So‘rovlar ro‘yxatini yuklab bo‘lmadi." },
+  uz: { title:"Talabalar sörovlari", lead:"Mavjud sörovni tanlang. Röyxatdan ötiş va şaxsiy kabinet talab qilinmaydi.", anonymous:"Javoblar anonim yuboriladi: sörov F.I.Ş. yoki Student ID ni söramaydi.", open:"Sörovdan ötiş", empty:"Hozirça mavjud sörovlar yöq.", deadline:"Amal qiliş muddati", error:"Sörovlar röyxatini yuklab bölmadi." },
   en: { title:"Student surveys", lead:"Choose an available survey. Registration and an account are not required.", anonymous:"Answers are submitted anonymously: the survey does not request a name or Student ID.", open:"Take survey", empty:"There are no available surveys now.", deadline:"Available until", error:"The survey list could not be loaded." },
 } as const;
 

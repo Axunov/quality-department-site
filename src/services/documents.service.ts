@@ -36,3 +36,9 @@ export async function getDocuments(limit?: number) {
 
   return (data || []) as DocumentItem[];
 }
+
+export async function getPublishedDocument(id: string) {
+  if (!/^(?:[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}|\d{1,18})$/i.test(id)) return null;
+  const {data,error}=await supabase.from("documents").select("*").eq("id",id).eq("published",true).maybeSingle();
+  return error ? null : data as DocumentItem|null;
+}

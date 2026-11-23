@@ -4,12 +4,12 @@ import { editorialLanguages,type EditorialLanguage } from "./EditorialTranslatio
 
 const previewCopy={
  ru:{open:"Предпросмотр текста",close:"Закрыть предпросмотр",empty:"Заголовок или текст на этом языке не заполнены.",format:"Текстовый предпросмотр"},
- uz:{open:"Matnni oldindan ko‘rish",close:"Ko‘rishni yopish",empty:"Bu tilda sarlavha yoki matn kiritilmagan.",format:"Matnni ko‘rish"},
+ uz:{open:"Matnni oldindan köriş",close:"Körişni yopiş",empty:"Bu tilda sarlavha yoki matn kiritilmagan.",format:"Matnni köriş"},
  en:{open:"Preview text",close:"Close preview",empty:"A title or body is missing in this language.",format:"Text preview"},
 } as const;
 export const publicationCopy={
  ru:{status:"Статус публикации",draft:"Черновик",published:"Опубликовано",save:"Сохранить"},
- uz:{status:"Nashr holati",draft:"Qoralama",published:"E’lon qilingan",save:"Saqlash"},
+ uz:{status:"Naşr holati",draft:"Qoralama",published:"E’lon qilingan",save:"Saqlaş"},
  en:{status:"Publication status",draft:"Draft",published:"Published",save:"Save"},
 } as const;
 

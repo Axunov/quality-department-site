@@ -3,26 +3,20 @@ import { FileText } from "lucide-react";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { Link } from "@/i18n/routing";
 import { portalLocale } from "@/data/portal";
+import { documentLocales as languages, documentText as field, documentUrl as safeUrl } from "@/lib/publicDocument";
+import { normalizeUzbekSearch } from "@/lib/uzbekAlphabet";
 import { getDocuments, type DocumentItem } from "@/services/documents.service";
 import { surveyText } from "@/lib/surveyI18n";
 
 const copy = {
   ru: { title:"Документы отдела", lead:"Положения, регламенты, отчёты и методические материалы системы обеспечения качества.", search:"Название или имя файла", category:"Категория", year:"Год добавления", format:"Формат", language:"Язык описания", all:"Все", filter:"Найти", clear:"Сбросить", found:"Найдено", open:"Открыть файл", download:"Скачать", cover:"Титульная страница", none:"По этим параметрам ничего не найдено. Попробуйте изменить запрос или сбросить фильтры.", unknown:"Файл", added:"Добавлено" },
-  uz: { title:"Bo‘lim hujjatlari", lead:"Sifatni ta’minlash tizimining nizomlari, reglamentlari, hisobotlari va uslubiy materiallari.", search:"Sarlavha yoki fayl nomi", category:"Toifa", year:"Qo‘shilgan yil", format:"Format", language:"Tavsif tili", all:"Barchasi", filter:"Qidirish", clear:"Tozalash", found:"Topildi", open:"Faylni ochish", download:"Yuklab olish", cover:"Titul sahifasi", none:"Ushbu mezonlar bo‘yicha hujjat topilmadi. So‘rovni o‘zgartiring yoki filtrlarni tozalang.", unknown:"Fayl", added:"Qo‘shilgan" },
+  uz: { title:"Bölim hujjatlari", lead:"Sifatni ta’minlaş tizimining nizomlari, reglamentlari, hisobotlari va uslubiy materiallari.", search:"Sarlavha yoki fayl nomi", category:"Toifa", year:"Qöşilgan yil", format:"Format", language:"Tavsif tili", all:"Barçasi", filter:"Qidiriş", clear:"Tozalaş", found:"Topildi", open:"Faylni oçiş", download:"Yuklab olish", cover:"Titul sahifasi", none:"Uşbu mezonlar böyiça hujjat topilmadi. Sörovni özgartiring yoki filtrlarni tozalang.", unknown:"Fayl", added:"Qöşilgan" },
   en: { title:"Department documents", lead:"Policies, procedures, reports and guidance for the education quality system.", search:"Title or filename", category:"Category", year:"Year added", format:"Format", language:"Description language", all:"All", filter:"Find", clear:"Reset", found:"Found", open:"Open file", download:"Download", cover:"Cover page", none:"No documents match. Try changing the search or clearing the filters.", unknown:"File", added:"Added" },
 } as const;
 
-type Locale = keyof typeof copy;
-const languages: Locale[] = ["ru", "uz", "en"];
-const langOrder = (l: Locale) => [l, ...languages.filter(x => x !== l)];
-const field = (d: DocumentItem, l: Locale, key: "title" | "description") => langOrder(l).map(lang => d[`${key}_${lang}`]?.trim()).find(Boolean);
 const extension = (d: DocumentItem) => (d.file_name?.match(/\.([a-z0-9]{1,8})$/i)?.[1] || "").toUpperCase();
 const unique = (values: string[]) => [...new Set(values.filter(Boolean))];
 const dateOf = (d: DocumentItem) => d.created_at && Number.isFinite(Date.parse(d.created_at)) ? new Date(d.created_at) : null;
-const safeUrl = (value?: string | null) => {
-  try { return value && new URL(value).protocol === "https:" ? value : null; } catch { return null; }
-};
-
 export default async function DocumentsPage({ params, searchParams }: {
   params: Promise<{ locale: string }>; searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
@@ -34,7 +28,7 @@ export default async function DocumentsPage({ params, searchParams }: {
     const date = dateOf(d);
     return date ? new Intl.DateTimeFormat("en", {year:"numeric", timeZone:"Asia/Tashkent"}).format(date) : "";
   };
-  const normalize = (s: string) => s.normalize("NFKC").toLowerCase().replace(/[’‘ʻʼ]/g, "'").replace(/ё/g, "е");
+  const normalize = (s: string) => l==="uz" ? normalizeUzbekSearch(s) : s.normalize("NFKC").toLowerCase().replace(/[’‘ʻʼ]/g, "'").replace(/ё/g, "е");
   const filtered = documents.filter(d =>
     (!criteria.q || normalize([d.file_name, ...languages.flatMap(lang => [d[`title_${lang}`], d[`description_${lang}`]])].join(" ")).includes(normalize(criteria.q))) &&
     (!criteria.category || d.category === criteria.category) &&
@@ -70,7 +64,7 @@ export default async function DocumentsPage({ params, searchParams }: {
         const date = dateOf(d);
         return <article className="campus-card" key={d.id}>
           {preview && <figure className="mb-4 flex h-64 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-2 sm:h-72"><img src={preview} alt={t.cover + ": " + title} loading="lazy" className="h-full w-full object-contain" /></figure>}
-          <div className="flex items-start gap-3"><FileText size={23} aria-hidden="true" className="shrink-0 text-blue-700"/><h2 className="font-bold">{title}</h2></div>
+          <div className="flex items-start gap-3"><FileText size={23} aria-hidden="true" className="shrink-0 text-blue-700"/><h2 className="font-bold"><Link className="hover:underline" href={`/documents/${encodeURIComponent(d.id)}`}>{title}</Link></h2></div>
           <p className="mt-2 text-sm text-slate-600">{[d.category ? surveyText(l, d.category) : "", extension(d), size].filter(Boolean).join(" · ")}</p>
           {date && <p className="mt-1 text-sm text-slate-600">{t.added}: {dateFormat.format(date)}</p>}
           {field(d,l,"description") && <p className="mt-3 text-sm leading-6">{field(d,l,"description")}</p>}

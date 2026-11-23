@@ -33,23 +33,23 @@ const labels = {
   },
   uz: {
     panel: "Admin panel",
-    subtitle: "Saytni boshqarish",
+    subtitle: "Saytni boşqariş",
     tools: "Vositalar",
-    dashboard: "Umumiy ko‘rinish",
+    dashboard: "Umumiy köriniş",
     news: "Yangiliklar",
-    institute: "Kontingent va o‘qituvchilar",
+    institute: "Kontingent va öqituvçilar",
     documents: "Hujjatlar",
     employees: "Xodimlar",
-    surveys: "Talabalar so‘rovi",
-    employerSurveys: "Ish beruvchilar so‘rovi",
-    graduateSurveys: "Bitiruvchilar so‘rovi",
-    doctoralSurveys: "Doktorantlar so‘rovi",
+    surveys: "Talabalar sörovi",
+    employerSurveys: "Iş beruvçilar sörovi",
+    graduateSurveys: "Bitiruvçilar sörovi",
+    doctoralSurveys: "Doktorantlar sörovi",
     studentAppeals: "Talabalar murojaatlari",
     hemisQuiz: "HEMIS testi",
     accreditation: "Akkreditatsiya",
     security: "Xavfsizlik",
-    monitoring: "So‘rovnomalar monitoringi",
-    site: "← Saytga qaytish",
+    monitoring: "Sörovnomalar monitoringi",
+    site: "← Saytga qaytiş",
   },
   en: {
     panel: "Admin Panel",
@@ -116,7 +116,7 @@ export default function AdminLayout({
 
   const grouped = {
     ru: ["Обзор и обращения", "Публикации", "Опросы и мониторинг", "Аккредитация и настройки"],
-    uz: ["Umumiy ko‘rinish va murojaatlar", "Nashrlar", "So‘rovlar va monitoring", "Akkreditatsiya va sozlamalar"],
+    uz: ["Umumiy köriniş va murojaatlar", "Naşrlar", "Sörovlar va monitoring", "Akkreditatsiya va sozlamalar"],
     en: ["Overview and appeals", "Publishing", "Surveys and monitoring", "Accreditation and settings"],
   }[currentLocale];
   const groups = [

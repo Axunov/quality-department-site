@@ -12,9 +12,9 @@ const labels = {
     error: "Ошибка выхода",
   },
   uz: {
-    logout: "Chiqish",
-    loading: "Chiqilmoqda...",
-    error: "Chiqish xatosi",
+    logout: "Çiqiş",
+    loading: "Çiqilmoqda...",
+    error: "Çiqiş xatosi",
   },
   en: {
     logout: "Sign out",

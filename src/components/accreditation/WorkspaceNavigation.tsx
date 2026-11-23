@@ -3,7 +3,7 @@ import { usePathname } from "@/i18n/routing";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import WorkspaceSidebar from "@/components/dashboard/WorkspaceSidebar";
 import { LayoutDashboard, ListChecks, FileText, Users } from "lucide-react";
-const copy={ru:{title:"Рабочее пространство",home:"Мои индикаторы",complex:"Комплексная",special:"Специализированная",documents:"Документы",groups:"Рабочие группы",overview:"Обзор аккредитации"},uz:{title:"Ish maydoni",home:"Mening indikatorlarim",complex:"Kompleks",special:"Maxsus",documents:"Hujjatlar",groups:"Ishchi guruhlar",overview:"Akkreditatsiya sharhi"},en:{title:"Workspace",home:"My indicators",complex:"Institutional",special:"Programme",documents:"Documents",groups:"Working groups",overview:"Accreditation overview"}};
+const copy={ru:{title:"Рабочее пространство",home:"Мои индикаторы",complex:"Комплексная",special:"Специализированная",documents:"Документы",groups:"Рабочие группы",overview:"Обзор аккредитации"},uz:{title:"Iş maydoni",home:"Mening indikatorlarim",complex:"Kompleks",special:"Maxsus",documents:"Hujjatlar",groups:"Işçi guruhlar",overview:"Akkreditatsiya şarhi"},en:{title:"Workspace",home:"My indicators",complex:"Institutional",special:"Programme",documents:"Documents",groups:"Working groups",overview:"Accreditation overview"}};
 export default function WorkspaceNavigation({ locale, children }: { locale: string; children: React.ReactNode }) {
   const path = usePathname();
   const l = locale === "uz" || locale === "en" ? locale : "ru";

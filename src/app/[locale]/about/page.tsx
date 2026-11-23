@@ -109,110 +109,110 @@ const labels = {
   },
 
   uz: {
-    badge: "Bo‘lim haqida",
-    title: "Ta’lim sifatini ta’minlash bo‘limi",
+    badge: "Bölim haqida",
+    title: "Ta’lim sifatini ta’minlaş bölimi",
     description:
-      "Institutning ichki sifat tizimi faoliyatini ta’minlovchi, ta’lim jarayonini monitoring qiluvchi va akkreditatsiya jarayonlarini muvofiqlashtiruvchi tarkibiy bo‘linma.",
+      "Institutning içki sifat tizimi faoliyatini ta’minlovçi, ta’lim jarayonini monitoring qiluvçi va akkreditatsiya jarayonlarini muvofiqlaştiruvçi tarkibiy bölinma.",
 
     missionLabel: "Bizning missiyamiz",
-    missionTitle: "Barqaror sifat madaniyatini shakllantirish",
+    missionTitle: "Barqaror sifat madaniyatini şakllantiriş",
     missionText:
-      "Bo‘limning missiyasi institutni muntazam rivojlantirishga qaratilgan shaffof, xolis va zamonaviy ichki sifatni ta’minlash tizimini yaratishdan iborat.",
+      "Bölimning missiyasi institutni muntazam rivojlantirişga qaratilgan şaffof, xolis va zamonaviy içki sifatni ta’minlaş tizimini yaratişdan iborat.",
 
     goalLabel: "Faoliyat maqsadi",
-    goalTitle: "Ta’lim jarayonini muntazam takomillashtirish",
+    goalTitle: "Ta’lim jarayonini muntazam takomillaştiriş",
     goalText:
-      "Tizimli monitoring, natijalarni tahlil qilish, qayta aloqani o‘rganish va asoslangan boshqaruv qarorlarini ishlab chiqish orqali ta’lim sifatini oshirish.",
+      "Tizimli monitoring, natijalarni tahlil qiliş, qayta aloqani örganiş va asoslangan boşqaruv qarorlarini işlab çiqiş orqali ta’lim sifatini oşiriş.",
 
-    principlesLabel: "Ish tamoyillari",
-    principlesTitle: "Bo‘lim faoliyati asoslanadigan yondashuvlar",
-    transparency: "Shaffoflik",
+    principlesLabel: "Iş tamoyillari",
+    principlesTitle: "Bölim faoliyati asoslanadigan yondaşuvlar",
+    transparency: "Şaffoflik",
     transparencyDesc:
-      "Baholash jarayonlarining ochiqligi va ish natijalari haqidagi ma’lumotlarning mavjudligi.",
+      "Baholaş jarayonlarining oçiqligi va iş natijalari haqidagi ma’lumotlarning mavjudligi.",
     objectivity: "Xolislik",
     objectivityDesc:
-      "Qarorlarni aniq ma’lumotlar, tahlil va tasdiqlangan natijalar asosida qabul qilish.",
+      "Qarorlarni aniq ma’lumotlar, tahlil va tasdiqlangan natijalar asosida qabul qiliş.",
     continuous: "Uzluksizlik",
     continuousDesc:
-      "Ta’lim jarayonlarini doimiy monitoring qilish va izchil takomillashtirish.",
-    participation: "Ishtirok",
+      "Ta’lim jarayonlarini doimiy monitoring qiliş va izçil takomillaştiriş.",
+    participation: "Iştirok",
     participationDesc:
-      "Talabalar, o‘qituvchilar, ish beruvchilar va boshqa manfaatdor tomonlarning ishtiroki.",
+      "Talabalar, öqituvçilar, iş beruvçilar va boşqa manfaatdor tomonlarning iştiroki.",
 
-    tasksLabel: "Funksional yo‘nalishlar",
-    tasksTitle: "Bo‘limning asosiy vazifalari",
+    tasksLabel: "Funksional yönalişlar",
+    tasksTitle: "Bölimning asosiy vazifalari",
     tasksDescription:
-      "Bo‘lim faoliyati ta’lim sifatini ichki nazorat qilish, tahlil etish va ta’minlashning asosiy jarayonlarini qamrab oladi.",
+      "Bölim faoliyati ta’lim sifatini içki nazorat qiliş, tahlil etiş va ta’minlaşning asosiy jarayonlarini qamrab oladi.",
 
     tasks: [
       {
         title: "Sifat monitoringi",
         description:
-          "Ta’lim jarayoni holati va o‘quv dasturlarining amalga oshirilish sifatini tizimli o‘rganish.",
+          "Ta’lim jarayoni holati va öquv dasturlarining amalga oşiriliş sifatini tizimli örganiş.",
       },
       {
-        title: "O‘zlashtirish tahlili",
+        title: "Özlaştiriş tahlili",
         description:
-          "Talabalarning davomati, akademik o‘zlashtirishi va ta’lim natijalarini tahlil qilish.",
+          "Talabalarning davomati, akademik özlaştirişi va ta’lim natijalarini tahlil qiliş.",
       },
       {
         title: "Akkreditatsiya",
         description:
-          "Institut va ta’lim dasturlarini davlat hamda xalqaro akkreditatsiyaga tayyorlash.",
+          "Institut va ta’lim dasturlarini davlat hamda xalqaro akkreditatsiyaga tayyorlaş.",
       },
       {
         title: "Qayta aloqa",
         description:
-          "Talabalar, o‘qituvchilar, ish beruvchilar va bitiruvchilar o‘rtasida so‘rovlar o‘tkazish.",
+          "Talabalar, öqituvçilar, iş beruvçilar va bitiruvçilar örtasida sörovlar ötkaziş.",
       },
       {
         title: "Tahliliy faoliyat",
         description:
-          "Rahbariyat uchun tahliliy hisobotlar, ma’lumotnomalar, tavsiyalar va takliflar tayyorlash.",
+          "Rahbariyat uçun tahliliy hisobotlar, ma’lumotnomalar, tavsiyalar va takliflar tayyorlaş.",
       },
       {
         title: "Ijro nazorati",
         description:
-          "Ta’lim sifatini oshirishga qaratilgan qarorlar va tadbirlar ijrosini monitoring qilish.",
+          "Ta’lim sifatini oşirişga qaratilgan qarorlar va tadbirlar ijrosini monitoring qiliş.",
       },
     ],
 
-    processLabel: "Ish tizimi",
+    processLabel: "Iş tizimi",
     processTitle: "Ta’lim sifati qanday nazorat qilinadi",
     processDescription:
-      "Bo‘lim faoliyati tahlil qilish, qaror qabul qilish va erishilgan natijalarni baholashning uzluksiz sikli asosida tashkil etilgan.",
+      "Bölim faoliyati tahlil qiliş, qaror qabul qiliş va erişilgan natijalarni baholaşning uzluksiz sikli asosida taşkil etilgan.",
 
     stages: [
       {
         number: "01",
-        title: "Ma’lumotlarni yig‘ish",
+        title: "Ma’lumotlarni yiğiş",
         description:
-          "Axborot tizimlari, hisobotlar, kuzatuvlar va so‘rovlar orqali ma’lumot olish.",
+          "Axborot tizimlari, hisobotlar, kuzatuvlar va sörovlar orqali ma’lumot oliş.",
       },
       {
         number: "02",
         title: "Tahlil",
         description:
-          "Ko‘rsatkichlarni tizimlashtirish, muammolar, xavflar va ijobiy natijalarni aniqlash.",
+          "Körsatkiçlarni tizimlaştiriş, muammolar, xavflar va ijobiy natijalarni aniqlaş.",
       },
       {
         number: "03",
         title: "Tavsiyalar",
         description:
-          "Kamchiliklarni bartaraf etish va jarayonlarni rivojlantirish bo‘yicha asoslangan takliflar tayyorlash.",
+          "Kamçiliklarni bartaraf etiş va jarayonlarni rivojlantiriş böyiça asoslangan takliflar tayyorlaş.",
       },
       {
         number: "04",
-        title: "Natijalarni nazorat qilish",
+        title: "Natijalarni nazorat qiliş",
         description:
-          "Qabul qilingan qarorlar va amalga oshirilgan tadbirlarning samaradorligini qayta baholash.",
+          "Qabul qilingan qarorlar va amalga oşirilgan tadbirlarning samaradorligini qayta baholaş.",
       },
     ],
 
-    ctaTitle: "Ichki sifat tizimi hujjatlari",
+    ctaTitle: "Içki sifat tizimi hujjatlari",
     ctaDescription:
-      "Bo‘lim nizomlari, me’yoriy materiallari va hujjatlari bilan tanishing.",
-    ctaButton: "Hujjatlarga o‘tish",
+      "Bölim nizomlari, me’yoriy materiallari va hujjatlari bilan tanişing.",
+    ctaButton: "Hujjatlarga ötiş",
   },
 
   en: {
@@ -421,7 +421,7 @@ export default async function AboutPage({
           {currentLocale === "ru"
             ? "Сотрудники отдела"
             : currentLocale === "uz"
-              ? "Bo‘lim xodimlari"
+              ? "Bölim xodimlari"
               : "Department staff"}
         </Link>
       </div>
@@ -439,7 +439,7 @@ export default async function AboutPage({
                 {currentLocale === "ru"
                   ? "Внутренняя система качества"
                   : currentLocale === "uz"
-                    ? "Ichki sifat tizimi"
+                    ? "Içki sifat tizimi"
                     : "Internal quality system"}
               </p>
 
@@ -447,7 +447,7 @@ export default async function AboutPage({
                 {currentLocale === "ru"
                   ? "Основные направления работы"
                   : currentLocale === "uz"
-                    ? "Asosiy faoliyat yo‘nalishlari"
+                    ? "Asosiy faoliyat yönalişlari"
                     : "Key areas of activity"}
               </h2>
             </div>
@@ -489,7 +489,7 @@ export default async function AboutPage({
               currentLocale === "ru"
                 ? "Совершенствование процессов"
                 : currentLocale === "uz"
-                  ? "Jarayonlarni takomillashtirish"
+                  ? "Jarayonlarni takomillaştiriş"
                   : "Process improvement",
             ].map((item) => (
               <div
@@ -513,7 +513,7 @@ export default async function AboutPage({
             {currentLocale === "ru"
               ? "Непрерывное обеспечение качества"
               : currentLocale === "uz"
-                ? "Sifatni uzluksiz ta’minlash"
+                ? "Sifatni uzluksiz ta’minlaş"
                 : "Continuous quality assurance"}
           </div>
         </div>

@@ -61,60 +61,60 @@ const labels = {
 
   uz: {
     label: "Aloqa",
-    title: "Bo‘lim bilan bog‘lanish",
+    title: "Bölim bilan boğlaniş",
     description:
-      "Ta’lim sifatini ta’minlash bo‘limining manzili, telefon raqami, elektron pochtasi, ish vaqti va aloqa ma’lumotlari.",
+      "Ta’lim sifatini ta’minlaş bölimining manzili, telefon raqami, elektron poçtasi, iş vaqti va aloqa ma’lumotlari.",
 
-    heroCardLabel: "Bo‘lim bilan aloqa",
-    heroCardTitle: "Murojaatlar uchun ochiqmiz",
+    heroCardLabel: "Bölim bilan aloqa",
+    heroCardTitle: "Murojaatlar uçun oçiqmiz",
     heroCardItems: [
-      "Ta’lim sifati bo‘yicha maslahatlar",
+      "Ta’lim sifati böyiça maslahatlar",
       "Akkreditatsiya masalalari",
       "Takliflar va qayta aloqa",
-      "Xodimlar va talabalarni qabul qilish",
+      "Xodimlar va talabalarni qabul qiliş",
     ],
-    heroStatus: "Murojaatlar ish vaqtida qabul qilinadi",
+    heroStatus: "Murojaatlar iş vaqtida qabul qilinadi",
 
     sectionLabel: "Aloqa ma’lumotlari",
-    sectionTitle: "Biz bilan qanday bog‘lanish mumkin",
+    sectionTitle: "Biz bilan qanday boğlaniş mumkin",
     sectionDescription:
-      "Bo‘limga shaxsan, telefon, elektron pochta yoki elektron qabulxona orqali murojaat qilishingiz mumkin.",
+      "Bölimga şaxsan, telefon, elektron poçta yoki elektron qabulxona orqali murojaat qilişingiz mumkin.",
 
     address: "Manzil",
     addressValue:
-      "Toshkent viloyati, Qibray tumani, Qoramurt 1",
+      "Toşkent viloyati, Qibray tumani, Qoramurt 1",
 
     phone: "Telefon",
     phoneValue: "+998 90 322-26-29",
 
-    email: "Elektron pochta",
+    email: "Elektron poçta",
     emailValue: "quality@sbumiptk.uz",
 
-    workSchedule: "Ish vaqti",
-    workScheduleValue: "Dushanba — juma, 09:00–18:00",
+    workSchedule: "Iş vaqti",
+    workScheduleValue: "Duşanba — juma, 09:00–18:00",
 
     reception: "Fuqarolar qabuli",
     receptionValue:
-      "Qabul oldindan kelishilgan holda amalga oshiriladi",
+      "Qabul oldindan kelişilgan holda amalga oşiriladi",
 
     employees: "Mas’ul xodimlar",
-    employeeOne: "Rustamov Farhad Nurmatovich",
-    employeeTwo: "Eshmetova Dilafruz",
+    employeeOne: "Rustamov Farhad Nurmatoviç",
+    employeeTwo: "Eşmetova Dilafruz",
 
-    call: "Qo‘ng‘iroq qilish",
-    write: "Xat yozish",
-    employeesButton: "Bo‘lim xodimlari",
+    call: "Qönğiroq qiliş",
+    write: "Xat yoziş",
+    employeesButton: "Bölim xodimlari",
 
-    mapLabel: "Joylashuv",
-    mapTitle: "Joylashuv xaritasi",
+    mapLabel: "Joylaşuv",
+    mapTitle: "Joylaşuv xaritasi",
     mapDescription:
-      "Institut Toshkent viloyatining Qibray tumanida joylashgan.",
+      "Institut Toşkent viloyatining Qibray tumanida joylaşgan.",
 
     receptionLabel: "Murojaatlar",
     receptionTitle: "Elektron qabulxona",
     receptionDescription:
-      "Murojaat, taklif yoki savol yuborish uchun institutning elektron qabulxonasidan foydalaning.",
-    receptionButton: "Qabulxonaga o‘tish",
+      "Murojaat, taklif yoki savol yuboriş uçun institutning elektron qabulxonasidan foydalaning.",
+    receptionButton: "Qabulxonaga ötiş",
   },
 
   en: {

@@ -22,8 +22,8 @@ const metadataByLocale = {
     description: "Официальный сайт отдела обеспечения качества образования СБУМИПТК",
   },
   uz: {
-    title: "Ta’lim sifatini ta’minlash bo‘limi",
-    description: "Ta’lim sifatini ta’minlash bo‘limining rasmiy sayti",
+    title: "Ta’lim sifatini ta’minlaş bölimi",
+    description: "Ta’lim sifatini ta’minlaş bölimining rasmiy sayti",
   },
   en: {
     title: "Education Quality Assurance Department",
@@ -77,7 +77,7 @@ export default async function LocaleLayout({
 
   const messages = await getMessages();
   const skipLabel = locale === "uz"
-    ? "Asosiy tarkibga o‘tish"
+    ? "Asosiy tarkibga ötiş"
     : locale === "en"
       ? "Skip to main content"
       : "Перейти к основному содержанию";

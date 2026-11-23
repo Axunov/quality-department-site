@@ -32,17 +32,17 @@ const content = {
   },
   uz: {
     eyebrow: "Talaba kabineti",
-    title: "Shaxsiy kabinetga kirish",
+    title: "Şaxsiy kabinetga kiriş",
     description:
-      "Sizga berilgan Student ID raqamini kiriting. Kabinetda mavjud so‘rovlar va ularning holatini ko‘rasiz.",
+      "Sizga berilgan Student ID raqamini kiriting. Kabinetda mavjud sörovlar va ularning holatini körasiz.",
     label: "Student ID",
     hint: "Format: STU-0001",
-    button: "Kirish",
-    loading: "Tekshirilmoqda…",
+    button: "Kiriş",
+    loading: "Tekşirilmoqda…",
     captcha: "Robot emasligingizni tasdiqlang.",
     privacy:
-      "Student ID faqat kirish va ishtirokni hisobga olish uchun ishlatiladi. So‘rov javoblari alohida saqlanadi va anonim qoladi.",
-    error: "Kirish amalga oshmadi. Student ID ni tekshirib, qayta urinib ko‘ring.",
+      "Student ID faqat kiriş va iştirokni hisobga oliş uçun işlatiladi. Sörov javoblari alohida saqlanadi va anonim qoladi.",
+    error: "Kiriş amalga oşmadi. Student ID ni tekşirib, qayta urinib köring.",
   },
   en: {
     eyebrow: "Student portal",

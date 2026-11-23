@@ -9,7 +9,7 @@ import WorkspaceSidebar from "@/components/dashboard/WorkspaceSidebar";
 
 const copy = {
   ru: ["Обзор", "Мои обращения", "Уведомления"],
-  uz: ["Umumiy ko‘rinish", "Mening murojaatlarim", "Bildirishnomalar"],
+  uz: ["Umumiy köriniş", "Mening murojaatlarim", "Bildirişnomalar"],
   en: ["Overview", "My appeals", "Notifications"],
 };
 

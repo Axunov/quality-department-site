@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const labels = {
   ru: { dark: "Включить тёмную тему", light: "Включить светлую тему" },
-  uz: { dark: "Tungi mavzuni yoqish", light: "Yorug‘ mavzuni yoqish" },
+  uz: { dark: "Tungi mavzuni yoqiş", light: "Yoruğ mavzuni yoqiş" },
   en: { dark: "Enable dark theme", light: "Enable light theme" },
 };
 

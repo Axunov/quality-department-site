@@ -3,7 +3,7 @@ import { editorialLanguages, type EditorialLanguage } from "./EditorialTranslati
 
 const fields = {
   ru: ["Русский", "Название", "Описание"],
-  uz: ["O‘zbekcha", "Nomi", "Tavsif"],
+  uz: ["Özbekça", "Nomi", "Tavsif"],
   en: ["English", "Title", "Description"],
 } as const;
 

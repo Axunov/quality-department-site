@@ -1,4 +1,5 @@
 import "server-only";
+import { normalizeUzbekSearch, uzbekAlphabet } from "@/lib/uzbekAlphabet";
 import { unstable_cache } from "next/cache";
 import { getDocuments } from "@/services/documents.service";
 import { getEmployees } from "@/services/employees.service";
@@ -15,6 +16,11 @@ const pick = (l: SearchLocale, ru?: string | null, uz?: string | null, en?: stri
 const clean = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 const normalize = (value: string) => value.normalize("NFKC").toLowerCase().replace(/[’‘ʻʼ`´]/g, "'").replace(/ё/g, "е").trim();
 const serviceLinks = [
+  ["/", "Главная", "Boş sahifa", "Home"],
+  ["/about", "Об отделе", "Bölim haqida", "About the department"],
+  ["/documents", "Документы отдела", "Bölim hujjatlari", "Department documents"],
+  ["/analytics", "Аналитика института HEMIS", "Institut tahlili HEMIS", "Institute analytics HEMIS"],
+  ["/contacts", "Контакты отдела", "Bölim kontaktlari", "Department contacts"],
   ["/surveys", "Опросы и анкеты", "So‘rovlar va anketalar", "Surveys and questionnaires"],
   ["/surveys/teacher", "Преподаватель глазами студента", "O‘qituvchi talaba nigohida", "Teacher Through the Eyes of a Student"],
   ["/surveys/employers", "Опрос работодателей", "Ish beruvchilar so‘rovi", "Employer survey"],
@@ -27,29 +33,26 @@ const serviceLinks = [
   ["/portal", "Вход в личный кабинет", "Shaxsiy kabinetga kirish", "Sign in to your account"],
 ] as const;
 
-function safeDocumentUrl(value: string) {
-  try { const url = new URL(value); return url.protocol === "https:" ? url.href : null; } catch { return null; }
-}
-
 const loadPublishedIndex = unstable_cache(async (l: SearchLocale) => {
   const [news, docs, staff] = await Promise.all([getNews(), getDocuments(), getEmployees()]);
   return [
     ...news.map((x): Result => ({ id: x.id, category: "news", href: `/news/${encodeURIComponent(x.slug)}`, title: pick(l, x.title_ru, x.title_uz, x.title_en), text: clean(pick(l, x.text_ru, x.text_uz, x.text_en)) })),
-    ...docs.map((x): Result => { const url = safeDocumentUrl(x.file_url); return { id: x.id, category: "documents", href: url ?? "/documents", external: !!url, title: pick(l, x.title_ru, x.title_uz, x.title_en), text: clean(pick(l, x.description_ru, x.description_uz, x.description_en) || x.file_name || ""), terms: x.file_name || "" }; }),
+    ...docs.map((x): Result => ({ id: x.id, category: "documents", href: `/documents/${encodeURIComponent(x.id)}`, title: pick(l, x.title_ru, x.title_uz, x.title_en), text: clean(pick(l, x.description_ru, x.description_uz, x.description_en) || x.file_name || ""), terms: x.file_name || "" })),
     ...staff.map((x): Result => ({ id: x.id, category: "employees", href: "/employees", title: pick(l, x.full_name_ru || x.fullname_ru, x.full_name_uz || x.fullname_uz, x.full_name_en || x.fullname_en), text: pick(l, x.position_ru, x.position_uz, x.position_en) })),
   ];
-}, ["published-site-search-v1"], { revalidate: 120 });
+}, ["published-site-search-v2"], { revalidate: 120 });
 
 export async function findSiteResults(locale: string, input: string, limit: number) {
   const l = portalLocale(locale);
-  const query = normalize(input.slice(0, 100));
+  const norm = l==="uz" ? normalizeUzbekSearch : normalize;
+  const query = norm(input.slice(0, 100));
   if (query.length < 2) return [];
   const tokens = query.split(/\s+/);
   const services: Result[] = serviceLinks.map(([href, ru, uz, en]) => ({ id: href, href, category: "services", title: pick(l, ru, uz, en), text: "", terms: href.startsWith("/surveys/") ? pick(l, "опрос анкета", "so‘rov anketa", "survey questionnaire") : "" }));
   const index = [...services, ...await loadPublishedIndex(l)];
   const counts = new Map<SearchCategory, number>();
-  return index.filter(x => x.title && tokens.every(token => normalize(`${x.title} ${x.text} ${x.terms || ""}`).includes(token)))
-    .sort((a, b) => Number(normalize(b.title).includes(query)) - Number(normalize(a.title).includes(query)))
+  return index.filter(x => x.title && tokens.every(token => norm(`${x.title} ${x.text} ${x.terms || ""}`).includes(token)))
+    .sort((a, b) => Number(norm(b.title).includes(query)) - Number(norm(a.title).includes(query)))
     .filter(x => { const count = (counts.get(x.category) || 0) + 1; counts.set(x.category, count); return count <= limit; })
-    .map(({ id, href, title, text, category, external }) => ({ id, href, title, text: text.slice(0, 180), category, external }));
+    .map(({ id, href, title, text, category, external }) => ({ id, href, title:l==="uz"?uzbekAlphabet(title):title, text: (l==="uz"?uzbekAlphabet(text):text).slice(0, 180), category, external }));
 }

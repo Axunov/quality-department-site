@@ -27,7 +27,7 @@ test("teacher survey opens publicly by group without a student account", async (
   assert.doesNotMatch(start,/STUDENT_PORTAL_COOKIE|begin_teacher_survey_from_portal/);
   assert.match(start,/survey_groups/);assert.match(start,/groupId/);
   assert.match(submit,/submit_public_teacher_survey/);assert.match(submit,/hashPublicSurveyParticipant/);
-  assert.match(form,/Выберите свою учебную группу/);assert.match(form,/O‘quv guruhingizni tanlang/);assert.match(form,/Select your study group/);
+  assert.match(form,/Выберите свою учебную группу/);assert.match(form,/Öquv guruhingizni tanlang/);assert.match(form,/Select your study group/);
   assert.match(migration,/teacher_survey_public_participation/);assert.match(migration,/enable row level security/);
   assert.match(migration,/revoke all[\s\S]*from public,anon,authenticated/);
 });

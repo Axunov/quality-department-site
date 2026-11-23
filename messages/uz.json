@@ -1,10 +1,10 @@
 {
   "Header": {
-    "title": "Ta’lim sifatini ta’minlash bo‘limi",
-    "institute": "Toshkent shahridagi Belarus–O‘zbekiston qo‘shma tarmoqlararo amaliy texnik kvalifikatsiyalar instituti",
-    "address": "Toshkent viloyati, Qibray tumani, Qoramurt 1",
-    "home": "Bosh sahifa",
-    "about": "Bo‘lim haqida",
+    "title": "Ta’lim sifatini ta’minlaş bölimi",
+    "institute": "Toşkent şahridagi Belarus–Özbekiston qöşma tarmoqlararo amaliy texnik kvalifikatsiyalar instituti",
+    "address": "Toşkent viloyati, Qibray tumani, Qoramurt 1",
+    "home": "Boş sahifa",
+    "about": "Bölim haqida",
     "employees": "Xodimlar",
     "news": "Yangiliklar",
     "documents": "Hujjatlar",
@@ -12,96 +12,96 @@
     "contacts": "Aloqa",
     "accessibility": "Maxsus imkoniyatlar",
     "search": "Qidiruv",
-    "menu": "Menyuni ochish",
-    "closeMenu": "Menyuni yopish"
+    "menu": "Menyuni oçiş",
+    "closeMenu": "Menyuni yopiş"
   },
   "Footer": {
-    "title": "Ta’lim sifatini ta’minlash bo‘limi",
-    "institute": "Belarus–O‘zbekiston qo‘shma tarmoqlararo instituti",
-    "description": "Ta’lim sifati monitoringi, akkreditatsiya, hujjatlar, yangiliklar va qayta aloqa bo‘yicha bo‘limning rasmiy portali.",
+    "title": "Ta’lim sifatini ta’minlaş bölimi",
+    "institute": "Belarus–Özbekiston qöşma tarmoqlararo instituti",
+    "description": "Ta’lim sifati monitoringi, akkreditatsiya, hujjatlar, yangiliklar va qayta aloqa böyiça bölimning rasmiy portali.",
     "quickLinks": "Tezkor havolalar",
     "contacts": "Aloqa",
-    "about": "Bo‘lim haqida",
+    "about": "Bölim haqida",
     "employees": "Xodimlar",
     "news": "Yangiliklar",
     "documents": "Hujjatlar",
     "accreditation": "Akkreditatsiya",
-    "rights": "Ta’lim sifatini ta’minlash bo‘limi. Barcha huquqlar himoyalangan."
+    "rights": "Ta’lim sifatini ta’minlaş bölimi. Barça huquqlar himoyalangan."
   },
   "Hero": {
-    "label": "Bo‘limning rasmiy portali",
-    "title": "Ta’lim sifatini ta’minlash bo‘limi",
-    "text": "Ta’lim sifati monitoringi, akkreditatsiya, tahlil, hujjatlar, yangiliklar va qayta aloqa uchun zamonaviy axborot platformasi.",
+    "label": "Bölimning rasmiy portali",
+    "title": "Ta’lim sifatini ta’minlaş bölimi",
+    "text": "Ta’lim sifati monitoringi, akkreditatsiya, tahlil, hujjatlar, yangiliklar va qayta aloqa uçun zamonaviy axborot platformasi.",
     "documents": "Hujjatlar",
-    "news": "Bo‘lim yangiliklari"
+    "news": "Bölim yangiliklari"
   },
   "Welcome": {
-    "label": "Bo‘lim boshlig‘ining tabrigi",
-    "name": "Rustamov Farhod Nurmatovich",
-    "position": "Ta’lim sifatini nazorat qilish bo‘limi boshlig‘i",
-    "text": "Ta’lim sifatini ta’minlash bo‘limi ichki sifat madaniyatini rivojlantirish, o‘quv jarayonini monitoring qilish, akkreditatsiya materiallarini tayyorlash hamda talabalar, o‘qituvchilar, ish beruvchilar va hamkorlar bilan qayta aloqani ta’minlash bo‘yicha tizimli ishlarni amalga oshiradi."
+    "label": "Bölim boşliğining tabrigi",
+    "name": "Rustamov Farhod Nurmatoviç",
+    "position": "Ta’lim sifatini nazorat qiliş bölimi boşliği",
+    "text": "Ta’lim sifatini ta’minlaş bölimi içki sifat madaniyatini rivojlantiriş, öquv jarayonini monitoring qiliş, akkreditatsiya materiallarini tayyorlaş hamda talabalar, öqituvçilar, iş beruvçilar va hamkorlar bilan qayta aloqani ta’minlaş böyiça tizimli işlarni amalga oşiradi."
   },
   "Directions": {
-    "label": "Yo‘nalishlar",
-    "title": "Faoliyatning asosiy yo‘nalishlari",
+    "label": "Yönalişlar",
+    "title": "Faoliyatning asosiy yönalişlari",
     "items": [
       {
         "title": "Ta’lim sifati monitoringi",
-        "text": "Davomat, o‘zlashtirish, darslar sifati va ta’lim muhitini nazorat qilish."
+        "text": "Davomat, özlaştiriş, darslar sifati va ta’lim muhitini nazorat qiliş."
       },
       {
         "title": "Akkreditatsiya",
-        "text": "Materiallar tayyorlash, o‘zini o‘zi baholash, indikatorlar va jarayonlarni kuzatish."
+        "text": "Materiallar tayyorlaş, özini özi baholaş, indikatorlar va jarayonlarni kuzatiş."
       },
       {
         "title": "Hujjatlar",
-        "text": "Nizomlar, buyruqlar, shakllar, namunalar va uslubiy materiallar."
+        "text": "Nizomlar, buyruqlar, şakllar, namunalar va uslubiy materiallar."
       },
       {
-        "title": "So‘rovlar",
-        "text": "Talabalar, o‘qituvchilar, bitiruvchilar va ish beruvchilar o‘rtasida so‘rovlar."
+        "title": "Sörovlar",
+        "text": "Talabalar, öqituvçilar, bitiruvçilar va iş beruvçilar örtasida sörovlar."
       },
       {
         "title": "Tahlil",
-        "text": "Ma’lumotnomalar, hisobotlar va institut rahbariyati uchun tavsiyalar tayyorlash."
+        "text": "Ma’lumotnomalar, hisobotlar va institut rahbariyati uçun tavsiyalar tayyorlaş."
       },
       {
         "title": "Qayta aloqa",
-        "text": "Ta’lim jarayoni ishtirokchilarining taklif, e’tiroz va murojaatlari bilan ishlash."
+        "text": "Ta’lim jarayoni iştirokçilarining taklif, e’tiroz va murojaatlari bilan işlaş."
       }
     ]
   },
   "Statistics": {
     "monitoring": "Monitoringlar",
     "documents": "Hujjatlar",
-    "surveys": "So‘rovlar",
+    "surveys": "Sörovlar",
     "students": "Talabalar"
   },
   "NewsPreview": {
-    "title": "So‘nggi yangiliklar",
+    "title": "Sönggi yangiliklar",
     "items": [
-      "O‘quv jarayoni sifati bo‘yicha monitoring o‘tkazildi",
-      "Akkreditatsiya bo‘yicha materiallar tayyorlandi",
-      "Ta’lim sifati bo‘yicha talabalar so‘rovi boshlandi"
+      "Öquv jarayoni sifati böyiça monitoring ötkazildi",
+      "Akkreditatsiya böyiça materiallar tayyorlandi",
+      "Ta’lim sifati böyiça talabalar sörovi boşlandi"
     ],
     "date": "04.07.2026"
   },
   "DocumentsPreview": {
     "title": "Muhim hujjatlar",
-    "download": "Hujjatni yuklab olish",
+    "download": "Hujjatni yuklab oliş",
     "items": [
-      "Ta’lim sifatini nazorat qilish bo‘limi to‘g‘risidagi nizom",
-      "Akkreditatsiya bo‘yicha tadbirlar rejasi",
-      "Tahliliy hisobot shakli"
+      "Ta’lim sifatini nazorat qiliş bölimi töğrisidagi nizom",
+      "Akkreditatsiya böyiça tadbirlar rejasi",
+      "Tahliliy hisobot şakli"
     ]
   },
   "ContactsPreview": {
-    "title": "Bo‘lim kontaktlari",
+    "title": "Bölim kontaktlari",
     "addressLabel": "Manzil",
-    "address": "Toshkent viloyati, Qibray tumani, Qoramurt 1",
+    "address": "Toşkent viloyati, Qibray tumani, Qoramurt 1",
     "phoneLabel": "Telefon",
     "employeesLabel": "Xodimlar",
-    "head": "Rustamov Farhod Nurmatovich",
-    "inspector": "Eshmetova Dilafruz"
+    "head": "Rustamov Farhod Nurmatoviç",
+    "inspector": "Eşmetova Dilafruz"
   }
 }
