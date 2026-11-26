@@ -306,7 +306,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
           return (
             <section
               key={teacher.id}
-              className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-8"
+              className="step-enter rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-8"
             >
               <p className="text-xs font-black uppercase tracking-[.18em] text-cyan-700">
                 {t.teacher} {teacherIndex + 1}/{teachers.length}
@@ -401,7 +401,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
         })}
 
         {teachers.length > 0 && step === teachers.length && (
-          <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+          <section className="step-enter rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
             <h2 ref={stepHeading} tabIndex={-1} className="scroll-mt-36 text-2xl font-black text-slate-900">{t.general}</h2>
 
             <fieldset className="mt-5 block font-semibold text-slate-800">

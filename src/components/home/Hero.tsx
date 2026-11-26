@@ -33,7 +33,7 @@ export function Hero() {
 
         <div className="relative h-[430px]">
           <Image
-            src="/images/institute.jpg"
+            src="/images/institute.webp"
             alt="Institute"
             fill
             className="object-cover"

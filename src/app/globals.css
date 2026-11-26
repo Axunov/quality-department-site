@@ -36,7 +36,7 @@
 }
 
 :root {
-  --background: #eef4fb;
+  --background: var(--surface-primary);
   --foreground: #0f172a;
   --primary: #0b3b78;
   --primary-light: #2563eb;
@@ -50,7 +50,7 @@
 
 .dark {
   color-scheme: dark;
-  --background: #07111f;
+  --background: var(--surface-primary);
   --foreground: #e5eefb;
   --card: rgba(15, 30, 51, 0.9);
   --muted: #9fb0c7;
@@ -74,11 +74,9 @@ html {
 
 .accessibility-mode {
   font-size: 115%;
-  filter: contrast(1.12);
-}
-
-.accessibility-mode body {
-  background: #ffffff;
+  --border-subtle: #64748b;
+  --accent-brand: #17468f;
+  --accent-emerald: #065b4b;
 }
 
 .accessibility-mode * {
@@ -87,10 +85,7 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.16), transparent 35%),
-    radial-gradient(circle at top right, rgba(20, 184, 166, 0.12), transparent 30%),
-    #eef4fb;
+  background: var(--surface-primary);
   color: var(--foreground);
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   font-optical-sizing: auto;
@@ -752,55 +747,11 @@ button:not(:disabled), summary { cursor: pointer; }
   .home-modern :is(.news-compact, .document-row, .bento-small) { transition: none; transform: none; }
 }
 
-/* Home page motion: the static layout remains readable without animation. */
-.home-modern .home-service-icon { display: inline-flex; width: fit-content; color: #1d5aa7; }
-.home-modern [data-home-motion="appeal"] .home-service-icon { color: #147065; }
-.dark .home-modern .home-service-icon { color: #9dc9ff; }
-.dark .home-modern [data-home-motion="appeal"] .home-service-icon { color: #73dfc1; }
-
-@media (prefers-reduced-motion: no-preference) {
-  .home-modern .hero-campus-photo {
-    translate: 0 var(--campus-drift, 0px);
-    transform-origin: 66% 44%;
-    animation: campus-open 1.25s cubic-bezier(.2,.75,.22,1) both;
-  }
-  .home-modern .hero-copy > * { animation: home-intro .58s cubic-bezier(.2,.8,.24,1) backwards; }
-  .home-modern .hero-title { animation-delay: .08s; }
-  .home-modern .hero-description { animation-delay: .16s; }
-  .home-modern .hero-actions { animation-delay: .24s; }
-  .home-modern .hero-privacy { animation-delay: .31s; }
-  .home-modern .hero-secondary { animation-delay: .37s; }
-  .home-modern .hero-copy:focus-within > * { animation: none; }
-
-  .home-modern [data-home-motion] { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
-  .home-modern [data-home-motion]:is(:hover, :focus-within) {
-    transform: translateY(-3px);
-    border-color: #78b6b6;
-    box-shadow: 0 10px 24px rgb(19 64 91 / .15);
-  }
-  .home-modern .home-motion-seen { animation: home-intro .38s ease-out; }
-  .home-modern .home-motion-seen .home-icon-stroke { stroke-dasharray: 1; animation: home-draw .56s ease-out backwards; }
-  .home-modern .home-motion-seen .home-icon-bar {
-    transform-box: fill-box;
-    transform-origin: bottom center;
-    animation: home-bar .48s cubic-bezier(.18,.75,.41,1.1) backwards;
-  }
-  .home-modern .home-motion-seen .home-icon-second { animation-delay: .1s; }
-  .home-modern .home-motion-seen .home-icon-third { animation-delay: .2s; }
-}
-@keyframes campus-open { from { scale: 1.15; } to { scale: 1.07; } }
-@keyframes home-intro { from { opacity: .55; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
-@keyframes home-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@keyframes home-bar { from { opacity: .5; scale: 1 .2; } to { opacity: 1; scale: 1; } }
-@media (prefers-reduced-motion: reduce) {
-  .home-modern .bento-small:hover { transform: none; }
-}
-
 /* Shared surfaces for the campus portal and working areas. */
 :root {
-  --campus-surface: #fff;
+  --campus-surface: var(--surface-elevated);
   --campus-ink: #142b44;
-  --campus-line: #dce6ef;
+  --campus-line: var(--border-subtle);
   --campus-hero: linear-gradient(130deg, #e8f2ff, #e7f7f4);
   --campus-shadow: 0 12px 34px rgb(18 54 88 / .07);
   --campus-radius: 22px;

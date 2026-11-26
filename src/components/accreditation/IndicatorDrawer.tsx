@@ -42,7 +42,7 @@ export default function IndicatorDrawer({ locale, code, title, status, statusKin
       <span className="indicator-progress text-right text-sm font-bold text-blue-800" aria-label={`${t.readiness}: ${progress}%`}>{progress}%</span>
       <ChevronRight size={17} aria-hidden="true" className="text-slate-400"/>
     </button>
-    <dialog ref={dialog} className="indicator-drawer" aria-labelledby={id} onClose={() => trigger.current?.focus({ preventScroll:true })} onClick={event => {
+    <dialog ref={dialog} className="indicator-drawer editorial-glass" aria-labelledby={id} onClose={() => trigger.current?.focus({ preventScroll:true })} onClick={event => {
       if (event.target !== event.currentTarget) return;
       const rect = event.currentTarget.getBoundingClientRect();
       if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.current?.close();

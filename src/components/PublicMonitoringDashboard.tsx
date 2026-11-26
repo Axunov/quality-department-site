@@ -1,5 +1,7 @@
 "use client";
 
+import { AnimatedNumber, SkeletonGrid } from "@/components/editorial/MotionPrimitives";
+import { AreaTrend } from "@/components/institute/AreaTrend";
 import { Link } from "@/i18n/routing";
 import { catalogCopy, reports } from "@/data/surveyCatalog";
 import { monitoringFormat } from "@/lib/monitoringFormat";
@@ -12,7 +14,7 @@ const labels = {
   en: { eyebrow: "Public analytics", title: "Education quality monitoring", lead: "Aggregated survey results update automatically. Personal data and written responses are not published here.", answers: "responses", average: "Average score", questions: "Results by question", loading: "Loading analytics…", error: "Could not load monitoring data.", empty: "No data yet", updated: "Updated" },
 } as const;
 
-const colors = ["#0b4f8a", "#10a3a3", "#2f9e62", "#f2a93b", "#da5a65", "#6b62c5"];
+const colors = ["#326de0", "#087f72", "#a46e21", "#8053bc", "#ae5262", "#64768d"];
 
 function Donut({ items, center, label, locale }: { items: Item[]; center: string; label: string; locale: string }) {
   const fmt = monitoringFormat(locale);
@@ -72,14 +74,13 @@ export default function PublicMonitoringDashboard({ locale, initialReport }: { l
   }, [lang, attempt]);
   const report = payload?.reports.find(item => item.key === selected);
   const questions = report?.questions.filter(q => q.total > 0) ?? [];
-  const peak = Math.max(1, ...(report?.byPeriod.map(row => row.value) ?? []));
   return <main className="container-main py-8 sm:py-14">
     <header className="rounded-[32px] bg-gradient-to-br from-[#083b73] via-[#14538a] to-[#087d83] p-7 text-white shadow-lg sm:p-12">
       <p className="text-sm font-bold uppercase tracking-widest text-cyan-100">{t.eyebrow}</p><h1 className="mt-3 text-3xl font-black sm:text-5xl">{t.title}</h1><p className="mt-4 max-w-3xl text-blue-50">{t.lead}</p>
       {payload && <p className="mt-5 text-sm text-cyan-100">{t.updated}: {fmt.date(payload.generatedAt)}</p>}
       <Link href="/surveys" className="mt-4 inline-flex min-h-11 items-center rounded-xl border border-white/50 px-4 text-sm font-bold">{catalogCopy[lang].catalog}</Link>
     </header>
-    {!payload && <p className="mt-6 rounded-2xl bg-white p-5" role="status">{failed ? t.error : t.loading}{failed && <button type="button" className="ms-4 underline" onClick={() => { setFailed(false); setAttempt(n => n + 1); }}>{ui.retry}</button>}</p>}
+    {!payload && (failed?<p className="editorial-surface mt-6 p-5" role="status">{t.error}<button type="button" className="ms-4 underline" onClick={() => { setFailed(false); setAttempt(n => n + 1); }}>{ui.retry}</button></p>:<SkeletonGrid label={t.loading}/>)}
     {!!payload && <nav aria-label={ui.select} className="mt-6 flex flex-wrap gap-2">
       {payload.reports.map(item => <button type="button" key={item.key} aria-pressed={selected === item.key} onClick={() => setSelected(item.key)} className="campus-filter font-bold">{item.title}</button>)}
     </nav>}
@@ -87,17 +88,15 @@ export default function PublicMonitoringDashboard({ locale, initialReport }: { l
       <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">{report.title}</h2>
       <p className="mt-2 text-sm text-slate-600">{counts.all}</p>
       <dl className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="campus-card"><dt className="text-sm font-bold">{counts.forms}</dt><dd className="mt-1 text-3xl font-black">{fmt.number(report.total)}</dd></div>
-        {typeof report.teacherEvaluations === "number" && <div className="campus-card"><dt className="text-sm font-bold">{counts.evaluations}</dt><dd className="mt-1 text-3xl font-black">{fmt.number(report.teacherEvaluations)}</dd></div>}
+        <div className="campus-card"><dt className="text-sm font-bold">{counts.forms}</dt><dd className="mt-1 text-3xl font-black"><AnimatedNumber value={report.total} locale={lang}/></dd></div>
+        {typeof report.teacherEvaluations === "number" && <div className="campus-card"><dt className="text-sm font-bold">{counts.evaluations}</dt><dd className="mt-1 text-3xl font-black"><AnimatedNumber value={report.teacherEvaluations} locale={lang}/></dd></div>}
       </dl>
       {report.total > 0 ? <>
         <p className="mt-5 text-sm leading-6 text-slate-600">{counts.scope}</p>
         <section className="mt-5 campus-card">
           <h3 className="font-bold">{counts.monthly}</h3>
-          {report.byPeriod.length > 0 ? <ul className="mt-4 grid gap-3">{report.byPeriod.map(row => <li key={row.label}>
-            <div className="flex justify-between gap-3 text-sm"><span>{fmt.month(row.label)}</span><strong>{fmt.number(row.value)}</strong></div>
-            <div className="mt-1 h-2 rounded-full bg-slate-100" aria-hidden="true"><div className="h-full rounded-full bg-blue-600" style={{ width: row.value / peak * 100 + "%" }} /></div>
-          </li>)}</ul> : <p className="mt-3 text-sm text-slate-600">{counts.noDate}</p>}
+          {report.byPeriod.length>0?<AreaTrend label={counts.monthly} locale={lang}
+            points={[...report.byPeriod].sort((a,b)=>a.label.localeCompare(b.label)).map(row=>({label:fmt.month(row.label),value:row.value}))}/>:<p className="mt-3 text-sm text-slate-600">{counts.noDate}</p>}
         </section>
         <section className="mt-5 rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 p-5">
           <h3 className="mb-5 font-bold text-blue-900">{ui.languages}</h3>

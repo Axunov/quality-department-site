@@ -1,4 +1,5 @@
 "use client";
+import AccountGateway from "./AccountGateway";
 import { learningLocale, learningQualityCopy } from "@/data/learningQualityCopy";
 import { surveyText } from "@/lib/surveyI18n";
 
@@ -13,7 +14,7 @@ import { Menu, X } from "lucide-react";
 import { catalogCopy } from "@/data/surveyCatalog";
 import QuickSearch from "@/components/search/QuickSearch";
 import { portalLocale, portalUI } from "@/data/portal";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Header() {
   const tr = (text: string) => surveyText(currentLocale, text);
@@ -22,6 +23,25 @@ export function Header() {
   const pathname = usePathname();
   const locale = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef=useRef<HTMLElement>(null);
+  useEffect(()=>{
+    let previous=window.scrollY,frame=0,directionAt=previous;
+    const update=()=>{
+      frame=0;
+      const y=window.scrollY,element=headerRef.current;
+      const changed=y-previous;
+      if(y<=40||changed < -1||element?.matches(":focus-within")||element?.querySelector("details[open]")) {
+        element?.removeAttribute("data-condensed");
+        directionAt=y;
+      } else if(y-directionAt>=12 && changed>0) {
+        element?.setAttribute("data-condensed","true");
+      }
+      previous=y;
+    };
+    const queue=()=>{if(!frame)frame=requestAnimationFrame(update);};
+    window.addEventListener("scroll",queue,{passive:true});
+    return ()=>{window.removeEventListener("scroll",queue);cancelAnimationFrame(frame);};
+  },[]);
 
   const portalLabels = {
     ru: { services:"Сервисы", navigation:"Основная навигация", resources:"Ресурсы", quality: "Система качества", self: "Самооценка", monitoring: "Мониторинг", analytics: "Аналитика", open: "Открытые материалы", appeals: "Обращения", faq: "FAQ", survey: "Опрос студентов", employerSurvey: "Опрос работодателей", graduateSurvey: "Опрос выпускников", doctoralSurvey: "Опрос докторантов" },
@@ -63,9 +83,9 @@ export function Header() {
   const sections = [[portal.services,services],[portal.quality,portalItems],[portal.resources,resources]] as const;
 
   return (
-    <header className="site-header sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl">
+    <header ref={headerRef} className="site-header sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl">
       <div className="container-main">
-        <div className="flex items-center justify-between gap-3 py-3 lg:gap-5">
+        <div className="flex items-center justify-between gap-3 py-3 lg:gap-5 masthead-row">
           <Link href="/" locale={locale} className="flex min-w-0 items-center gap-3 lg:gap-4">
             <Image
               src="/images/logo.jpg"
@@ -88,7 +108,7 @@ export function Header() {
 
           <div className="hidden shrink-0 items-center gap-2 lg:flex">
             <ThemeToggle/><AccessibilityToggle compact label={t("accessibility")}/><LanguageSwitcher/>
-            <Link href="/portal" className="rounded-xl bg-[#123b60] px-4 py-2.5 text-sm font-semibold text-white">{account.account}</Link>
+            <AccountGateway locale={locale}/>
           </div>
 
           <div className="flex items-center gap-2">
@@ -146,9 +166,9 @@ export function Header() {
 
         {menuOpen && (
           <div className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-slate-100 py-4 lg:hidden">
-            <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <LanguageSwitcher />
-              <Link href="/portal" onClick={() => setMenuOpen(false)} className="rounded-xl bg-[#123b60] px-4 py-2.5 font-semibold text-white">{account.account}</Link>
+              <AccountGateway locale={locale}/>
             </div>
             <nav aria-label={portal.navigation} className="grid gap-1 text-sm font-semibold">
               {main.map((item) => (

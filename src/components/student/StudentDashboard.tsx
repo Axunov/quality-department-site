@@ -1,5 +1,6 @@
 "use client";
 
+import { SkeletonGrid } from "@/components/editorial/MotionPrimitives";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 
@@ -107,7 +108,7 @@ export default function StudentDashboard({ locale }: { locale: string }) {
   if (!profile) {
     return (
       <main className="container-main py-16">
-        <p className="text-center font-semibold text-slate-600">{t.loading}</p>
+        <SkeletonGrid label={t.loading}/>
       </main>
     );
   }

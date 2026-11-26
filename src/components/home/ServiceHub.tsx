@@ -1,26 +1,47 @@
-import { catalogCopy } from "@/data/surveyCatalog";
+"use client";
+
+import { useId, useState } from "react";
+import { ArrowUpRight, GraduationCap, Presentation, BriefcaseBusiness, ClipboardCheck } from "lucide-react";
 import { Link } from "@/i18n/routing";
-import { ArrowUpRight, ClipboardCheck, FileText, GraduationCap, ShieldCheck } from "lucide-react";
+
+const icons=[GraduationCap,Presentation,BriefcaseBusiness,ClipboardCheck];
 const copy={
- ru:{label:"Выберите действие",title:"Сервисы системы качества",accreditation:"Аккредитация",accreditationText:"Индикаторы, ответственные и материалы. Комплексная и специализированная аккредитация.",complex:"Комплексная",special:"Специализированная",survey:"Опросы",surveyText:"Ваш опыт помогает улучшать образование.",student:"Студентам",employer:"Работодателям",graduate:"Выпускникам",doctoral:"Докторантам",appeal:"Электронные обращения",appealText:"Задайте вопрос или предложите улучшение. Отслеживайте ответ по коду.",send:"Подать обращение",documents:"Документы",documentText:"Положения, регламенты и формы",monitoring:"Мониторинг",monitoringText:"Направления контроля качества",self:"Самооценка",selfText:"Внутренняя оценка и развитие",hemis:"Тест HEMIS",hemisText:"Проверка знаний преподавателей"},
- uz:{label:"Amalni tanlang",title:"Sifat tizimi xizmatlari",accreditation:"Akkreditatsiya",accreditationText:"Indikatorlar, mas’ullar va materiallar. Kompleks va maxsus akkreditatsiya.",complex:"Kompleks",special:"Maxsus",survey:"Sörovlar",surveyText:"Tajribangiz ta’limni yaxşilaşga yordam beradi.",student:"Talabalar uçun",employer:"Iş beruvçilar uçun",graduate:"Bitiruvçilar uçun",doctoral:"Doktorantlar uçun",appeal:"Elektron murojaatlar",appealText:"Savol bering yoki taklif kiriting. Javobni kod orqali kuzating.",send:"Murojaat yuboriş",documents:"Hujjatlar",documentText:"Nizomlar, reglamentlar va şakllar",monitoring:"Monitoring",monitoringText:"Ta’lim sifati nazorati yönalişlari",self:"Özini özi baholaş",selfText:"Içki baholaş va rivojlaniş",hemis:"HEMIS testi",hemisText:"Öqituvçilar bilimini tekşiriş"},
- en:{label:"Choose an action",title:"Quality system services",accreditation:"Accreditation",accreditationText:"Indicators, owners and evidence. Institutional and programme accreditation.",complex:"Institutional",special:"Programme",survey:"Surveys",surveyText:"Your experience helps improve education.",student:"Students",employer:"Employers",graduate:"Graduates",doctoral:"Doctoral students",appeal:"Online appeals",appealText:"Ask a question or suggest an improvement. Track the response with your code.",send:"Submit an appeal",documents:"Documents",documentText:"Policies, procedures and templates",monitoring:"Monitoring",monitoringText:"Education quality control areas",self:"Self-assessment",selfText:"Internal review and development",hemis:"HEMIS test",hemisText:"Teacher knowledge assessment"}
-};
-function MotionIcon({ kind }: { kind: "survey" | "appeal" | "monitor" }) {
- return <span className="home-service-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-  {kind === "survey" && <><path d="M9 4H6a1 1 0 0 0-1 1v15h14V5a1 1 0 0 0-1-1h-3M9 3h6v4H9z"/><path className="home-icon-stroke" pathLength="1" d="m8 12 2 2 5-5m-7 8h8"/></>}
-  {kind === "appeal" && <><path d="M4 5h16v12H9l-5 4V5Z"/><path className="home-icon-stroke" pathLength="1" d="M8 9h8"/><path className="home-icon-stroke home-icon-second" pathLength="1" d="M8 13h6"/></>}
-  {kind === "monitor" && <><path d="M4 4v16h16"/><path className="home-icon-bar" d="M8 16v-4"/><path className="home-icon-bar home-icon-second" d="M12 16V8"/><path className="home-icon-bar home-icon-third" d="M16 16V5"/></>}
- </svg></span>;
-}
+ ru:{
+  heading:"Сервисы по ролям", all:"Все опросы", results:"Результаты опросов",
+  roles:["Студенту","Преподавателю","Работодателю","Эксперту"],
+  actions:[["Пройти студенческий опрос","Подать обращение","Проверить статус обращения"],["Пройти тест HEMIS","Открыть документы","Посмотреть результаты опросов"],["Пройти опрос работодателей","Открыть аналитику","Связаться с отделом"],["Войти в кабинет аккредитации","Комплексная аккредитация","Специализированная аккредитация"]],
+ },
+ uz:{
+  heading:"Rollar böyiça xizmatlar", all:"Barça sörovlar", results:"Sörov natijalari",
+  roles:["Talabaga","Öqituvçiga","Iş beruvçiga","Ekspertga"],
+  actions:[["Talabalar sörovida qatnaşiş","Murojaat yuboriş","Murojaat holatini tekşiriş"],["HEMIS testidan ötiş","Hujjatlarni oçiş","Sörov natijalarini köriş"],["Iş beruvçilar sörovida qatnaşiş","Tahlilni oçiş","Bölim bilan boğlaniş"],["Akkreditatsiya kabinetiga kiriş","Kompleks akkreditatsiya","Maxsus akkreditatsiya"]],
+ },
+ en:{
+  heading:"Services by role", all:"All surveys", results:"Survey results",
+  roles:["Student","Teacher","Employer","Expert"],
+  actions:[["Take a student survey","Submit an appeal","Track an appeal"],["Take the HEMIS test","Open documents","View survey results"],["Take the employer survey","Open institute analytics","Contact the department"],["Sign in to accreditation","Institutional accreditation","Programme accreditation"]],
+ },
+} as const;
+
+const routes=[
+ ["/surveys?audience=students","/appeals","/appeals#track"],
+ ["/teacher/login","/documents","/monitoring"],
+ ["/surveys/employers","/analytics","/contacts"],
+ ["/accreditation/login","/accreditation?type=complex","/accreditation?type=special"],
+] as const;
 
 export function ServiceHub({locale}:{locale:string}){
- const l=locale==='uz'||locale==='en'?locale:'ru',t=copy[l];
- return <section id="services" className="container-main service-hub" aria-labelledby="service-title"><p className="section-eyebrow">{t.label}</p><h2 id="service-title" className="mt-2 text-3xl font-bold tracking-tight">{t.title}</h2>
- <div className="bento-grid mt-6">
-  <article className="bento-card bento-surveys" data-home-motion="survey"><MotionIcon kind="survey"/><h3 className="mt-4 text-2xl font-semibold">{t.survey}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{t.surveyText}</p><div className="mt-5 grid grid-cols-2 gap-2">{[[t.student,"students"],[t.employer,"employers"],[t.graduate,"graduates"],[t.doctoral,"doctoral"]].map(([label,path])=><Link key={path} href={`/surveys?audience=${path}`} className="survey-service-link">{label}</Link>)}</div><Link href="/surveys" className="mt-4 w-fit text-sm font-bold text-blue-700">{catalogCopy[l].catalog}</Link></article>
-  <article className="bento-card bento-accreditation"><ShieldCheck size={30}/><h3 className="mt-5 text-2xl font-semibold">{t.accreditation}</h3><p className="mt-3 max-w-sm text-sm leading-6 text-blue-100">{t.accreditationText}</p><div className="mt-auto flex flex-wrap gap-2 pt-8"><Link href="/accreditation?type=complex" className="bento-chip">{t.complex}<ArrowUpRight size={16}/></Link><Link href="/accreditation?type=special" className="bento-chip">{t.special}<ArrowUpRight size={16}/></Link></div></article>
-  <article className="bento-card bento-appeals" data-home-motion="appeal"><MotionIcon kind="appeal"/><h3 className="mt-4 text-2xl font-semibold">{t.appeal}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{t.appealText}</p><Link href="/appeals" className="appeal-service-link mt-auto">{t.send}<ArrowUpRight size={16}/></Link></article>
-  {([[t.documents,t.documentText,"/documents",FileText],[t.monitoring,t.monitoringText,"/monitoring",null],[t.self,t.selfText,"/self-assessment",ClipboardCheck],[t.hemis,t.hemisText,"/teacher/login",GraduationCap]] as const).map(([title,description,href,Icon])=><Link key={String(href)} href={String(href)} className="bento-card bento-small" data-home-motion={Icon ? undefined : "monitor"}>{Icon ? <Icon size={23} className="text-blue-700"/> : <MotionIcon kind="monitor"/>}<h3 className="mt-4 font-semibold">{String(title)}</h3><p className="mt-2 text-sm leading-5 text-slate-500">{String(description)}</p><ArrowUpRight size={16} className="absolute right-5 top-5 text-slate-400"/></Link>)}
- </div></section>;
+ const t=copy[locale==="uz"||locale==="en"?locale:"ru"];
+ const [role,setRole]=useState(0);
+ const id=useId();
+ return <section id="services" className="role-hub" aria-labelledby={id} data-spotlight>
+   <h2 id={id} className="role-hub-heading">{t.heading}</h2>
+   <div className="role-select" role="group" aria-labelledby={id}>
+    {t.roles.map((label,index)=>{const Icon=icons[index];return <button key={label} type="button" aria-pressed={index===role} onClick={()=>setRole(index)}><Icon size={17} aria-hidden="true"/>{label}</button>})}
+   </div>
+   <div key={role} className="role-actions step-enter" aria-live="polite">
+    {t.actions[role].map((label,index)=><Link key={label} href={routes[role][index]}><span>{label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}
+   </div>
+   <div className="role-footer"><Link href="/surveys">{t.all}</Link><Link href="/monitoring">{t.results}</Link></div>
+ </section>;
 }

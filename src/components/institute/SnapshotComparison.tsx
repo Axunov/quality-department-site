@@ -1,3 +1,4 @@
+import { AreaTrend } from "./AreaTrend";
 import type { Language } from "@/lib/institute/copy";
 import type { Snapshot } from "@/lib/institute/types";
 import { compareSnapshots } from "@/lib/institute/snapshotComparison";
@@ -12,10 +13,14 @@ export function SnapshotComparison({lang,current,previous}:{lang:Language;curren
   const t=copy[lang],comparison=compareSnapshots(current,previous);
   const num=new Intl.NumberFormat(lang);
   const date=(value:string)=>new Intl.DateTimeFormat(lang,{dateStyle:"medium",timeZone:"UTC"}).format(new Date(value+"T00:00:00Z"));
+  const percent=new Intl.NumberFormat(lang,{style:"percent",maximumFractionDigits:1,signDisplay:"exceptZero"});
   return <details className="campus-card">
     <summary className="cursor-pointer rounded font-bold focus-visible:outline-2 focus-visible:outline-offset-4">{t.title}</summary>
     <p className="mt-3 text-sm leading-6">{t.method}</p>
     {!comparison?<p className="mt-2 text-sm">{t.empty}</p>:
+      <>
+      <p className="snapshot-delta" data-delta={Math.sign(comparison.change)}>{t.change}: {percent.format(comparison.change/comparison.previousTotal)}</p>
+      <AreaTrend label={t.title} locale={lang} points={[{label:date(comparison.previousDate),value:comparison.previousTotal},{label:date(comparison.currentDate),value:comparison.currentTotal}]}/>
       <table className="mt-4 w-full table-fixed text-left text-sm">
         <thead><tr className="border-b"><th scope="col" className="py-2">{t.period}</th><th scope="col" className="py-2 text-right">{t.total}</th></tr></thead>
         <tbody>
@@ -23,6 +28,6 @@ export function SnapshotComparison({lang,current,previous}:{lang:Language;curren
           <tr className="border-b"><th scope="row" className="py-2 font-normal">{date(comparison.currentDate)}</th><td className="text-right">{num.format(comparison.currentTotal)}</td></tr>
           <tr><th scope="row" className="py-2">{t.change}</th><td className="text-right font-bold">{comparison.change>0?"+":""}{num.format(comparison.change)}</td></tr>
         </tbody>
-      </table>}
+      </table></>}
   </details>;
 }

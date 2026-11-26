@@ -16,3 +16,5 @@ Quotation: Address to the Oliy Majlis and the people of Uzbekistan, 20 December 
 - https://president.uz/ru/lists/view/5774
 - https://president.uz/oz/lists/view/5774
 - https://president.uz/en/lists/view/5774
+
+WebP variants are resized copies of the accompanying raster assets for the portal cards. The agency logo remains SVG.

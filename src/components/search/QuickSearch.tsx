@@ -54,7 +54,7 @@ export default function QuickSearch({ locale }: { locale: string }) {
     <button type="button" className="header-control" aria-label={t.title} aria-haspopup="dialog" aria-keyshortcuts="Control+k Meta+k" onClick={() => { dialog.current?.showModal(); setOpen(true); input.current?.focus(); }}>
       <Search size={19} aria-hidden="true" />
     </button>
-    <dialog ref={dialog} className="quick-search" aria-labelledby="quick-search-title" onClose={() => setOpen(false)}>
+    <dialog ref={dialog} className="quick-search editorial-glass" aria-labelledby="quick-search-title" onClose={() => setOpen(false)}>
       <div className="flex items-center justify-between gap-4 p-4 pb-0 sm:px-6">
         <h2 id="quick-search-title" className="text-lg font-bold">{t.title}</h2>
         <button type="button" onClick={close} className="header-control" aria-label={t.close}><X aria-hidden="true" size={19} /></button>
@@ -68,11 +68,11 @@ export default function QuickSearch({ locale }: { locale: string }) {
         </p>
         {searchCategories.map(category => {
           const group = results.filter(x => x.category === category);
-          return group.length > 0 && <section className="mt-3" key={category}>
+          return group.length > 0 && <section className="quick-search-results mt-3" key={category}>
             <h3 className="px-2 text-xs font-bold uppercase tracking-wide text-slate-600">{t[category]}</h3>
             {group.map(x => {
               const detail = <><strong className="block">{x.title}</strong>{x.text && <span className="line-clamp-1 text-sm text-slate-600">{x.text}</span>}</>;
-              const classes = "block rounded-lg p-2 hover:bg-blue-50 focus-visible:bg-blue-50";
+              const classes = "quick-search-row block rounded-lg p-2 hover:bg-blue-50 focus-visible:bg-blue-50";
               return x.external
                 ? <a key={x.id} href={x.href} className={classes} onClick={close} target="_blank" rel="noopener noreferrer">{detail}</a>
                 : <Link key={x.id} href={x.href} className={classes} onClick={close}>{detail}</Link>;
