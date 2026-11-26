@@ -83,12 +83,12 @@ export function Header() {
   const sections = [[portal.services,services],[portal.quality,portalItems],[portal.resources,resources]] as const;
 
   return (
-    <header ref={headerRef} className="site-header sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl">
+    <header ref={headerRef} className="site-header qd-glass-bar sticky top-0 z-50 border-b">
       <div className="container-main">
         <div className="flex items-center justify-between gap-3 py-3 lg:gap-5 masthead-row">
           <Link href="/" locale={locale} className="flex min-w-0 items-center gap-3 lg:gap-4">
             <Image
-              src="/images/logo.jpg"
+              src="/images/logo.webp"
               alt={tr("Логотип института")}
               width={48}
               height={48}

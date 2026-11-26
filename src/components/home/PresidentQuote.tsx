@@ -14,14 +14,14 @@ export default function PresidentQuote({ locale, compact=false }: { locale: stri
           <blockquote cite={t.href}><p>{t.quote}</p></blockquote>
           <figcaption>
             <div className="president-author">
-              {!compact&&<Image src="/images/portals/emblem.png" alt="" width={56} height={56}/>}
+              {!compact&&<Image src="/images/portals/emblem.webp" alt="" width={56} height={56}/>}
               <div><p className="president-name">{t.name}</p><p className="president-role">{t.role}</p></div>
             </div>
             <a className="president-source" href={t.href} target="_blank" rel="noopener noreferrer"><span>{t.source}<time dateTime="2022-12-20">{t.date}</time></span><ArrowUpRight size={17} aria-hidden="true"/></a>
           </figcaption>
         </div>
         <div className="president-portrait">
-          <Image src="/images/portals/president.jpg" alt={`${t.name} — ${t.role}`} fill sizes={compact?"128px":"(max-width: 767px) 100vw, 45vw"} className="president-photo"/>
+          <Image src="/images/portals/president.webp" alt={`${t.name} — ${t.role}`} fill sizes={compact?"128px":"(max-width: 767px) 100vw, 45vw"} className="president-photo"/>
         </div>
       </figure>
     </section>

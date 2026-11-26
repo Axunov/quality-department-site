@@ -1,3 +1,4 @@
+import { AnimatedCounter } from "@/components/motion/UnifiedMotion";
 import { useLocale } from "next-intl";
 import { surveyText } from "@/lib/surveyI18n";
 import { useTranslations } from "next-intl";
@@ -32,7 +33,7 @@ export function Statistics() {
 
               <div>
                 <h2 className={`text-3xl font-extrabold ${item.color}`}>
-                  {item.number}
+                  <AnimatedCounter value={Number.parseInt(item.number,10)} suffix="+" locale={currentLocale}/>
                 </h2>
                 <p className="mt-1 text-sm font-semibold text-slate-800">
                   {item.title}

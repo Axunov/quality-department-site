@@ -54,7 +54,7 @@ export default function QuickSearch({ locale }: { locale: string }) {
     <button type="button" className="header-control" aria-label={t.title} aria-haspopup="dialog" aria-keyshortcuts="Control+k Meta+k" onClick={() => { dialog.current?.showModal(); setOpen(true); input.current?.focus(); }}>
       <Search size={19} aria-hidden="true" />
     </button>
-    <dialog ref={dialog} className="quick-search editorial-glass" aria-labelledby="quick-search-title" onClose={() => setOpen(false)}>
+    <dialog ref={dialog} className="quick-search qd-glass-bar" aria-labelledby="quick-search-title" onClose={() => setOpen(false)}>
       <div className="flex items-center justify-between gap-4 p-4 pb-0 sm:px-6">
         <h2 id="quick-search-title" className="text-lg font-bold">{t.title}</h2>
         <button type="button" onClick={close} className="header-control" aria-label={t.close}><X aria-hidden="true" size={19} /></button>

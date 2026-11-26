@@ -22,9 +22,7 @@ table,.editorial-number,.area-chart,.institute-chart,.journey-progress,.snapshot
 table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
 .editorial-number,.snapshot-delta,.indicator-row-status { font-family:var(--display-font); }
 .editorial-surface { color:var(--editorial-ink); background:var(--surface-elevated); border:1px solid var(--border-subtle); border-radius:1.1rem; box-shadow:var(--elevation); }
-.editorial-glass { color:var(--editorial-ink); background:var(--glass); border-color:var(--border-subtle); box-shadow:inset 0 1px 0 rgb(255 255 255 / .15),var(--elevation); backdrop-filter:blur(16px); }
 
-.site-header { background:var(--glass); }
 .site-header .masthead-row { transition:padding .22s var(--ease-release); }
 @media (min-width:1024px) {
  .site-header[data-condensed] .masthead-row { padding-block:.35rem; }
@@ -61,7 +59,6 @@ table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
 .home-modern .hero-campus-content { min-height:470px; grid-template-columns:minmax(0,1fr) minmax(18rem,.91fr); gap:clamp(1rem,5vw,4.75rem); padding-block:2.6rem 3rem; }
 .home-modern .hero-campus-caption { display:none; }
 .home-modern .hero-title { font-size:clamp(2.35rem,4.5vw,4.1rem); text-wrap:balance; }
-.home-modern .hero-campus-shade::after { content:""; position:absolute; inset:0; background:radial-gradient(ellipse at 75% 60%,rgb(24 149 151 / .31),transparent 59%),radial-gradient(ellipse at 30% 0%,rgb(38 98 214 / .27),transparent 60%); pointer-events:none; }
 .role-hub { position:relative; isolation:isolate; min-width:0; padding:clamp(.8rem,2.2vw,1.4rem); align-self:center; border:1px solid rgb(186 211 232 / .42); border-radius:1.15rem; color:#edf7ff; background:#10283eea; box-shadow:0 16px 42px #0213216b; scroll-margin-top:9rem; }
 .role-hub-heading { margin-bottom:.7rem; font-size:1.25rem; font-weight:750; }
 .role-select { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.35rem; }
@@ -144,13 +141,8 @@ table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
 .contact-map { width:100%; height:clamp(15rem,40vw,26rem); border:1px solid var(--border-subtle); border-radius:.85rem; margin-top:.8rem; }
 #track { scroll-margin-top:9rem; }
 .portal-logo { background:#f3f6fb; border:1px solid #dce5ee; }
-.portal-logo-image { filter:grayscale(1); }
-.portal-card:is(:hover,:focus-visible) .portal-logo-image { filter:none; }
-.accessibility-mode .portal-logo-image { filter:none; }
 
-.quick-search.editorial-glass,.indicator-drawer.editorial-glass,.workspace-sidebar { background:var(--glass); color:var(--editorial-ink); backdrop-filter:blur(16px); }
 .workspace-sidebar { box-shadow:inset 0 1px 0 rgb(255 255 255 / .15); border-inline-end:1px solid var(--border-subtle); }
-.quick-search::backdrop,.indicator-drawer::backdrop { backdrop-filter:blur(3px); background:rgb(9 16 31 / .55); }
 .campus-card { box-shadow:var(--elevation); }
 .editorial-skeleton-grid { width:100%; display:grid; gap:.75rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); }
 .skeleton-card { display:grid; gap:.75rem; padding:1rem; height:10rem; align-content:center; }
@@ -186,14 +178,12 @@ table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
  .role-select button { display:flex; justify-content:center; align-items:center; min-height:44px; font-size:.78rem; }
 }
 @media(prefers-reduced-motion:no-preference) {
- .home-modern .hero-campus-photo { translate:0 var(--campus-drift,0px); scale:1.055; animation:editorial-campus .72s var(--ease-release) backwards; }
  .home-modern .hero-copy > *,.home-modern .role-hub { animation:editorial-reveal .55s var(--ease-release) backwards; }
  .home-modern .hero-title { animation-delay:.07s; }
  .home-modern .hero-description { animation-delay:.14s; }
  .home-modern .hero-privacy { animation-delay:.21s; }
  .home-modern .role-hub { animation-delay:.28s; }
  .home-modern .hero-copy:focus-within > *,.home-modern .role-hub:focus-within { animation:none; }
- .reveal-seen { animation:editorial-reveal .48s var(--ease-release) both; }
  .step-enter,.quick-search-row,.quick-search-results { animation:editorial-step .25s var(--ease-release) both; }
  .quick-search-row:nth-of-type(2) { animation-delay:30ms; }
  .quick-search-row:nth-of-type(3) { animation-delay:60ms; }
@@ -205,20 +195,12 @@ table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
  .editorial-lift:hover img { transform:scale(1.03); }
  .editorial-lift:hover svg { transform:translateX(4px); }
  .journey-meter span { transition:width .34s var(--ease-release); }
- .skeleton-card i { background:linear-gradient(100deg,var(--border-subtle) 20%,var(--surface-elevated) 50%,var(--border-subtle) 80%); background-size:220% 100%; animation:editorial-skeleton 1.7s ease-in-out infinite; }
-}
-@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
- [data-spotlight]:hover::before { content:""; position:absolute; z-index:-1; inset:0; border-radius:inherit; background:radial-gradient(240px circle at var(--spot-x,50%) var(--spot-y,50%),rgb(116 231 217 / .17),transparent 76%); pointer-events:none; }
 }
 @keyframes editorial-reveal { from{opacity:.5;translate:0 16px} to{opacity:1;translate:0 0} }
-@keyframes editorial-campus { from{scale:1.1;opacity:.7} to{scale:1.055;opacity:1} }
 @keyframes editorial-step { from{opacity:.68;translate:9px 0} to{opacity:1;translate:0 0} }
 @keyframes editorial-dialog { from{opacity:0;scale:.96} to{opacity:1;scale:1} }
 @keyframes editorial-drawer { from{translate:100% 0} to{translate:0 0} }
-@keyframes editorial-skeleton { to{background-position:-220% 0} }
 .accessibility-mode .hero-campus-photo,.accessibility-mode .editorial-lift { scale:none; translate:none; transform:none; }
-.accessibility-mode [data-spotlight]::before { display:none; }
-.accessibility-mode .site-header,.accessibility-mode .editorial-glass,.accessibility-mode .workspace-sidebar { backdrop-filter:none; }
 html.accessibility-mode { scroll-behavior:auto; }
 .journey-meter { height:.38rem; margin-top:.85rem; border-radius:2rem; overflow:hidden; background:var(--border-subtle); }
 .journey-meter span { display:block; height:100%; border-radius:inherit; background:var(--accent-emerald); }

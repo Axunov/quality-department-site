@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatedNumber, SkeletonGrid } from "@/components/editorial/MotionPrimitives";
+import { AnimatedCounter, SkeletonGrid } from "@/components/motion/UnifiedMotion";
 import { AreaTrend } from "@/components/institute/AreaTrend";
 import { Link } from "@/i18n/routing";
 import { catalogCopy, reports } from "@/data/surveyCatalog";
@@ -88,8 +88,8 @@ export default function PublicMonitoringDashboard({ locale, initialReport }: { l
       <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">{report.title}</h2>
       <p className="mt-2 text-sm text-slate-600">{counts.all}</p>
       <dl className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="campus-card"><dt className="text-sm font-bold">{counts.forms}</dt><dd className="mt-1 text-3xl font-black"><AnimatedNumber value={report.total} locale={lang}/></dd></div>
-        {typeof report.teacherEvaluations === "number" && <div className="campus-card"><dt className="text-sm font-bold">{counts.evaluations}</dt><dd className="mt-1 text-3xl font-black"><AnimatedNumber value={report.teacherEvaluations} locale={lang}/></dd></div>}
+        <div className="campus-card qd-interactive-surface"><dt className="text-sm font-bold">{counts.forms}</dt><dd className="mt-1 text-3xl font-black"><AnimatedCounter value={report.total} locale={lang}/></dd></div>
+        {typeof report.teacherEvaluations === "number" && <div className="campus-card qd-interactive-surface"><dt className="text-sm font-bold">{counts.evaluations}</dt><dd className="mt-1 text-3xl font-black"><AnimatedCounter value={report.teacherEvaluations} locale={lang}/></dd></div>}
       </dl>
       {report.total > 0 ? <>
         <p className="mt-5 text-sm leading-6 text-slate-600">{counts.scope}</p>

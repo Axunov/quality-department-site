@@ -6,7 +6,9 @@ import { routing } from "@/i18n/routing";
 import SiteChrome from "@/components/layout/SiteChrome";
 import type { Metadata } from "next";
 import "../globals.css";
+import { ScrollProgressBar } from "@/components/motion/UnifiedMotion";
 import "../editorial.css";
+import "../final-polish.css";
 
 type Props = {
   children: React.ReactNode;
@@ -95,6 +97,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body>
+        <ScrollProgressBar/>
         <a href="#main-content" className="skip-link">{skipLabel}</a>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <SiteChrome><div id="main-content" tabIndex={-1}>{children}</div></SiteChrome>
