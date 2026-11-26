@@ -3,7 +3,7 @@
 import { useId, useState, type KeyboardEvent, type ReactNode } from "react";
 import type { Language } from "@/lib/institute/copy";
 
-export const CHART_COLORS = ["#3476df", "#087f72", "#8053bc", "#64768d"];
+export const CHART_COLORS = ["#326de0", "#087f72", "#a46e21", "#64768d"];
 export type Series = { label: string; color: string };
 export type Slice = Series & { value: number };
 export type ChartRow = { label: string; values: number[] };
@@ -28,6 +28,7 @@ function useSelection(fallback: number) {
   };
   return {
     active: hover ?? focus ?? pinned ?? fallback,
+    engaged:hover!==null||focus!==null||pinned!==null,
     hover: (i: number) => ({ onPointerEnter: () => setHover(i), onPointerLeave: () => setHover(null), onClick: () => toggle(i) }),
     control: (i: number) => ({
       onPointerEnter: () => setHover(i), onPointerLeave: () => setHover(null),
@@ -55,7 +56,7 @@ export function DonutChart({ title, slices, lang }: { title: string; slices: Sli
     <ChartHeader title={title} lang={lang} />
     <div className="institute-donut-layout">
       <div className="institute-donut">
-        <svg viewBox="0 0 180 180" aria-hidden="true">
+        <svg viewBox="0 0 180 180" aria-hidden="true" data-engaged={selection.engaged}>
           <circle cx="90" cy="90" r="68" stroke="var(--campus-line)" strokeWidth="15" fill="none" />
           {spin.map((slice, i) => slice.length > 0 && <circle key={slice.label} cx="90" cy="90" r="68" pathLength="100"
             fill="none" stroke={slice.color} strokeWidth="15" strokeDasharray={`${slice.length === 100 ? 100 : Math.max(.25,slice.length - .7)} 100`} strokeDashoffset={-slice.start}
@@ -69,7 +70,7 @@ export function DonutChart({ title, slices, lang }: { title: string; slices: Sli
         </button>)}
       </div>
     </div>
-    <div className="institute-chart-readout" id={id}>
+    <div className="editorial-glass institute-chart-readout" id={id}>
       <span>{selected?.label ?? copy[lang].empty}</span>
       <strong>{selected ? `${number(selected.value,lang)} / ${number(total,lang)} · ${percent(selected.value,total,lang)}` : "—"}</strong>
     </div>
@@ -101,7 +102,7 @@ export function StackChart({ title, rows, series, lang, percentage = false, head
         </button>;
       })}
     </div>
-    <div className="institute-chart-readout institute-chart-readout-stack" id={id} aria-label={copy[lang].details}>
+    <div className="editorial-glass institute-chart-readout institute-chart-readout-stack" id={id} aria-label={copy[lang].details}>
       {selected ? <><span><strong>{selected.label}</strong> · {copy[lang].total}: {number(sum(selected.values),lang)}</span>
         <ul>{series.map((s,i)=><li key={s.label}><i style={{background:s.color}} aria-hidden="true"/>{s.label}: <strong>{number(selected.values[i],lang)}</strong></li>)}</ul></> : copy[lang].empty}
     </div>

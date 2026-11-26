@@ -113,10 +113,23 @@ test('service cards, accreditation tabs and indicator dialogs stay accessible an
     language=locale;
     const {ServiceHub}=load('src/components/home/ServiceHub.tsx');
     const services=renderToStaticMarkup(React.createElement(ServiceHub,{locale}));
-    for(const audience of ['students','employers','graduates','doctoral']) assert.ok(services.includes(`/surveys?audience=${audience}`));
+    const roleRoutes=[
+      ['/surveys?audience=students','/appeals#track'],
+      ['/teacher/login','/documents'],
+      ['/surveys/employers','/analytics'],
+      ['/accreditation/login','/accreditation?type=special'],
+    ];
+    for(const [role,paths] of roleRoutes.entries()){
+      const original=React.useState;
+      let markup;
+      React.useState=initial=>original(initial===0?role:initial);
+      try{markup=renderToStaticMarkup(React.createElement(ServiceHub,{locale}));}finally{React.useState=original;}
+      for(const href of paths) assert.ok(markup.includes(`href="${href}"`), href);
+      assert.equal((markup.match(/aria-pressed="true"/g)||[]).length,1);
+      if(locale!=='ru')assertLocalized(markup);
+    }
     const {fixedSurveys}=load('src/data/surveyCatalog.ts');
     for(const kind of ['teacher','employers','graduates','doctoral','learning-quality']) assert.ok(fixedSurveys(locale).some(survey => survey.href === `/surveys/${kind}`));
-    assert.ok(services.includes('/appeals')); assert.ok(services.includes('/accreditation?type=special'));
     for(const type of ['complex','special']) {
       const tabs=render('src/components/accreditation/AccreditationOverview.tsx',{locale,initialType:type});
       assert.match(tabs,new RegExp(`id="accreditation-tab-${type}"[^>]+aria-selected="true"`));

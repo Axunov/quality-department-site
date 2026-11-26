@@ -1,3 +1,4 @@
+import { NewsCategoryFilter } from "@/components/news/NewsCategoryFilter";
 import sanitizeHtml from "sanitize-html";
 import { uzbekAlphabet } from "@/lib/uzbekAlphabet";
 import { NewsViews } from "@/components/news/NewsViews";
@@ -264,8 +265,7 @@ export default async function NewsPage({
 
       {/* Новости */}
       <section className="container-main pb-24 pt-8">
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {news.map((item: any) => {
+        <NewsCategoryFilter locale={currentLocale} cards={news.map(item => {
             const title = getLocalizedText(
               currentLocale,
               item.title_ru,
@@ -277,10 +277,11 @@ export default async function NewsPage({
             const excerpt = sanitizeHtml(raw || "", {allowedTags:[],allowedAttributes:{}});
             const text = currentLocale === "uz" ? uzbekAlphabet(excerpt) : excerpt;
 
-            return (
+            const category=item.category||t.defaultCategory;
+            return {id:item.id,category,label:surveyText(locale,category),node:(
               <article
                 key={item.id}
-                className="group flex h-full flex-col overflow-hidden rounded-[32px] border border-slate-200/80 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_26px_70px_rgba(15,23,42,0.13)]"
+                className="editorial-lift group flex h-full flex-col overflow-hidden rounded-[32px] border border-slate-200/80 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_26px_70px_rgba(15,23,42,0.13)]"
               >
                 {/* Изображение */}
                 <div className="relative h-[250px] overflow-hidden bg-gradient-to-br from-blue-700 to-cyan-600">
@@ -341,8 +342,8 @@ export default async function NewsPage({
                   </div>
                 </div>
               </article>
-            );
-          })}
+            )};
+          })}/>
 
           {news.length === 0 && (
             <div className="col-span-full rounded-[32px] border border-slate-200 bg-white p-14 text-center shadow-sm">
@@ -364,7 +365,6 @@ export default async function NewsPage({
               <p className="mt-5 text-slate-500">{t.empty}</p>
             </div>
           )}
-        </div>
       </section>
     </main>
   );

@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [{ source:"/images/institute.jpg", destination:"/images/institute.webp", permanent:true }];
+  },
   async headers() {
     const contentSecurityPolicy = [
       "default-src 'self'",

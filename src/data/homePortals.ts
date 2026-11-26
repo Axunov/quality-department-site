@@ -41,11 +41,11 @@ export const portalCopy = {
 };
 
 export const officialPortals = [
-  { id: "lex", url: "https://lex.uz/", domain: "lex.uz", image: "/images/portals/lex.jpg", title: { ru: "Национальная база законодательства", uz: "Qonunçilik ma’lumotlari milliy bazasi", en: "National legislation database" } },
-  { id: "president", url: "https://president.uz/", domain: "president.uz", image: "/images/portals/emblem.png", title: { ru: "Президент Республики Узбекистан", uz: "Özbekiston Respublikasi Prezidenti", en: "President of the Republic of Uzbekistan" } },
-  { id: "government", url: "https://gov.uz/", domain: "gov.uz", image: "/images/portals/government.jpg", title: { ru: "Правительственный портал", uz: "Hukumat portali", en: "Government portal" } },
-  { id: "ministry", url: "https://gov.uz/oz/edu", domain: "gov.uz/edu", image: "/images/portals/ministry.jpg", title: { ru: "Министерство высшего образования, науки и инноваций", uz: "Oliy ta’lim, fan va innovatsiyalar vazirligi", en: "Ministry of Higher Education, Science and Innovation" } },
+  { id: "lex", url: "https://lex.uz/", domain: "lex.uz", image: "/images/portals/lex.webp", title: { ru: "Национальная база законодательства", uz: "Qonunçilik ma’lumotlari milliy bazasi", en: "National legislation database" } },
+  { id: "president", url: "https://president.uz/", domain: "president.uz", image: "/images/portals/emblem.webp", title: { ru: "Президент Республики Узбекистан", uz: "Özbekiston Respublikasi Prezidenti", en: "President of the Republic of Uzbekistan" } },
+  { id: "government", url: "https://gov.uz/", domain: "gov.uz", image: "/images/portals/government.webp", title: { ru: "Правительственный портал", uz: "Hukumat portali", en: "Government portal" } },
+  { id: "ministry", url: "https://gov.uz/oz/edu", domain: "gov.uz/edu", image: "/images/portals/ministry.webp", title: { ru: "Министерство высшего образования, науки и инноваций", uz: "Oliy ta’lim, fan va innovatsiyalar vazirligi", en: "Ministry of Higher Education, Science and Innovation" } },
   { id: "agency", url: "https://nqaae.uz/uz", domain: "nqaae.uz", image: "/images/portals/agency.svg", title: { ru: "Национальное агентство обеспечения качества образования", uz: "Ta’lim sifatini ta’minlaş milliy agentligi", en: "National Agency for Quality Assurance in Education" } },
-  { id: "data", url: "https://data.egov.uz/", domain: "data.egov.uz", image: "/images/portals/open-data.jpg", title: { ru: "Портал открытых данных", uz: "Oçiq ma’lumotlar portali", en: "Open data portal" } },
-  { id: "services", url: "https://my.gov.uz/", domain: "my.gov.uz", image: "/images/portals/mygov.jpg", title: { ru: "Единый портал государственных услуг", uz: "Yagona interaktiv davlat xizmatlari portali", en: "Unified portal of public services" } },
+  { id: "data", url: "https://data.egov.uz/", domain: "data.egov.uz", image: "/images/portals/open-data.webp", title: { ru: "Портал открытых данных", uz: "Oçiq ma’lumotlar portali", en: "Open data portal" } },
+  { id: "services", url: "https://my.gov.uz/", domain: "my.gov.uz", image: "/images/portals/mygov.webp", title: { ru: "Единый портал государственных услуг", uz: "Yagona interaktiv davlat xizmatlari portali", en: "Unified portal of public services" } },
 ] as const;

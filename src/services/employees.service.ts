@@ -18,6 +18,10 @@ export type EmployeeItem = {
   email?: string | null;
   telegram?: string | null;
   photo_url?: string | null;
+  room?: string | null;
+  reception_ru?: string | null;
+  reception_uz?: string | null;
+  reception_en?: string | null;
   office?: string | null;
   reception_hours_ru?: string | null;
   reception_hours_uz?: string | null;

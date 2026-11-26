@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import SiteChrome from "@/components/layout/SiteChrome";
 import type { Metadata } from "next";
 import "../globals.css";
+import "../editorial.css";
 
 type Props = {
   children: React.ReactNode;
@@ -52,7 +53,7 @@ export async function generateMetadata({
       title: meta.title,
       description: meta.description,
       locale: current,
-      images: ["/images/institute.jpg"],
+      images: ["/images/institute.webp"],
     },
     twitter: {
       card: "summary_large_image",

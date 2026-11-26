@@ -29,7 +29,8 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
+    <div className="language-switcher" data-active={Math.max(0,languages.findIndex(x=>x.code===locale))}>
+      <span className="language-pill" aria-hidden="true"/>
       {languages.map((language) => {
         const isActive = locale === language.code;
 
@@ -41,11 +42,7 @@ export default function LanguageSwitcher() {
             aria-pressed={isActive}
             aria-label={language.label}
             onClick={() => changeLanguage(language.code)}
-            className={`rounded-lg px-3 py-2 text-xs font-bold transition ${
-              isActive
-                ? "bg-blue-700 text-white"
-                : "text-slate-600 hover:bg-slate-100"
-            } disabled:opacity-60`}
+            className="language-option"
           >
             {language.label}
           </button>

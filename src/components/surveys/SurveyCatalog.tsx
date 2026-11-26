@@ -1,5 +1,6 @@
 "use client";
 
+import { FilterRail } from "@/components/editorial/FilterRail";
 import { useEffect, useState } from "react";
 import { ClipboardList, LockKeyhole } from "lucide-react";
 import { Link } from "@/i18n/routing";
@@ -44,9 +45,7 @@ export default function SurveyCatalog({ locale, initialAudience }: { locale: str
     </header>
     <section className="mt-7" aria-labelledby="survey-audience">
       <h2 id="survey-audience" className="text-lg font-bold">{t.filter}</h2>
-      <div className="mt-3 flex flex-wrap gap-2" role="group" aria-labelledby="survey-audience">
-        {(["all", ...audiences] as const).map(a => <button key={a} type="button" className="campus-filter" aria-pressed={audience === a} onClick={() => setAudience(a)}>{t[a]}</button>)}
-      </div>
+      <div className="mt-3"><FilterRail items={(["all",...audiences] as const).map(id=>({id,label:t[id]}))} label={t.filter} value={audience} onChange={setAudience}/></div>
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {main.map(s => {
           const signIn = s.key === "hemis";
