@@ -182,7 +182,8 @@ table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
 }
 @media(max-width:440px) {
  .editorial-pairs { grid-template-columns:minmax(0,1fr); }
- .role-select button { font-size:.72rem; }
+ .role-select { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .role-select button { display:flex; justify-content:center; align-items:center; min-height:44px; font-size:.78rem; }
 }
 @media(prefers-reduced-motion:no-preference) {
  .home-modern .hero-campus-photo { translate:0 var(--campus-drift,0px); scale:1.055; animation:editorial-campus .72s var(--ease-release) backwards; }
@@ -203,7 +204,7 @@ table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
  .editorial-lift img,.editorial-lift svg,.portal-logo-image { transition:transform .4s var(--ease-release),filter .4s; }
  .editorial-lift:hover img { transform:scale(1.03); }
  .editorial-lift:hover svg { transform:translateX(4px); }
- .journey-progress::-webkit-progress-value { transition:width .3s var(--ease-release); }
+ .journey-meter span { transition:width .34s var(--ease-release); }
  .skeleton-card i { background:linear-gradient(100deg,var(--border-subtle) 20%,var(--surface-elevated) 50%,var(--border-subtle) 80%); background-size:220% 100%; animation:editorial-skeleton 1.7s ease-in-out infinite; }
 }
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
@@ -218,6 +219,9 @@ table,input,textarea,select { font-family:Inter,system-ui,sans-serif; }
 .accessibility-mode .hero-campus-photo,.accessibility-mode .editorial-lift { scale:none; translate:none; transform:none; }
 .accessibility-mode [data-spotlight]::before { display:none; }
 .accessibility-mode .site-header,.accessibility-mode .editorial-glass,.accessibility-mode .workspace-sidebar { backdrop-filter:none; }
+html.accessibility-mode { scroll-behavior:auto; }
+.journey-meter { height:.38rem; margin-top:.85rem; border-radius:2rem; overflow:hidden; background:var(--border-subtle); }
+.journey-meter span { display:block; height:100%; border-radius:inherit; background:var(--accent-emerald); }
 @media(prefers-reduced-motion:reduce) {
  html { scroll-behavior:auto; }
  :is(.filter-pill,.language-pill,.site-header .masthead-row,.portal-logo-image) { transition:none; }

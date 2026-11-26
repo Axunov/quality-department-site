@@ -1,5 +1,6 @@
 "use client";
 
+import { JourneyProgress } from "@/components/common/FormSteps";
 import { useEffect, useRef, useState } from "react";
 import { matchesSurveyGroup, studyModes, studyMode, type StudyMode } from "@/lib/surveyGroupSearch";
 import { surveyJourney } from "@/data/surveyJourney";
@@ -294,7 +295,7 @@ export default function TeacherSurveyForm({ locale }: { locale: string }) {
             <span>{step < teachers.length ? `${t.teacher} ${step + 1}/${teachers.length}` : t.general}</span>
             <span>{step + 1}/{teachers.length + 1}</span>
           </div>
-          <progress className="journey-progress" max={teachers.length + 1} value={step + 1} aria-label={ui.progress} />
+          <JourneyProgress max={teachers.length + 1} value={step + 1} label={ui.progress} />
         </section>}
 
         {teachers.map((teacher, teacherIndex) => {

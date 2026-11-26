@@ -168,7 +168,7 @@ export function Header() {
           <div className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-slate-100 py-4 lg:hidden">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <LanguageSwitcher />
-              <AccountGateway locale={locale}/>
+              <AccountGateway locale={locale} onNavigate={()=>setMenuOpen(false)}/>
             </div>
             <nav aria-label={portal.navigation} className="grid gap-1 text-sm font-semibold">
               {main.map((item) => (
