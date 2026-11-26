@@ -1,3 +1,4 @@
+import { SpotlightCard, Reveal } from "@/components/motion/UnifiedMotion";
 import { useLocale } from "next-intl";
 import { surveyText } from "@/lib/surveyI18n";
 import { useTranslations } from "next-intl";
@@ -35,10 +36,9 @@ export function Directions() {
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {items.map((item, index) => (
-          <Link
-            key={item.title}
+          <Reveal key={item.title} delayMs={index*60}><SpotlightCard className="qd-bento-card"><Link
             href={links[index]}
-            className="rounded-[30px] bg-white p-7 shadow-xl shadow-slate-200/70 transition hover:-translate-y-1 hover:shadow-2xl"
+            className="block p-7"
           >
             <div className="text-5xl">{icons[index]}</div>
             <h3 className="mt-6 text-2xl font-bold text-slate-900">
@@ -46,7 +46,7 @@ export function Directions() {
             </h3>
             <p className="mt-4 leading-7 text-slate-600">{item.text}</p>
             <p className="mt-6 font-bold text-blue-700">{tr("Открыть →")}</p>
-          </Link>
+          </Link></SpotlightCard></Reveal>
         ))}
       </div>
     </section>

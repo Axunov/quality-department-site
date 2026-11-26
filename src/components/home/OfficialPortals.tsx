@@ -11,7 +11,7 @@ export default function OfficialPortals({ locale }: { locale: string }) {
   const [expanded, setExpanded] = useState(false);
   const cards = (duplicate: boolean) => officialPortals.map(portal => (
     <a key={portal.id} href={portal.url} className="portal-card" target="_blank" rel="noopener noreferrer" tabIndex={duplicate ? -1 : undefined}>
-      <span className="portal-logo"><Image src={portal.image} width={132} height={72} sizes="132px" alt="" className="portal-logo-image"/></span>
+      <span className="portal-logo"><Image src={portal.image} width={132} height={72} sizes="132px" alt="" className="portal-logo-image qd-portal-badge"/></span>
       <h3>{portal.title[l]}</h3>
       <span className="portal-domain">{portal.domain}<ArrowUpRight size={16} aria-hidden="true"/></span>
       {!duplicate && <span className="sr-only">{t.newTab}</span>}

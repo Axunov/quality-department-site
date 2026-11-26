@@ -1,3 +1,4 @@
+import assetReplacements from "./scripts/asset-replacements.json";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
@@ -20,7 +21,7 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    return [{ source:"/images/institute.jpg", destination:"/images/institute.webp", permanent:true }];
+    return Object.entries(assetReplacements).map(([source,destination])=>({source,destination,permanent:true}));
   },
   async headers() {
     const contentSecurityPolicy = [

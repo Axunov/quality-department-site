@@ -52,7 +52,7 @@ export function DonutChart({ title, slices, lang }: { title: string; slices: Sli
     const start = offset; offset += length;
     return { ...s, start, length };
   });
-  return <section className="campus-card institute-chart">
+  return <section className="campus-card institute-chart qd-interactive-surface">
     <ChartHeader title={title} lang={lang} />
     <div className="institute-donut-layout">
       <div className="institute-donut">
@@ -84,7 +84,7 @@ export function StackChart({ title, rows, series, lang, percentage = false, head
   const selection = useSelection(0);
   const selected = rows[selection.active] ?? rows[0];
   const max = Math.max(1,...rows.map(r=>sum(r.values)));
-  return <section className="campus-card institute-chart">
+  return <section className="campus-card institute-chart qd-interactive-surface">
     <ChartHeader title={title} lang={lang}>{headingAction}</ChartHeader>
     <ul className="institute-series" aria-label={title}>
       {series.map(s=><li key={s.label}><i style={{background:s.color}} aria-hidden="true"/>{s.label}</li>)}

@@ -1,6 +1,6 @@
 "use client";
 
-import { SkeletonGrid } from "@/components/editorial/MotionPrimitives";
+import { SkeletonGrid } from "@/components/motion/UnifiedMotion";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 

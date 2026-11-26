@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { ArrowUpRight, GraduationCap, Presentation, BriefcaseBusiness, ClipboardCheck } from "lucide-react";
+import { SpotlightCard, Reveal } from "@/components/motion/UnifiedMotion";
 import { Link } from "@/i18n/routing";
 
 const icons=[GraduationCap,Presentation,BriefcaseBusiness,ClipboardCheck];
@@ -34,14 +35,14 @@ export function ServiceHub({locale}:{locale:string}){
  const t=copy[locale==="uz"||locale==="en"?locale:"ru"];
  const [role,setRole]=useState(0);
  const id=useId();
- return <section id="services" className="role-hub" aria-labelledby={id} data-spotlight>
+ return <SpotlightCard as="section" id="services" className="role-hub" labelledBy={id}>
    <h2 id={id} className="role-hub-heading">{t.heading}</h2>
    <div className="role-select" role="group" aria-labelledby={id}>
     {t.roles.map((label,index)=>{const Icon=icons[index];return <button key={label} type="button" aria-pressed={index===role} onClick={()=>setRole(index)}><Icon size={17} aria-hidden="true"/>{label}</button>})}
    </div>
    <div key={role} className="role-actions step-enter" aria-live="polite">
-    {t.actions[role].map((label,index)=><Link key={label} href={routes[role][index]}><span>{label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}
+    {t.actions[role].map((label,index)=><Reveal key={label} delayMs={index*60}><Link href={routes[role][index]}><span>{label}</span><ArrowUpRight size={17} aria-hidden="true"/></Link></Reveal>)}
    </div>
    <div className="role-footer"><Link href="/surveys">{t.all}</Link><Link href="/monitoring">{t.results}</Link></div>
- </section>;
+ </SpotlightCard>;
 }

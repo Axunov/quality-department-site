@@ -25,7 +25,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-4">
               <Image
-                src="/images/logo.jpg"
+                src="/images/logo.webp"
                 alt={tr("Логотип института")}
                 width={72}
                 height={72}
