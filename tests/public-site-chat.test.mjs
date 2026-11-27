@@ -21,6 +21,13 @@ test("chat matches typical questions in three languages and keeps links on the s
   for (const q of ["Покажи мои оценки", "What is the weather?", "My HEMIS grades", "Документы для me@example.com", "проверить статус +998 99 123 45 67"]) assert.equal(lib.matchSiteTopic(q),null);
 });
 
+test("home chat links lead to the correct language and section",()=>{
+  assert.equal(lib.siteChatLink("ru",false,lib.siteChatAnswer("track","ru").href),"/ru/appeals#track");
+  assert.equal(lib.siteChatLink("uz",false),"/uz/appeals#appeal-form");
+  assert.equal(lib.siteChatLink("en",false,lib.siteChatAnswer("documents","en").href),"/en/documents");
+  assert.equal(lib.siteChatLink("en",true,"#track"),"#track");
+});
+
 function handler({key, count=0}={}) {
   const calls=[];
   const db={from:()=>({select:()=>({eq:()=>({eq:()=>({gte:async()=>({count})})})}),insert:async()=>({})})};

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { type AppealLocale } from "@/lib/appealHelp";
-import { chatSuggestions, matchSiteTopic, siteChatAnswer } from "@/lib/publicSiteChat";
+import { chatSuggestions, matchSiteTopic, siteChatAnswer, siteChatLink } from "@/lib/publicSiteChat";
 import { uzbekAlphabet } from "@/lib/uzbekAlphabet";
 
 const labels = {
@@ -14,7 +14,7 @@ const labels = {
 type Answer = NonNullable<ReturnType<typeof siteChatAnswer>>;
 type Message = {id:number; question: string; answer: Answer | null; generated?: string};
 
-export default function PublicSiteChat({locale}: {locale:AppealLocale}) {
+export default function PublicSiteChat({locale, onAppealsPage=false}: {locale:AppealLocale;onAppealsPage?:boolean}) {
   const [open,setOpen] = useState(false);
   const [tipDismissed,setTipDismissed] = useState(false);
   const [input,setInput] = useState("");
@@ -103,7 +103,7 @@ export default function PublicSiteChat({locale}: {locale:AppealLocale}) {
           <div className="mr-auto max-w-[95%] rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
             <p>{generated??answer?.text??t("fallback")}</p>
             {generated && answer && <details className="mt-2 text-sm"><summary className="cursor-pointer font-semibold">{t("original")}</summary><p className="mt-1">{answer.text}</p></details>}
-            <a className="mt-2 inline-block font-bold text-blue-700 underline underline-offset-4 dark:text-blue-300" href={answer?.href??"#appeal-form"} onClick={()=>closeChat(false)}>{answer?t("source"):t("form")}</a>
+            <a className="mt-2 inline-block font-bold text-blue-700 underline underline-offset-4 dark:text-blue-300" href={siteChatLink(locale,onAppealsPage,answer?.href)} onClick={()=>closeChat(false)}>{answer?t("source"):t("form")}</a>
           </div>
         </div>)}
         {pending && <div><p className="ml-auto w-fit max-w-[90%] break-words rounded-2xl bg-blue-700 px-3 py-2 text-white">{pending}</p><p className="mt-2 text-sm">{t("loading")}</p></div>}

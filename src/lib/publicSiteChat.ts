@@ -55,3 +55,7 @@ export function siteChatAnswer(topic: unknown, locale: AppealLocale) {
 }
 
 export const chatSuggestions = ["track", "surveys", "documents", "contacts"] as const;
+
+export function siteChatLink(locale: AppealLocale, anchorOnCurrentPage: boolean, href = "#appeal-form") {
+  return href.startsWith("#") && !anchorOnCurrentPage ? `/${locale}/appeals${href}` : href;
+}
