@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
       // The provider receives only curated guidance; links remain assigned by the site.
       const result = await fetch("https://api.openai.com/v1/responses", {
-        method: "POST", cache: "no-store", signal: AbortSignal.timeout(5000),
+        method: "POST", cache: "no-store", signal: AbortSignal.timeout(9000),
         headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "gpt-5.4-mini", reasoning: {effort:"none"}, store:false, max_output_tokens:180,
@@ -45,14 +45,27 @@ export async function POST(request: NextRequest) {
           text:{format:{type:"json_schema",name:"site_guidance",strict:true,schema:{type:"object",additionalProperties:false,required:["text"],properties:{text:{type:"string"}}}}},
         }),
       });
-      if (!result.ok) return fallback();
+      if (!result.ok) {
+        const body = await result.json().catch(() => null);
+        const code = body?.error?.code;
+        console.warn("site_chat_provider_rejected", result.status,
+          typeof code === "string" && /^[a-z_]{1,60}$/.test(code) ? code : "unknown");
+        return fallback();
+      }
       const data = await result.json();
-      if (data.status !== "completed" || !Array.isArray(data.output)) return fallback();
+      if (data.status !== "completed" || !Array.isArray(data.output)) {
+        console.warn("site_chat_provider_incomplete");
+        return fallback();
+      }
       const content = data.output.flatMap((x: {type?: string; content?: unknown[]}) => x?.type === "message" && Array.isArray(x.content) ? x.content : []);
       if (content.length !== 1 || content[0]?.type !== "output_text" || typeof content[0]?.text !== "string" || content[0].text.length > 2400) return fallback();
       const text = JSON.parse(content[0].text)?.text;
       if (typeof text !== "string" || text.trim().length < 15 || text.length > 700 || /https?:|www\.|[<>]|\S+@\S+/i.test(text)) return fallback();
       return reply({...answer, text:text.trim(), generated:true});
-    } catch { return fallback(); }
+    } catch (error) {
+      console.warn("site_chat_provider_unavailable",
+        error instanceof Error && error.name === "TimeoutError" ? "timeout" : "failure");
+      return fallback();
+    }
   } catch { return reply({}, 400); }
 }

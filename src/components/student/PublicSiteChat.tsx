@@ -47,7 +47,7 @@ export default function PublicSiteChat({locale, onAppealsPage=false}: {locale:Ap
     setPending(question);
     try {
       const r=await fetch("/api/public/site-chat",{
-        method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({topic,locale}),signal:AbortSignal.timeout(7500),
+        method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({topic,locale}),signal:AbortSignal.timeout(13000),
       });
       const data=r.ok?await r.json():null;
       append(data?.generated===true && typeof data.text==="string"? data.text : undefined);
