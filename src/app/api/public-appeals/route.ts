@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { appealFileTypes } from "@/lib/studentAppeals";
 import { getClientIp, hashClientIp, verifyTurnstile } from "@/lib/studentSecurity";
+import { readAppealContact } from "@/lib/appealContact";
 import { notifyAdminAboutAppeal } from "@/lib/adminAppealNotifications";
 
 export const runtime = "nodejs";
@@ -14,8 +15,7 @@ export async function POST(request: NextRequest) {
   if (Number(request.headers.get("content-length") || 0) > 25_000_000) return NextResponse.json({ok:false},{status:413});
   let form: FormData; try { form = await request.formData(); } catch { return NextResponse.json({ok:false},{status:400}); }
   const category=clean(form.get("category"),50),subject=clean(form.get("subject"),200),body=clean(form.get("body"),5000);
-  const anonymous=form.get("anonymous")==="true",name=anonymous?"":clean(form.get("name"),200),group=clean(form.get("group"),150);
-  const contactType=anonymous?"":clean(form.get("contactType"),20),contactValue=anonymous?"":clean(form.get("contactValue"),250);
+  const {anonymous, name, group, contactType, contactValue}=readAppealContact(form);
   const locale=["ru","uz","en"].includes(clean(form.get("locale"),2))?clean(form.get("locale"),2):"ru";
   if(!categories.has(category)||subject.length<3||body.length<10||(!anonymous&&!name)||(!anonymous&&contactValue&&!['phone','telegram','email'].includes(contactType))) return NextResponse.json({ok:false,code:"invalid"},{status:400});
   const admin=createAdminClient(),ipHash=hashClientIp(getClientIp(request)),since=new Date(Date.now()-3_600_000).toISOString();
@@ -32,6 +32,6 @@ export async function POST(request: NextRequest) {
   const files=form.getAll("files").filter(x=>x instanceof File) as File[];
   for(const file of files.slice(0,3)){if(file.size<1||file.size>5_242_880||!appealFileTypes.has(file.type))continue;const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-120),path=`${appeal.id}/${crypto.randomUUID()}-${safe}`;const{error:uploadError}=await admin.storage.from("student-appeals").upload(path,await file.arrayBuffer(),{contentType:file.type,upsert:false});if(!uploadError)await admin.from("student_appeal_files").insert({appeal_id:appeal.id,storage_path:path,original_name:file.name.slice(0,200),mime_type:file.type,size_bytes:file.size,uploaded_by_type:"student"});}
   await admin.from("site_security_events").insert({endpoint:"public_appeal",ip_hash:ipHash,outcome:"accepted"});
-  await notifyAdminAboutAppeal({number:appeal.appeal_number,category,subject,anonymous,name,group});
+  await notifyAdminAboutAppeal();
   return NextResponse.json({ok:true,number:appeal.appeal_number,trackingCode},{headers:{"Cache-Control":"no-store"}});
 }

@@ -1,2 +1,2 @@
 import StudentAppealsAdmin from "@/components/admin/StudentAppealsAdmin";
-export default async function AppealsPage({params}:{params:Promise<{locale:string}>}){const{locale}=await params;return <StudentAppealsAdmin locale={locale}/>}
+export default async function AppealsPage({params}:{params:Promise<{locale:string}>}){const{locale}=await params;return <StudentAppealsAdmin locale={locale} assistantEnabled={process.env.APPEALS_ASSISTANT_ENABLED !== "0"}/>}

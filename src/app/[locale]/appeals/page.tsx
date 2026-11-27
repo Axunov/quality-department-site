@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/common/PageHeader";
+import AppealQuickHelp from "@/components/student/AppealQuickHelp";
 import PublicAppealForm from "@/components/student/PublicAppealForm";
 
 const labels = {
@@ -18,7 +19,10 @@ export default async function AppealsPage({ params }: { params: Promise<{ locale
   return (
     <main>
       <PageHeader label={t.label} title={t.title} description={t.description} />
-      <section className="container-main py-10 sm:py-14"><PublicAppealForm locale={current}/></section>
+      <section className="container-main py-10 sm:py-14">
+        {process.env.APPEALS_ASSISTANT_ENABLED !== "0" && <AppealQuickHelp locale={current} />}
+        <div id="appeal-form" className="scroll-mt-28"><PublicAppealForm locale={current}/></div>
+      </section>
     </main>
   );
 }
