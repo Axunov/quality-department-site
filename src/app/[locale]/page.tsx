@@ -9,6 +9,7 @@ import { getLocalizedText } from "@/utils/getLocalizedText";
 import { surveyText } from "@/lib/surveyI18n";
 import { ParallaxFrame, Reveal } from "@/components/motion/UnifiedMotion";
 import { ServiceHub } from "@/components/home/ServiceHub";
+import PublicSiteChat from "@/components/student/PublicSiteChat";
 import { HomeEditorNote } from "@/components/home/HomeEditorNote";
 
 export const revalidate = 300;
@@ -41,5 +42,6 @@ export default async function HomePage({params}:{params:Promise<{locale:string}>
   </section></Reveal>
   <Reveal delayMs={60}><section className="home-publication-section" aria-labelledby="home-documents"><div className="section-heading"><div><p className="section-eyebrow">{t.resources}</p><h2 id="home-documents" className="mt-2 text-3xl font-bold tracking-tight">{t.documents}</h2></div><Link href="/documents" className="text-sm font-semibold text-blue-700">{t.allDocuments} →</Link></div><div className="mt-6 grid gap-3">{documents.map(d=><Link key={d.id} href={`/documents/${encodeURIComponent(d.id)}`} className="document-row editorial-lift"><span className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-bold text-blue-700">{surveyText(l,d.category||t.documents)}</span><span className="min-w-0 flex-1 font-semibold">{getLocalizedText(l,d.title_ru||"",d.title_uz||"",d.title_en||"")}</span><ArrowUpRight size={20} className="shrink-0 text-slate-500"/></Link>)}{!documents.length&&<p className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-500">{t.emptyDocuments}</p>}</div></section></Reveal>
   </div>
+  {process.env.SITE_CHAT_ENABLED !== "0" && <PublicSiteChat locale={l} />}
  </main>;
 }
